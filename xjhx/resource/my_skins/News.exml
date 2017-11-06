@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="news" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image id="img_newsbg" source="newsbg_png" x="0" y="0" width="640" height="1136" scale9Grid="0,0,20,0"/>
+	<e:Scroller id="scr_news" width="640" height="1136" x="0" y="0">
+		<e:Group id="grp_news">
+			<e:Image id="img_txt" source="transparent_png" x="23.47" y="65.21"/>
+			<e:Image id="img_ad" width="580" height="264" x="22.000000000000004" y="1069.83" source="gamead_jpg" horizontalCenter="-8" scaleX="1" scaleY="1"/>
+			<e:Button id="btn_check" label="" x="172.56" y="1351.95" enabled="true" scaleX="1" scaleY="1">
+				<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btncheck_png"/>
+					<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+				</e:Skin>
+				</e:skinName>
+			</e:Button>
+			<e:Image id="img_commant" width="100%" x="0" source="comment_png" height="108" bottom="-436" y="1131" scaleX="1" scaleY="1"/>
+			<e:Image id="img_hand" source="hand_png" x="393.32" y="1385.28" scaleX="1" scaleY="1"/>
+			<e:Image id="img_tm" source="newsbg_png" x="0" y="1600" scale9Grid="2,2,16,16" width="100%" height="40"/>
+		</e:Group>
+	</e:Scroller>
+</e:Skin>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>wiki列表</title>
+    <link rel="stylesheet" type="text/css" href="http://joymewiki.joyme.com/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="http://joymewiki.joyme.com/static/css/audit/info.css">
+    <script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+    <script src="http://static.joyme.com/pc/wiki/tuji/js/layer.js"></script>
+</head>
+<body>
+<div class="goods-list-main">
+    <ul class="breadcrumb">
+        <li><a href="/wiki/index.php?c=wiki&a=addwiki"><button type="button" class="btn btn-default">添加wiki</button></a></li>
+    </ul>
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>查询条件</h5>
+        </div>
+        <div class="goods-list-search content-box-content">
+            <form class="form-horizontal" style="margin-top: 10px;" method="post" action="/wiki/index.php?c=wiki&a=wlist">
+                <div class="my-left">
+                    <div class="control-group">
+                        <label class="control-label" >WIKI KEY:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <input type="text" style="height: 16px;" name="wikikey" value="<?php echo $wikikey;?>" placeholder="请输入要查找的wikikey">
+                        </div>
+                    </div>
+                </div>
+                <div class="my-right">
+                    <div class="control-group">
+                        <label class="control-label" >WIKI名称:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <input type="text" style="height: 16px;" name="wikiname" value="<?php echo $wikiname;?>" placeholder="请输入要查找的游戏名称">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="submit" class="btn btn-success" value="查询">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>WIKI列表</h5>
+        </div>
+        <div class="content-box-content" style="">
+            <table class="table table-bordered table-hover" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th>wikikey</th>
+                    <th>wiki名称</th>
+                    <th>游戏名称</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(empty($list)):?>
+                <tr class="warning">
+                    <td colspan="12">暂无数据</td>
+                </tr>
+                <?php else:?>
+                <?php foreach($list as $key=>$val):?>
+                <tr>
+                    <td><?php echo $val['wiki_key'];?></td>
+                    <td><?php echo $val['wiki_name'];?></td>
+                    <td><?php echo $val['game_name'];?></td>
+                    <td>
+                        <a href="/wiki/index.php?c=wiki&a=editwiki&id=<?php echo $val['id'];?>">编辑</a><br>
+                        <?php if($val['status']==1):?>
+                        <a href="javascript:;" class="status" data-id="<?php echo $val['id']?>" data-status="0">禁用</a><br>
+                        <?php else:?>
+                        <a href="javascript:;" class="status" data-id="<?php echo $val['id']?>" data-status="1">启用</a><br>
+                        <?php endif;?>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+                <?php endif;?>
+                </tbody>
+            </table>
+            <div class="pagination pagination-right">
+                <ul>
+                    <?php echo $phtml;?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(".active a").css('background-color','#5bb75b');
+    $(".active a").css('color','black');
+    $(".admin_page a").css('cursor','pointer');
+
+    $(".status").click(function(){
+        var id = $(this).data('id');
+        var status = $(this).data('status');
+        layer.confirm('确定要修改么？', {
+            btn: ['确定','取消'] //按钮
+        }, function(index){
+            $.post('/wiki/index.php', {c:'wiki', a:'editwstatus', id:id,status:status}, function(res){
+                res = JSON.parse(res);
+                if(res.rs == 1){
+                    layer.msg(res.msg, {time:2000});
+                }else{
+                    layer.msg(res.msg, {time:2000});
+                }
+                window.location.reload();
+            });
+        }, function(){
+        });
+    });
+</script>
+

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <title>星际火线军团争霸赛</title>
+    <link rel="stylesheet" href="http://static.joyme.com/mobile/20170220xjhx/css/comm.css?a=11">
+    <script>
+        document.addEventListener("DOMContentLoaded", function (e) {
+            var w=e.target.activeElement.clientWidth>=1024?1024:e.target.activeElement.clientWidth;
+            document.getElementById('warp').style.zoom = w / 375;
+        });
+        window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+            if (window.orientation === 180 || window.orientation === 0) {
+                var w= document.body.clientWidth;
+                document.getElementById('warp').style.zoom = w / 375;
+            }
+            if (window.orientation === 90 || window.orientation === -90 ){
+                var w=320;
+                document.getElementById('warp').style.zoom = w / 375;
+                document.getElementById('warp').style.width='375px';
+            }
+        }, false);
+    </script>
+    <style>
+        .control a,.uls a{
+            display: block;
+            color: #978edd;
+        }
+        .control .control-curr a{
+            color: #ffd220;
+        }
+        .uls .lis a{
+            color: #ffffff;
+        }
+        .details dl dt{
+            overflow: hidden;
+        }
+        s{font-style:normal;text-decoration:none;}
+    </style>
+</head>
+<body>
+
+<div id="warp">
+    <div class="nav">
+        <a href="/new/?c=xjhx&a=mustsee"><span></span></a>
+        <a href="/new/?c=xjhx&a=jtzblist"><span class="curr"></span></a>
+        <a href="/new/?c=xjhx&a=reward"><span></span></a>
+        <a href="/new/?c=xjhx&a=index"><span></span></a>
+    </div>
+
+    <div class="corps">
+        <div class="corps-top"></div>
+        <div class="control">
+            <span data-type="1" class="<?php if($data['sort']==1):?>control-curr<?php endif;?>"><a href="/new/?c=xjhx&a=jtzblist&sort=1&sy=<?=$data['sy'];?>&keyword=<?=$data['keyword'];?>">最新</a></span>
+
+            <span  data-type="2"  class="<?php if($data['sort']==2):?>control-curr<?php endif;?>"><a href="/new/?c=xjhx&a=jtzblist&sort=2&sy=<?=$data['sy'];?>&keyword=<?=$data['keyword'];?>">最热</a></span>
+
+            <div class="search">
+                <input name="keyword" type="text" value="<?=$data['keyword'];?>" placeholder="输入军团名称/编号查询">
+                <s onclick="search()"></s>
+            </div>
+        </div>
+    </div>
+
+    <ul class="uls">
+        <li  data-type="2" class="<?php if($data['sy']==2):?>lis<?php endif;?>"><a href="/new/?c=xjhx&a=jtzblist&sort=<?=$data['sort'];?>&sy=2&keyword=<?=$data['keyword'];?>">苹果(ios)区</a></li>
+        <li  data-type="1" class="<?php if($data['sy']==1):?>lis<?php endif;?>"><a href="/new/?c=xjhx&a=jtzblist&sort=<?=$data['sort'];?>&sy=1&keyword=<?=$data['keyword'];?>">安卓(Android)区</a></li>
+    </ul>
+
+    <div class="list mask-like">
+
+        <?php if(empty($data['corps'])):?>
+            <div class="tips">
+                暂无数据
+            </div>
+        <?php else:?>
+            <?php foreach($data['corps'] as $key=>$v):?>
+            <dl class="">
+                <dt>
+                    <img src="<?=$v['avatar'];?>?imageView/1/w/281/h/281/">
+                <div class="rank">编号：<?=$v['id'];?></div>
+                </dt>
+                <dd data-area="<?=$v['area'];?>" data-corpsName="<?=$v['corps_name'];?>" data-voteNum="<?=$v['vote_num'];?>" data-rank="<?=$v['id'];?>" data-img="<?=$v['avatar'];?>"  data-colonelName="<?=$v['colonel_name'];?>" data-decla="<?=$v['decla'];?>">
+                    <p class="c<?=$v['id'];?>"><s class="vote_num"><?=$v['vote_num'];?></s>票 <em class="zan <?php if($v['is_like'] == 1):?>like<?php endif;?>" data-id="<?=$v['id'];?>"></em></p>
+                    <p>
+                        <span>军团名称：<?=$v['corps_name'];?></span>
+                        <span>区服名称：<?=$v['area'];?></span>
+                    </p>
+                </dd>
+            </dl>
+            <?php endforeach;?>
+        <?php endif;?>
+    </div>
+
+    <!--弹窗-->
+    <div class="popup mask-like">
+
+    </div>
+
+    <!--报名弹窗-->
+    <div class="mask-signUp">
+        <div class="sign-main failure">
+            <p style="visibility: hidden;height: 20px;margin: 0; margin-top: 10px">111</p>
+            <p>今天的投票机会已用完，</p>
+            <p>明天再来吧！</p>
+            <em></em>
+            <img src="http://static.joyme.com/mobile/20170220xjhx/images/code.jpg" width="150" height="150">
+            <div class="gz">关注微信公众号，资讯福利一手掌握</div>
+        </div>
+        <div class="sign-main success">
+            <span>投票成功！</span>
+            <em></em>
+            <img src="http://static.joyme.com/mobile/20170220xjhx/images/code.jpg" width="150" height="150">
+            <div class="gz">关注微信公众号，资讯福利一手掌握</div>
+        </div>
+    </div>
+
+    <div class="share">
+
+    </div>
+
+</div>
+<script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+<script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+<script src=" http://static.joyme.com/mobile/20170220xjhx/js/fastclick.js"></script>
+<script>
+    window.addEventListener( "load", function() {
+        FastClick.attach( document.body );
+    }, false );
+
+    //    分享弹窗
+    $('.popup').on('click','.share-btn',function (){
+        $('.share').show();
+    });
+    //    分享弹窗关闭
+    $('.share').on('click',function (){
+        $('.share').hide();
+    });
+    //    详情弹窗关闭
+    $('.popup').on('click','.close',function (){
+        var csname=$(this).attr('data-className');
+        var p_vote_num = $(this).parent().find('.vote_num').html();
+        var l_vote_num = $('.'+csname).find('.vote_num').html();
+        if(p_vote_num > l_vote_num){
+            $('.'+csname).find('.vote_num').html(p_vote_num);
+            $('.'+csname).find('.zan').addClass('like');
+        }
+        $('.popup').hide();
+    });
+
+    //    列表详情
+    $('.list').on('click','dl',function (){
+        var data_img=$(this).find('dd').attr('data-img');
+        var data_rank=$(this).find('dd').attr('data-rank');
+        var data_votenum=$(this).find('.vote_num').html();
+        var data_corpsname=$(this).find('dd').attr('data-corpsname');
+        var data_area =$(this).find('dd').attr('data-area');
+        var data_decla=$(this).find('dd').attr('data-decla');
+        var data_colonelName=$(this).find('dd').attr('data-colonelName');
+        var className = 'zan';
+        if($(this).find('.zan').hasClass('like')){
+            className = 'zan like'
+        }
+        var str='<div class="details">\
+                <div class="close" data-className="c'+data_rank+'"></div>\
+                <dl>\
+                <dt>\
+                <img src="'+data_img+'?imageView/1/w/281/h/281/">\
+                <div class="rank">编号：'+data_rank+'</div>\
+                </dt>\
+                <dd>\
+                <p><s class="vote_num">'+data_votenum+'</s>票<em data-id="'+data_rank+'" class="'+className+'"></em></p>\
+                <p>\
+                <span>军团名称：'+data_corpsname+'</span>\
+                <span>军团长：'+data_colonelName+'</span>\
+                <span>所在区服：'+data_area+'</span>\
+                </p>\
+                <p>\
+                <span>参赛宣言：</span>\
+                <span>'+data_decla+'</span>\
+                </p>\
+                </dd>\
+                </dl>\
+                <div class="share-btn"></div>\
+                </div>';
+
+
+
+        $('.popup').show().html(str);
+
+
+    });
+    //    点赞弹窗关闭
+    $('.sign-main em').on('click' , function(){
+        $('.mask-signUp').hide();
+    });
+    $('.mask-like').on('click' ,'.zan', function (event){
+        event.stopPropagation();
+        var id= $(this).attr('data-id');
+        var $_this = $(this);
+        $.ajax({
+            url:'/new/?c=xjhx&a=vote',
+            type:'post',
+            data:{
+                id:id
+            },
+            dataType:'json',
+            success:function(data){
+                $('.mask-signUp').show();
+                $('.mask-signUp>div').hide();
+                if(data.rs == 1){
+                    $('.success').show().find('span').html('投票成功！');
+                    $_this.addClass('like');
+                    $_this.parent().find('s').html(Number($_this.parent().find('s').html())+1);
+
+                }else if(data.rs == 2){
+                    $('.failure').show();
+                }else if(data.rs == 0){
+                    $('.success').show().find('span').html(data.msg);
+                }
+            },
+            error:function(xhr,textStatus){
+
+            }
+        })
+    });
+    //搜索
+    function search(){
+        var kw = $('input[name="keyword"]').val();
+        /*if(kw==''){
+            return false;
+        }*/
+
+        var url = '/new/?c=xjhx&a=jtzblist&keyword='+kw;
+        console.log(url);
+
+        window.location.href=url;
+    }
+
+    var flag = true;
+    var n = 2;
+    var winH = $(window).height();
+    if($('.list dl').length>1){
+        flag = true;
+    }else{
+        flag = false;
+    }
+    $(window).on('touchmove', function() {
+        var sct = $(window).scrollTop();
+        var scrollWrapper = $('body');
+        var scrollH = scrollWrapper.height();
+        if ((sct - (scrollH - winH)) >= -100) {
+            if (flag) {
+                getAllList();
+            }
+        }
+    });
+    var load = '<div class="dropload-down" style="transition: all 300ms; height: 50px;">\
+        <div class="dropload-load"></div>\
+        <span class="loading"></span>\
+        加载中...\
+        </div>';
+    function getAllList(){
+        flag = false;
+        $('.integral').append(load);
+        var  url = "/new/?c=xjhx&a=jtzbList";
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {
+                'pb_page': n++,
+                'sort':$('.control-curr').attr('data-type'),
+                'sy':$('.lis').attr('data-type'),
+                'keyword':$('input[name="keyword"]').val()
+            },
+            dataType: "json",
+            beforeSend: function (XMLHttpRequest) {
+                $('.dropload-down').remove();
+                $('#warp').append(load);
+            },
+            success: function (data) {
+                if(data.rs == 1){
+                    var str = '';
+                    var add_like='';
+                    for(var i = 0 ; i <data.msg.length ; i++){
+                        if(data.msg[i].is_like ==1){
+                            add_like = 'like';
+                        }else{
+                            add_like = '';
+                        }
+                    str+='<dl class="">\
+                    <dt>\
+                    <img src="'+data.msg[i].avatar+'?imageView/1/w/281/h/281/">\
+                    <div class="rank">编号：'+data.msg[i].id+'</div>\
+                    </dt>\
+                    <dd data-area="'+data.msg[i].area+'" \
+                        data-corpsname="'+data.msg[i].corps_name+'" \
+                        data-votenum="'+data.msg[i].vote_num+'" \
+                        data-rank="'+data.msg[i].id+'" \
+                        data-img="'+data.msg[i].avatar+'" \
+                        data-colonelname="'+data.msg[i].colonel_name+'" \
+                        data-decla="'+data.msg[i].decla+'">\
+                    <p class="c'+data.msg[i].id+'"><s class="vote_num">'+data.msg[i].vote_num+'</s>票 <em class="zan '+add_like+'" data-id="'+data.msg[i].id+'"></em></p>\
+                    <p>\
+                    <span>军团名称：'+data.msg[i].corps_name+'</span>\
+                    <span>区服名称：'+data.msg[i].area+'</span>\
+                    </p>\
+                    </dd>\
+                    </dl>';
+                    }
+
+                   $('.dropload-down').remove();
+                    $('.list').append(str);
+                    flag = true;
+                }else{
+                    $('.dropload-down').text('没有更多了!');
+                    return false;
+                }
+
+            },error:function (){
+
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //设置openid
+        wx.config({
+            debug: false,
+            appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+            timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+            nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+            signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareQZone'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                desc: '我正在参加《星际火线》军团争霸赛活动，快来给我点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                desc: '我正在参加《星际火线》军团争霸赛活动，快来给我点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                desc: '我正在参加《星际火线》军团争霸赛活动，快来给我点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

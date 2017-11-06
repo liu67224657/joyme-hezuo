@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="BluePring" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image id="img_printbg" source="bg_jpg" x="0" y="0" width="100%"/>
+	<e:Image id="img_print" source="blueprint_png" x="162.5" y="267.29"/>
+	<e:Image id="img_printline" source="printline_png" x="183.5" y="262.79"/>
+	<e:Image id="img_printtip" source="scantip_png" x="74.48" y="742"/>
+</e:Skin>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <link rel="stylesheet" href="<?=$data['static_path']?>css/common.css">
+    <link rel="stylesheet" href="<?=$data['static_path']?>css/page.css">
+    <script type="text/javascript" src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="http://static.joyme.com/js/plupload.full.min.js"></script>
+    <script type="text/javascript" src="http://static.joyme.com/js/qiniu.js"></script>
+    <title>青云志名人堂-我要报名</title>
+    <style>
+        .upload-img { position: relative;}
+        #container {position: absolute;top: 0;left: 50%;width: 2.3rem;height: 2.3rem;    padding: 0.1rem;margin-left: -1.25rem;z-index:999}
+        #pickfiles {display: block; overflow: hidden; width: 2.3rem; height: 2.3rem; font-size: 1.2rem;    opacity: 0.2; line-height: 2.2rem;}
+    </style>
+</head>
+<body>
+<div id="page-wrap">
+    <div class="page-cont-box">
+        <div class="upload-img fn-center clearfix">
+            <div class="upload-img-box">
+                <img name="imageUrl" id="imageUrl" src="<?=$data['static_path']?>images/head-img.jpg" alt="" width="126px;" height="126px">
+            </div>
+            <div id="container"><a class="" id="pickfiles" href="#">+</a></div>
+            <div class="up_block_line" id="up_block_line" style="position: absolute;top: 0;left: 50%;width: 2.3rem;height: 2.3rem;    padding: 0.1rem;margin-left: -1.25rem;"></div>
+            <span>仅支持JPG、PNG格式 大小在5M以内</span>
+        </div>
+            <div class="apply-iteam"><span>服务器：</span>
+                <!--<input id="area_code" type="text" value="">-->
+                <select id="area_code">
+                    <option value="">请选择</option>
+                    <?php foreach($data['serveridlist'] as $key=>$v):?>
+                    <option value="<?=$v['name']?>|<?=$v['serverid']?>" lev="<?=$v['status']?>"><?=$v['name']?></option>
+                    <?php endforeach;?>
+                </select>
+            </div>
+            <div class="apply-iteam"><span>参赛主题：</span>
+                <select id="zhuti">
+                    <option value="">请选择</option>
+                    <option value="#青云志盛世美颜#">#青云志盛世美颜#</option>
+                    <option value="#青云志壕气冲天#">#青云志壕气冲天#</option>
+                    <option value="#青云志恩爱有加#">#青云志恩爱有加#</option>
+                    <option value="#青云志真我无限#">#青云志真我无限#</option>
+                </select>
+            </div>
+            <div class="apply-iteam"><span>角色名称：</span><input id="user_name" type="text" value=""></div>
+            <div class="apply-iteam"><span>角色ID：</span><input id="user_id" type="text" value=""></div>
+            <div class="apply-iteam"><span>门派：</span><input id="occup" type="text" value=""></div>
+            <div class="apply-iteam"><span>家族：</span><input id="family" type="text" value=""></div>
+            <input type="hidden" id="nwe_img" value="">
+            <div class="apply-dec-box clearfix">
+                <span class="apply-dec">参赛宣言：</span>
+                <!--<textarea class="apply-dec-cont" name="" id="decla" onmouseover="focus()" onfocus="if(value==''){}"></textarea>-->
+                <textarea class="apply-dec-cont" onclick="focus()"  id="decla"></textarea>
+            </div>
+            <button  class="apply-submit-btn" id="submitBtn"></button>
+        <input type="hidden" id="endtime" value="<?=$data['endtime'];?>">
+        <input type="hidden" id="time" value="<?=$data['time'];?>">
+        <input type="hidden" id="is_share" value="<?=$data['is_share'];?>">
+        <h4 class="fn-center">报名规则</h4>
+        <p><span>①</span> 参赛玩家必须关注《青云志》官方微信后可参与活动报名；</p>
+        <p><span>②</span> 玩家按照要求上传图片并填写完所需信息后点击“报名”即可完成，图片未上传或信息填写不完整时，均不能完成报名；</p>
+        <p><span>③</span> 玩家主动输入的参赛宣言字数限制 15 字以内；</p>
+        <p><span>④</span> 当玩家正确上传并填写后，点击【报名】后弹出提示“报名成功即成功报名；</p>
+        <p><span>⑤</span> 所有玩家报名的照片及参赛宣言需经过人工审核，通过审核后方可在活动页面展示。</p>
+    </div>
+</div>
+<div class="focus-wind" id="focus" style="display:none" onclick="offareaTip('focus')">
+    <div class="focus-box">
+        <p class="fn-center">长按识别二维码<br/>进入微信公众号参与报名</p>
+        <cite><img src="<?=$data['static_path']?>images/code-img.jpg" alt=""></cite>
+    </div>
+</div>
+</body>
+</html>
+<script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+<script>
+
+    window.alert = function(name){
+        var iframe = document.createElement("IFRAME");
+        iframe.style.display="none";
+        iframe.setAttribute("src", 'data:text/plain,');
+        document.documentElement.appendChild(iframe);
+        window.frames[0].window.alert(name);
+        iframe.parentNode.removeChild(iframe);
+    };
+
+    var json = {};
+    var pid='c0b9fbf18884ac1c3b9be365025da686';
+    var apiHost = 'http://api.joyme.com/';
+    var uploadToken="";
+    $(document).ready(function () {
+        uploadInit();
+    });
+
+    function uploadInit() {
+        $.ajax({
+            url: apiHost + "comment/bean/json/check",
+            type: "post",
+            data: {profileid: pid},
+            dataType: "jsonp",
+            jsonpCallback: "checkcallback",
+            success: function (req) {
+                var resMsg = req[0];
+                if (resMsg.rs == '1') {
+                    uploadToken=resMsg.uploadtoken;
+                    upload();
+                }
+            }
+        });
+    }
+    function submitGoods() {
+        document.myForm.submit();
+    }
+
+    //图片传进度条
+    function uploadPicProcessLine(uploadRate){
+        if(uploadRate == 100){
+            $('#up_block_line').html('');
+        }else{
+            $('#up_block_line').html('<span>'+uploadRate+'%</span>');
+        }
+    }
+    function upload(){
+
+        var QiniuPic = new QiniuJsSDK();
+        var picUploader = QiniuPic.uploader({
+            runtimes: 'html5,flash,html4',    //上传模式,依次退化
+            browse_button: 'pickfiles',       //上传选择的点选按钮，**必需**
+            uptoken: uploadToken,
+            unique_names: false ,
+            save_key: false,
+            domain: 'http://joymepic.joyme.com/',
+            container: 'container',           //上传区域DOM ID，默认是browser_button的父元素，
+            max_file_size: '8mb',           //最大文件体积限制
+            flash_swf_url: 'http://lib.joyme.com/static/third/qiniuupload/plupload/Moxie.swf',  //引入flash,相对路径
+            max_retries: 3,                   //上传失败最大重试次数
+            dragdrop: true,                   //开启可拖曳上传
+            chunk_size: '4mb',                //分块上传时，每片的体积
+            auto_start: true,                 //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+            init: {
+                'FilesAdded': function (up, files) {
+                    //头像判断多图上传的情况
+                    if(files.length>=2){
+                        alert('只能选择一张图片上传');
+                        location.reload();
+                    }
+                    var i = 1;
+                    plupload.each(files, function (file) {
+                        files.splice(i,1);
+                        // 文件添加进队列后,处理相关的事情
+                    });
+                },
+                'BeforeUpload': function (up, file) {
+
+                    var picType = file.name.substring(file.name.lastIndexOf('.'),file.name.length).toUpperCase();
+                    if(picType != '.JPG' && picType != '.JPEG' && picType != '.PNG'){
+                        this.trigger('Error', {
+                            code : -1,
+                            message : "只能上传*.jpg,*png,*.jpeg的图片",
+                            file:file
+                        });
+                        return false;
+                    }
+                    if (file.size >= 1048576 * 5) {
+                        this.trigger('Error', {
+                            code : -1,
+                            message : "上传的图片大小不超过5M",
+                            file:file
+                        });
+                        return false;
+                    }
+                },
+                'UploadProgress': function (up, file) {
+                    var chunk_size = plupload.parseSize(this.getOption('chunk_size'));
+                    var uploadRate=Math.ceil(file.loaded*100/file.size);
+                    if(uploadRate>0){
+                        uploadPicProcessLine(uploadRate);
+                    }
+                },
+                'FileUploaded': function (up, file, info) {
+                    try {
+                        var domain = up.getOption('domain');
+                        var res = JSON.parse(info);
+                        var sourceLink = domain +res.key; //获取上传成功后的文件的Url
+                        $('#imageUrl').attr('src',sourceLink);
+                        $('#nwe_img').val(sourceLink);
+                    } catch (ex) {
+                        alert(ex);
+                    }
+                },
+                'Error': function (up, err, errTip) {
+                    alert(errTip);
+                    //上传出错时,处理相关的事情
+                },
+                'UploadComplete': function () {
+
+                },
+                'Key': function (up, file) {
+                    // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                    var picType = file.name.substring(file.name.lastIndexOf('.'),file.name.length).toLowerCase();
+                    var day = new Date();
+                    var Year= day.getFullYear();
+                    var Month= day.getMonth()+1;
+                    if(Month<10){
+                        Month='0'+Month;
+                    }
+                    var Day = day.getDate();
+                    var timestamp=Math.ceil(day.getTime());
+                    var key = "live/pic/"+Year+Month+'/'+Day+timestamp+picType;
+
+                    return key
+                }
+            }
+        });
+        picUploader.stop();
+    }
+
+
+    //报名按钮
+    $('#submitBtn').click(function(){
+
+        if(!checkTime()){
+            return false;
+        }
+        json['flag'] = '';
+        var img_path = $('#nwe_img').val();  //头像
+        var area_code = $('#area_code').val();  //服务器
+        var user_name = $('#user_name').val();  //角色名称
+        var user_id = $('#user_id').val();  //角色ID
+        var occup = $('#occup').val();   //职业
+        var family = $('#family').val();  //家族
+        var decla = $('#decla').val();   //宣言
+        var zhuti = $('#zhuti').val();  //主题
+
+        if($('#is_share').val()){
+            $('.focus-wind').show();
+            return false;
+        }
+
+        //服务器维护状态
+        if($('#area_code').find('option:selected').attr('lev') == 1){
+            alert('该服务器正在维护，暂时不能报名，请稍后再来!');
+            return false;
+        }
+
+        if(!img_path){
+            alert('请上传头像');
+            return false;
+        }
+
+        if(!area_code){
+            alert('请选择服务器地址');
+            return false;
+        }
+
+        if(!zhuti){
+            alert('请选择参赛主题');
+            return false;
+        }
+
+        if(!user_name){
+            alert('请填写角色名称');
+            return false;
+        }
+        if(!user_id){
+            alert('请填写角色ID');
+            return false;
+        }
+
+        if( isNaN(user_id) ){
+            alert('角色ID只能是数字');
+            return false;
+        }
+
+        userIdExists(user_id,area_code);
+
+        if(json['flag'] == 4){
+            alert('角色ID已存在');
+            return false;
+        }else if(json['flag'] == 2){
+            alert('该服务器不存在');
+            return false;
+        }else if(json['flag'] == 1){
+            alert('该用户不存在');
+            return false;
+        }
+
+        if(!occup){
+            alert('请填写门派');
+            return false;
+        }
+        if(!family){
+            alert('请填写家族');
+            return false;
+        }
+        if(!decla){
+            alert('请填写宣言');
+            return false;
+        }
+        if(decla.length>15){
+            alert('宣言限制在15字以内');
+            return false;
+        }
+
+        $.ajax({
+            "url": "/new/?c=qyz&a=signUp",
+            "type": "POST",
+            "data": {'user_id':user_id,'user_name':user_name,'area_code':area_code,'occup':occup,'family':family,'decla':zhuti+decla,'head_portr':img_path},
+            "success": function(msg) {
+                var obj = eval('(' + msg+ ')');
+                if(obj['rs'] == 0) {
+                    alert('报名成功，请等待审核');
+                    window.location.href="/new/?c=qyz&a=index";
+                }else{
+                    alert('报名失败');
+                }
+            }
+        })
+
+    });
+
+    //用户是否存在
+    function userIdExists( user_id ,area_code ){
+
+        $.ajax({
+            "url": "/new/?c=qyz&a=userExists",
+            "type": "post",
+            "async": false,
+            "data": {'user_id':user_id,'area_code':area_code},
+            "success": function(msg) {
+                var data = eval('(' + msg + ')');
+                if(data['result']==0){
+                    json['flag'] = 4;
+                }else if(data['result']==1){
+                    json['flag'] = 1;
+                }else if(data['result']==2){
+                    json['flag'] = 2;
+                }else if(data['result']==3){
+                    json['flag'] = 3;
+                }
+            }
+        })
+    }
+
+    //验证时间
+    function checkTime(){
+        if($('#endtime').val() < $('#time').val()){
+            alert('活动已结束');
+            return false;
+        }
+        return true;
+    }
+
+    $(document).ready(function () {
+        //设置openid
+        wx.config({
+            debug: false,
+            appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+            timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+            nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+            signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareQZone'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '我正在参加《青云志》名人堂活动，快来给我点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://wechat.joyme.com/attachment/headimg_2.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '我正在参加《青云志》名人堂活动，快来给我点赞吧！',
+//                desc: '短短的测试已经过去了，更长的旅行即将到来。',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://wechat.joyme.com/attachment/headimg_2.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '我正在参加《青云志》名人堂活动，快来给我点赞吧！',
+//                desc: '短短的测试已经过去了，更长的旅行即将到来。',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://wechat.joyme.com/attachment/headimg_2.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '我正在参加《青云志》名人堂活动，快来给我点赞吧！',
+                desc: '',//'短短的测试已经过去了，更长的旅行即将到来。',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://wechat.joyme.com/attachment/headimg_2.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+        });
+    });
+
+    function offareaTip(id){
+        var con = document.getElementById(id);
+        con.style.display = "block";
+    }
+
+    function offareaTip(id){
+        var con = document.getElementById(id);
+        con.style.display = "none";
+    }
+
+    if($('#is_share').val()){
+        $('.focus-wind').show();
+    }
+
+</script>

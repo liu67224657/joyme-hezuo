@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <title>初心不老 御魂不灭</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (e) {
+
+            var w=e.target.activeElement.clientWidth>=1024?1024:e.target.activeElement.clientWidth;
+            document.getElementById('warp').style.zoom = w / 320;
+
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+//                alert(0)
+            } else {
+//                document.getElementById('noweixn').style.display = 'block';
+                return false;
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="http://static.joyme.com/mobile/cms/ylzt170308/css/style.css">
+    <script src="http://static.joyme.com/js/jquery-1.9.1.min.js" language="javascript"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+<body onload="init()">
+<div class="noweixn" id="noweixn">
+    请通过微信打开
+</div>
+<div class="hp_tips">请切换到竖屏观赏~</div>
+<div id="warp">
+    <div class="page loading-page">
+        <div class="loading">
+            <div class="preload"></div>
+        </div>
+        <div class="loading-txt">0%</div>
+    </div>
+    <div class="page start-page">
+        <img class="index-text" src="http://static.joyme.com/mobile/cms/ylzt170308/images/open-text.png" width="8%">
+        <div class="mask-text"></div>
+        <div class="star-btn"></div>
+    </div>
+    <!--第一段视频 开始-->
+    <video id="video1" preload="auto" poster=""  x5-video-player-type="h5" x5-video-player-fullscreen="true" webkit-playsinline="true" x-webkit-airplay="true" playsinline="true">
+        <source src="http://static.joyme.com/mobile/cms/ylzt170308/images/video1.mp4">
+    </video>
+    <!--第一段视频 结束-->
+    <div class="page-bg page1">
+        <div class="look-btn"></div>
+    </div>
+    <!--第二段视频 开始-->
+    <video id="video2" preload="auto" poster=""  x5-video-player-type="h5" x5-video-player-fullscreen="true" webkit-playsinline="true" x-webkit-airplay="true" playsinline="true">
+        <source src="http://static.joyme.com/mobile/cms/ylzt170308/images/video2.mp4">
+    </video>
+    <!--第二段视频 结束-->
+    <div class="summon-btn"></div>
+    <!--发送方明信片开始-->
+    <div class="page-bg page7">
+        <div class="page7-mask">
+            <div class="pointer"></div>
+        </div>
+        <input class="send-name" type="text" placeholder="接收者名称">
+        <div class="column-height">
+            <div class="user-head"><img src="<?=$data['userinfo']['headimgurl']?>" alt=""><span class="user-name send-nickname"><?=$data['userinfo']['nickname']?></span></div>
+            <div class="send-btn">发给兄弟</div>
+            <div class="welfare-btn">领取福利</div>
+        </div>
+    </div>
+    <!--发送方明信片结束-->
+    <!--明信片展示页面 开始-->
+    <div class="page-bg page12" style="<?=$data['is_display']?>">
+        <div class="postcards-txt">你收到<span><?=$data['senduser']['nickname']?></span>的一张明信片</div>
+        <div class="postcards-btn"></div>
+    </div>
+    <!--明信片展示页面 结束-->
+    <!--接收方明信片开始-->
+    <div class="page-bg page8">
+        <div class="receive-name"><?=$data['rname']?></div>
+        <div class="column-height">
+            <div class="user-head"><img src="<?=$data['senduser']['headimgurl']?>" alt=""><span class="user-name"><?=$data['senduser']['nickname']?></span></div>
+            <div class="receive-btn"></div>
+        </div>
+    </div>
+    <!--接收方明信片结束-->
+    <!--分享提示弹窗 开始-->
+    <div class="popup share-page">
+        <img src="http://static.joyme.com/mobile/cms/ylzt170308/images/share-text.png" alt="">
+    </div>
+    <!--分享提示弹窗 结束-->
+    <!--领取福利成功 开始-->
+    <div class="popup page9">
+        <div class="receive-main receive-succe">
+            <i class="close-btn"></i>
+            <!--<div class="cdk-box">DSQJQAAAAKWUsmAh</div>-->
+            <input class="cdk-box" readonly="readonly" value="DSQJQAAAAKWUsmAh">
+            <a href="http://game.weixin.qq.com/cgi-bin/h5/static/gamecenter/detail.html?appid=wx780e9d6f0c1bbc7a&ssid=11#wechat_redirect" class="enter-game"></a>
+        </div>
+    </div>
+    <!--领取福利成功 结束-->
+
+    <!--已领取福利 开始-->
+    <div class="popup page10">
+        <div class="receive-main receive-been">
+            <i class="close-btn"></i>
+            对不起，您已领取过奖励。
+        </div>
+    </div>
+    <!--已领取福利 结束-->
+
+    <!--奖励发放完毕 开始-->
+    <div class="popup page11">
+        <div class="receive-main receive-been">
+            <i class="close-btn"></i>
+            对不起，奖励已发放完毕！
+        </div>
+    </div>
+    <!--奖励发放完毕 结束-->
+
+</div>
+<script type="text/javascript" src="http://static.joyme.com/mobile/cp/ylzt20160805/js/preloadjs.min.js"></script>
+<script>
+    /*document.addEventListener('touchmove', function (event) {
+     event.preventDefault();
+     }, false);
+
+     window.addEventListener( "load", function() {
+     FastClick.attach( document.body );
+     }, false );*/
+
+
+    function setMenuShareTimeline(data){
+        wx.onMenuShareTimeline(data);
+    }
+
+    function setMenuShareAppMessage(data){
+        wx.onMenuShareAppMessage(data);
+    }
+
+    function settitle(name,rname){
+        var sopenid = "<?=$data['openid']?>";
+        var title = '你收到了'+name+'的明信片';
+        var desc = '你的兄弟'+name+'召唤你归来！';
+        var link = 'http://hezuo.joyme.com/new/?c=ylzt&a=cxblyhbm&rname='+rname +'&sopenid='+sopenid;
+        var imgUrl = 'http://static.joyme.com/mobile/cms/ylzt170308/images/share-icon.png';
+        setMenuShareAppMessage({
+            title: title, // 分享标题
+            desc : desc,
+            link: link, // 分享链接
+            imgUrl: imgUrl, // 分享图标
+            success: function (res) {
+                alert("分享成功");
+            }
+        });
+        setMenuShareTimeline({
+            title: title, // 分享标题
+            desc : desc,
+            link: link, // 分享链接
+            imgUrl: imgUrl, // 分享图标
+            success: function (res) {
+                alert("分享成功");
+            }
+        });
+    }
+    /** 输入框软键盘遮挡处理 **/
+    function checkPlatform(){
+        if(/android/i.test(navigator.userAgent)){
+            var windowHeight = document.documentElement.clientHeight;
+            $('input').bind("focus",function(){
+                document.body.style.height = windowHeight + 'px';
+                setTimeout(function(){
+                    document.body.scrollTop = 120;
+                    document.documentElement.scrollTop = 120;
+                    window.pageYOffset = 120;
+                },100)
+            });
+        }
+    }
+
+    function pageOperation(){
+        var myVideo1 = document.getElementById('video1');
+        var myVideo2 = document.getElementById('video2');
+
+        function playVideo1() {
+            $(".star-btn").fadeOut(500);
+            var h = $('.index-text').height();
+            $('.mask-text').animate({height:h+'px'},3000,function(){
+                $(this).hide();
+                $('.index-text').hide();
+                $(".start-page").fadeOut(500);
+                $("#video1").css({display:"block"}).delay(100);
+                myVideo1.play();
+            });
+        }
+
+        $('.star-btn').on('click',function(){
+            playVideo1();
+            myVideo1.play();
+            // myVideo1.pause();
+//            PTTSendClick('btn','videoplay','视频开始');
+        });
+
+        myVideo1.addEventListener("ended",function(){
+            //视频1播放完成
+            myVideo1.pause();
+            $('.page1').show();
+            $(".look-btn").show();
+            setTimeout(function(){
+                myVideo1.remove();
+            },100);
+        }, false);
+
+        $('.look-btn').on('click',function(){
+            $(this).fadeOut();
+            myVideo1.pause();
+            $("#video1").css({display:"none"}).delay(100);
+            $("#video2").css({display:"block"}).delay(100);
+            myVideo2.play();
+        });
+
+        myVideo2.addEventListener("ended",function(){
+            //视频2播放完成
+            $(".summon-btn").fadeIn();
+        }, false);
+
+        $('.summon-btn').on('click',function(){
+            $(this).fadeOut();
+            myVideo2.pause();
+            $("#video2").css({display:"none"}).delay(100);
+            $('.page7').fadeIn();
+        });
+
+        $('.send-btn').on('click',function(){
+            $('.share-page').fadeIn();
+            var rname = $('.send-name').val();
+            var name = $('.send-nickname').html();
+            if(name != ''){
+                settitle(name,rname);
+            }
+        });
+
+        $('.page7-mask').on('click',function(){
+            $(this).fadeOut();
+        });
+
+        $('.share-page').on('click',function(){
+            $(this).fadeOut();
+        });
+
+
+        $('.welfare-btn').on('click',function(){
+            $.ajax({
+                url:'/new/?c=ylzt&a=getcdk',
+                type:'post',
+                data:{},
+                dataType:'json',
+                success:function(data){
+                    if(data.rs == 1){
+                        $('.cdk-box').val(data.msg.cdk);
+                        $('.page9').fadeIn();
+                    }else if(data.rs == 2){
+                        $('.page11').fadeIn();
+                    }else if(data.rs == 3){
+                        $('.page10').fadeIn();
+                    }
+                    else if(data.rs == 0){
+                        alert(data.msg);
+                    }
+                },
+                error:function(xhr,textStatus){}
+            });
+        });
+
+        $('.popup i').on('click',function(){
+            $('.popup').fadeOut();
+        });
+    }
+
+    $('.postcards-btn').on('click',function(){
+        $('.page12').fadeOut();
+        $('.page8').show();
+    });
+
+    $('.receive-btn').on('click',function(){
+        $('.page8').fadeOut();
+    });
+
+    function init() {
+        var loadingbar = $('.preload');
+        var url = 'http://static.joyme.com/mobile/cms/ylzt170308/';
+        var manifest;
+        var preload;
+        //定义相关JSON格式文件列表
+        function setupManifest() {
+            manifest = [
+                {src: url + 'images/share-icon.png', id: "images"},
+                {src: url + 'images/postcards-bg.jpg', id: "images"},
+                //{src: url + 'images/video1.mp4', id: "video"},
+                //{src: url + 'images/video2.mp4', id: "video"},
+                {src: url + 'images/notice-bg.png', id: "images"},
+                {src: url + 'images/share-icon.png', id: "images"},
+                {src: url + 'images/share-text.png', id: "images"}
+
+            ];
+        };
+        //开始预加载
+        function startPreload() {
+            preload = new createjs.LoadQueue(true);
+            //注意加载音频文件需要调用如下代码行
+            preload.installPlugin(createjs.Sound);
+            preload.on("fileload", handleFileLoad);
+            preload.on("progress", handleFileProgress);
+            preload.on("complete", loadComplete);
+            preload.on("error", loadError);
+            preload.loadManifest(manifest);
+        };
+        function handleFileLoad(event) {
+            var progress = preload.progress * 100 | 0;
+            loadingbar.css({width:(225/100)*progress});
+            $('.loading-txt').html(progress+'%')
+            //console.log("文件类型: " + event);
+        };
+        function loadError(evt) {
+            //console.log("加载出错！");
+        };
+        function handleFileProgress(event) {
+            //console.log(1);
+        };
+        function loadComplete(event) {
+            $('.loading-page').hide();
+            pageOperation()
+        }
+        setupManifest();
+        startPreload();
+    }
+
+    //设置openid
+    wx.config({
+        debug: false,
+        appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+        timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+        nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+        signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+        jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'hideMenuItems'
+//            'onMenuShareQQ',
+//            'onMenuShareQZone'
+        ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+
+    wx.ready(function () {
+        wx.hideMenuItems({
+            menuList: [
+                'menuItem:share:qq',
+                'menuItem:favorite',
+                'menuItem:openWithSafari',
+                'menuItem:share:QZone',
+                'menuItem:share:email'
+            ] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+        });
+        //分享到朋友圈
+        wx.onMenuShareTimeline({
+            title: '初心不老 御魂不灭',
+            link: "http://hezuo.joyme.com/new/?c=ylzt&a=cxblyhbm",
+            imgUrl: 'http://static.joyme.com/mobile/cms/ylzt170308/images/share-icon.png',
+            success: function (res) {
+//                alert("分享成功");
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: '初心不老 御魂不灭',
+            desc: '点击查看我的御龙之旅',
+            link: "http://hezuo.joyme.com/new/?c=ylzt&a=cxblyhbm",
+            imgUrl: 'http://static.joyme.com/mobile/cms/ylzt170308/images/share-icon.png',
+            success: function (res) {
+//                alert("分享成功");
+            }
+        });
+
+        //分享到QQ
+        /*wx.onMenuShareQQ({
+            title: '初心不老 御魂不灭',
+            desc: '点击查看我的御龙之旅',
+            link: "http://hezuo.joyme.com/new/?c=ylzt&a=cxblyhbm",
+            imgUrl: 'http://static.joyme.com/mobile/cms/ylzt170308/images/share-icon.png',
+            success: function (res) {
+//                alert("分享成功");
+            }
+        });*/
+
+        //分享到QQ空间
+        /*wx.onMenuShareQZone({
+            title: '初心不老 御魂不灭',
+            desc: '点击查看我的御龙之旅',
+            link: "http://hezuo.joyme.com/new/?c=ylzt&a=cxblyhbm",
+            imgUrl: 'http://static.joyme.com/mobile/cms/ylzt170308/images/share-icon.png',
+            success: function (res) {
+//                alert("分享成功");
+            }
+        });*/
+    });
+
+    var _mtac = {};
+    (function() {
+        var mta = document.createElement("script");
+        mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.2";
+        mta.setAttribute("name", "MTAH5");
+        mta.setAttribute("sid", "500415180");
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(mta, s);
+    })();
+</script>
+</body>
+</html>

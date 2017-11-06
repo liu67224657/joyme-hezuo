@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="Result" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image id="img_resultbg" source="newsbg_png" x="0" y="0" scale9Grid="2,2,16,16" width="100%" height="100%"/>
+	<e:Image id="img_resultdialogbg" source="resultbg_png" x="39.5" y="97.8"/>
+	<e:Image id="img_zhang" source="zhang_png" x="307.88" y="707.55"/>
+	<e:Image id="img_barcode" source="barcode_png" x="103.94" y="704.91" width="146" height="146"/>
+	<e:Button id="btn_download" label="" x="75.88" y="932.71">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btndownload_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Button id="btn_share" label="" x="326.88" y="930.71">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btnshare_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Label id="txt_name" text="Label" x="377" y="249.8"/>
+	<e:Image id="img_head" width="128" height="128" x="148" y="182"/>
+	<e:Label id="txt_result" text="Label" x="66" y="347.68" width="500" size="26" lineSpacing="12" textColor="0x9acfda"/>
+	<e:Image id="img_bartxt" source="txtbarcode_png" x="99.94" y="863.71"/>
+	<e:Image id="img_tipshare" source="tipshare_png" x="107.53" y="422.65" visible="false"/>
+	<e:Image id="img_greybg" source="greybg_png" x="0" y="0" width="100%" height="100%" visible="false"/>
+	<e:Button id="btn_back" label="返回" x="276" y="755.8" visible="false"/>
+	<e:Button id="btn_secure" label="" x="79.88" y="934.71">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btnsecure_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Button id="btn_now" label="" x="79.88" y="933.74">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btnnow_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+</e:Skin>

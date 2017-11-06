@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <link rel="stylesheet" href="<?=$data['static_path']?>css/common.css">
+    <link rel="stylesheet" href="<?=$data['static_path']?>css/page.css">
+    <title>青云志名人堂-选手风采</title>
+</head>
+<body>
+<div class="list-nav">
+    <a class="fn-left" href="/new/?c=qyz&a=mustSee&is_share=<?=$data['is_share']?>" target="_blank">参赛必看</a>
+    <a class="fn-left  on" href="/new/?c=qyz&a=layerList&is_share=<?=$data['is_share']?>" target="_blank">选手风采</a>
+    <a class="fn-left" href="/new/?c=qyz&a=reward&is_share=<?=$data['is_share']?>" target="_blank">丰厚奖励</a>
+    <a class="fn-left" href="/new/?c=qyz&a=index&is_share=<?=$data['is_share']?>" target="_blank">回到首页</a>
+</div>
+<div id="page-wrap">
+    <h2 class="player">选手风采</h2>
+    <div class="search-box clearfix">
+        <?php if($data['param']['sort']==1):?>
+            <a class="fn-left fn-center on" href="/new/?c=qyz&a=layerList&sort=1&is_share=<?=$data['is_share']?>">最新</a>
+            <a class="fn-left fn-center" href="/new/?c=qyz&a=layerList&sort=2&is_share=<?=$data['is_share']?>">最热</a>
+        <?php else:?>
+            <a class="fn-left fn-center" href="/new/?c=qyz&a=layerList&sort=1&is_share=<?=$data['is_share']?>">最新</a>
+            <a class="fn-left fn-center on" href="/new/?c=qyz&a=layerList&sort=2&is_share=<?=$data['is_share']?>">最热</a>
+        <?php endif;?>
+        <form class="fn-left search">
+            <input class="fn-left search-cont" type="text" value="<?=$data['param']['user_id'];?>" placeholder="输入选手角色ID查询">
+            <input class="fn-right search-btn" type="button" onclick="search()">
+        </form>
+    </div>
+    <div class="page-cont-box">
+        <div class="player-list-box clearfix">
+            <?php if(empty($data['item'])):?>
+            <div class="player-list-none fn-center">
+                (┬＿┬)<br/>没有选手数据……
+            </div>
+            <?php else:?>
+            <?php foreach($data['item'] as $key=>$v):?>
+                <div class="player-list fn-left clearfix">
+                    <cite onclick="showarea('palyerwind',<?=$v['user_id'];?>);"><img id="img_<?=$v['user_id'];?>" src="<?=$v['head_portr'];?>?imageView/1/w/281/h/281/" alt="" width="281px;" height="281px;"></cite>
+                    <div class="player-count">
+                        <div class="vote-count"><span id="<?=$v['user_id'];?>"><?=$v['vote_num'];?></span>票</div>
+                        <div class="flow-count">鲜花数：<span id="xh_<?=$v['user_id'];?>"><?=$v['flower'];?></span>朵</div>
+                        <div class="vote-btn" onclick="qyz_vote(<?=$v['user_id'];?>)"></div>
+                    </div>
+                    <div class="player-detail">
+                        <li>角色名：<span id="jsm_<?=$v['user_id'];?>" ><?=$v['user_name'];?></span></li>
+                        <li>服务器名：<span id="fwq_<?=$v['user_id'];?>"><?=$v['area_code'];?></span></li>
+                    </div>
+                    <input type="hidden" id="jz_<?=$v['user_id'];?>" value="<?=$v['family'];?>">
+                    <input type="hidden" id="xy_<?=$v['user_id'];?>" value="<?=$v['decla'];?>">
+                    <input type="hidden" id="mp_<?=$v['user_id'];?>" value="<?=$v['occup'];?>">
+                    <input type="hidden" id="jsid_<?=$v['user_id'];?>" value="<?=$v['user_id'];?>">
+                </div>
+            <?php endforeach;?>
+            <?php endif;?>
+        </div>
+    </div>
+    <input type="hidden" id="sort" value="<?=$data['param']['sort'];?>">
+    <input type="hidden" id="endtime" value="<?=$data['endtime'];?>">
+    <input type="hidden" id="time" value="<?=$data['time'];?>">
+    <input type="hidden" id="is_share" value="<?=$data['is_share'];?>">
+    <div class="player-wind-box" id="palyerwind">
+        <div class="player-wind-cont clearfix">
+            <div class="close-btn" onclick="offarea('palyerwind');">关闭</div>
+            <cite><img id="new_img" src="" alt=""></cite>
+            <div class="wind-count">
+                <span><em id="new_ps">134285</em>票</span>
+                <span>鲜花数：<em id="new_xh">0</em>朵</span>
+                <div class="vote-btn" id="vote_btn_click"></div>
+            </div>
+            <div class="wind-detail clearfix">
+                <li class="fn-left">角色名：<em id="new_jsm">夏沫初妆</em></li>
+                <li class="fn-left"><span>家族：<em id="new_jz"></em></span></li>
+                <li class="fn-left">角色ID：<em id="new_jsid"></em></li>
+                <li class="fn-left"><span>门派：<em id="new_mp"></em></span></li>
+                <li class="fn-left"><span>服务器名称：<em id="new_fwq"></em></span></li>
+                <li class="fn-left"><span><em id="shareuserid"></em></span></li>
+            </div>
+            <div class="declaration">
+                <li>参赛宣言：</li>
+                <p id="new_xy"></p>
+            </div>
+            <button type="submit" class="share-btn" onclick="showarea('sharewind')"></button>
+        </div>
+    </div>
+    <div class="share-notice-box" id="sharewind">
+        <div class="share-notice" onclick="offarea('sharewind')"></div>
+    </div>
+    <?php if($data['page']['max_page']>1):?>
+        <div class="prompt-box fn-center"><span></span>
+                上拉加载更多
+        </div>
+    <?php endif;?>
+
+</div>
+<div class="focus-wind" id="focus" style="display:none" onclick="offareaTip('focus')">
+    <div class="focus-box">
+        <p class="fn-center">长按识别二维码<br/>进入微信公众号进行点赞</p>
+        <cite><img src="<?=$data['static_path']?>images/code-img.jpg" alt=""></cite>
+    </div>
+</div>
+</body>
+<script src="http://static.joyme.com/js/jquery-1.9.1.min.js" language="javascript"></script>
+<script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+<script>
+
+
+    window.alert = function(name){
+        var iframe = document.createElement("IFRAME");
+        iframe.style.display="none";
+        iframe.setAttribute("src", 'data:text/plain,');
+        document.documentElement.appendChild(iframe);
+        window.frames[0].window.alert(name);
+        iframe.parentNode.removeChild(iframe);
+    };
+
+
+    function showarea($palyerwind,id){
+        //头像 img_user_id
+        $('#new_img').attr('src',$('#img_'+id).attr('src'));
+        //投票数 user_id
+        $('#new_ps').text($('#'+id).text());
+        //鲜花数 xh_user_id
+        $('#new_xh').text($('#xh_'+id).text());
+        //角色名 jsm_user_id
+        $('#new_jsm').text($('#jsm_'+id).text());
+        //家族 jz_user_id
+        $('#new_jz').text($('#jz_'+id).val());
+        //服务器  fwq_user_id
+        $('#new_fwq').text($('#fwq_'+id).text());
+        //门派  mp_user_id
+        $('#new_mp').text($('#mp_'+id).val());
+        //宣言 xy_user_id
+        $('#new_xy').text($('#xy_'+id).val());
+        //角色ID
+        $('#new_jsid').text($('#jsid_'+id).val());
+//        $('#shareuserid').text(id);
+        var con = document.getElementById($palyerwind);
+        con.style.display = "block";
+        if($('#img_'+id).attr('src') && $('#jsid_'+id).val()){
+            share($('#img_'+id).attr('src'),$('#jsid_'+id).val());
+        }
+   }
+
+    function offarea(id){
+        var con = document.getElementById(id);
+        con.style.display = "none";
+    }
+
+    //投票
+    function qyz_vote( user_id ){
+
+        if(!checkTime()){
+            return false;
+        }
+        if($('#is_share').val()){
+            $('.focus-wind').show();
+            return false;
+        }
+        if(!isNaN(user_id)){
+            jQuery.ajax({
+                "url": "/new/?c=qyz&a=active_vote",
+                "type": "GET",
+                "data": {'user_id':user_id},
+                "success": function(msg) {
+                    var obj = eval('(' + msg+ ')');
+                    if(obj['result'] == 1){
+                        alert('投票成功');
+                        $('#'+user_id).text(parseInt($('#'+user_id).text()) + 1);
+                    }else if(obj['result'] == 3){
+                        alert('机会已用完');
+                    }else{
+                        alert('投票失败');
+                    }
+                }
+            })
+        }else{
+            alert("程序异常");
+            return false;
+        }
+    }
+
+    $('#vote_btn_click').click(function(){
+
+        if(!checkTime()){
+            return false;
+        }
+        if($('#is_share').val()){
+            $('.focus-wind').show();
+            return false;
+        }
+        var user_id = parseInt($('#new_jsid').text());
+        if(user_id){
+            jQuery.ajax({
+                "url": "/new/?c=qyz&a=active_vote",
+                "type": "GET",
+                "data": {'user_id':user_id},
+                "success": function(msg) {
+                    var obj = eval('(' + msg+ ')');
+                    if(obj['result'] == 1){
+                        alert('投票成功');
+                        $('#new_ps').text(parseInt($('#'+user_id).text()) + 1);
+                        $('#'+user_id).text(parseInt($('#'+user_id).text()) + 1);
+                    }else if(obj['result'] == 3){
+                        alert('机会已用完');
+                    }else{
+                        alert('投票失败');
+                    }
+                }
+            })
+        }else{
+            alert("程序异常");
+            return false;
+        }
+    });
+
+    //搜索
+    function search(){
+
+        var user_id = $('.search-cont').val();
+        var is_share = $('#is_share').val();
+        var url = '/new/?c=qyz&a=layerList&userid='+user_id+'&is_share='+is_share;
+
+        window.location.href=url;
+    }
+
+    //加载更多
+    var i = 2;
+    var j = 0;
+    $(window).scroll( function(event){
+        var scrollTop = $(this).scrollTop();
+        var scrollHeight = $(document).height();
+        var windowHeight = $(this).height();
+        var sort = $('#sort').val();
+        var num = 0;
+        if((scrollTop + windowHeight == scrollHeight) && !$('.search-cont').val()){
+            setTimeout(function(){
+                $.getJSON('/new/?c=qyz&a=layerList',{'pb_page':i,'ajax':1,'sort':sort},function(json){
+                    var maxpage =  json['page']['max_page'];
+                    if(i<=maxpage){
+                        var listhtml = "";
+                        var hiddenhtml = '';
+                        $.each(json['item'],function(index,array){
+                            num++;
+                            listhtml = '<div class="player-list fn-left clearfix"><cite onclick="showarea('+'\'palyerwind\','+array['user_id']+');"><img id="img_'+array['user_id']+'" src="'+array['head_portr']+'?imageView/1/w/281/h/281/" alt="" width="281px;" height="281px;"></cite><div class="player-count"><div class="vote-count"><span id="'+array['user_id']+'">'+array['vote_num']+'</span>票</div><div class="flow-count">鲜花数：<span id="xh_'+array['user_id']+'">'+array['flower']+'</span>朵</div><div class="vote-btn" onclick="qyz_vote('+array['user_id']+')""></div></div><div class="player-detail"><li>角色名：<span id="jsm_'+array['user_id']+'"> '+array['user_name']+'</span></li><li>服务器名：<span id="fwq_'+array['user_id']+'">'+array['area_code']+'</span></li></div></div>';
+                            hiddenhtml = '<input type="hidden" id="jz_'+array['user_id']+'" value="'+array['user_id']+'"> <input type="hidden" id="xy_'+array['user_id']+'" value="'+array['decla']+'"><input type="hidden" id="mp_'+array['user_id']+'"  value="'+array['occup']+'"><input type="hidden" id="jsid_'+array['user_id']+'" value="'+array['user_id']+'">';
+                            $('.player-list-box').append(listhtml+hiddenhtml);
+                        });
+                        if(num<8){
+                            $('.prompt-box').html('已加载全部');
+                        }
+                    }
+                    i++;
+                });
+                loaded=false;
+            },500);
+        }
+    } );
+
+    //搜索不显示上拉加载更多
+    if($('.search-cont').val()){
+        $('.prompt-box').html('');
+    }
+
+
+    //验证时间
+    function checkTime(){
+        if($('#endtime').val() < $('#time').val()){
+            alert('活动已结束');
+            return false;
+        }
+        return true;
+    }
+
+    function wxConf(){
+
+        //设置openid
+        wx.config({
+            debug: false,
+            appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+            timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+            nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+            signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareQZone'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+    }
+
+    function share(img,userid) {
+
+        wxConf();
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '我为《青云志》手游的 '+userid+'号选手点了赞哦！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: img,
+                success: function (res) {
+                    alert("分享成功");
+                    $('.share-notice-box').hide();
+                    $('#palyerwind').hide();
+                }
+            });
+            //分享给朋友
+            wx.onMenuShareAppMessage({
+                title: '我为《青云志》手游的 '+userid+'号选手点了赞哦！',
+                desc: '赶紧关注青云志公众号为ta点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: img,
+                success: function (res) {
+                    alert("分享成功");
+                    $('.share-notice-box').hide();
+                    $('#palyerwind').hide();
+                }
+            });
+
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '我为《青云志》手游的 '+userid+'号选手点了赞哦！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: img,
+                success: function (res) {
+                    alert("分享成功");
+                    $('.share-notice-box').hide();
+                    $('#palyerwind').hide();
+                }
+            });
+
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '我为《青云志》手游的 '+userid+'号选手点了赞哦！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: img,
+                success: function (res) {
+                    alert("分享成功");
+                    $('.share-notice-box').hide();
+                    $('#palyerwind').hide();
+                }
+            });
+        });
+    }
+
+    $(document).ready(function () {
+
+        wxConf();
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '我正在参加《青云志》名人堂活动，快来给我点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://wechat.joyme.com/attachment/headimg_2.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '我正在参加《青云志》名人堂活动，快来给我点赞吧！',
+//                desc: '短短的测试已经过去了，更长的旅行即将到来。',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://wechat.joyme.com/attachment/headimg_2.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '我正在参加《青云志》名人堂活动，快来给我点赞吧！',
+//                desc: '短短的测试已经过去了，更长的旅行即将到来。',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://wechat.joyme.com/attachment/headimg_2.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '我正在参加《青云志》名人堂活动，快来给我点赞吧！',
+                desc: '',//'短短的测试已经过去了，更长的旅行即将到来。',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://wechat.joyme.com/attachment/headimg_2.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+        });
+    });
+
+    function showareaTip(id){
+        var con = document.getElementById(id);
+        con.style.display = "block";
+    }
+    function offareaTip(id){
+        var con = document.getElementById(id);
+        con.style.display = "none";
+    }
+
+    window.document.onkeydown = disableRefresh;
+    function disableRefresh(evt){
+        evt = (evt) ? evt : window.event
+        if (evt.keyCode) {
+            if(evt.keyCode == 13){
+                var user_id = $('.search-cont').val();
+                var is_share = $('#is_share').val();
+                var url = '/new/?c=qyz&a=layerList&userid='+user_id+'&is_share='+is_share;
+                window.location.href=url;
+                return false;
+            }
+        }
+    }
+</script>
+</html>

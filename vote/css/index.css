@@ -1,0 +1,29 @@
+#wrap{ position: relative;width: 100%; padding-bottom: 135px; min-width: 1000px; overflow-x:auto; overflow-y: hidden; top:0;left: 0;z-index: 2;}
+.content{position: relative;z-index: 10; width: 1000px;margin:0 auto;}
+.content-box1{width: 610px;height: 200px;padding-top: 440px;float: right;margin-right: 60px;display: inline;}
+.content-box2{width: 610px;height: 200px;padding-top: 42px;float: left;margin-left: 190px;display: inline;}
+.content-box3{width: 610px;height: 200px;padding-top: 42px;float: left;margin-left: 230px;display: inline;}
+.content ul li{line-height: 42px;height: 42px;}
+.content ul li a{font-size: 18px;width: 80px;float: left;height: 42px;}
+.content ul li span input{float: left;margin-top: 14px;margin-right: 5px;margin-left: 8px;display: inline;}
+
+.subBtn{width: 185px;height: 66px;position:absolute;bottom: 35px;left: 44%; z-index: 1000;background: url(../images/subBtn.jpg) no-repeat;cursor: pointer;}
+.alert{ width: 456px;height: 232px; margin:-116px 0 0 -228px; position:fixed; top:50%;left: 50%; z-index: 1000; background:url(../images/alert-bg.png) no-repeat;opacity:0.9;filter:"alpha(opacity=90)";-ms-filter:"alpha(opacity=90)";color: #333;text-align: center;display: none;}
+.void{width: 35px;height: 35px;float: right;margin-right: 10px;cursor: pointer;}
+.alert h2{font-size: 24px;font-weight: normal;line-height: 80px;}
+.alert p{font-size: 20px;line-height: 30px;}
+.bg{width: 100%;max-width: 1920px; height: 1260px;position: absolute;top:0;left: 0;background: #072653;display: inline;}
+.bg span{width: 100%;height: 100px;position: absolute;left: 0;background-position: center 0;display: inline;}
+.bg_1{background: url(../images/big1-bg1.jpg) no-repeat;top:0px;}
+.bg_2{background: url(../images/big1-bg2.jpg) no-repeat;top:100px;}
+.bg_3{background: url(../images/big1-bg3.jpg) no-repeat;top:200px;}
+.bg_4{background: url(../images/big1-bg4.jpg) no-repeat;top:300px;}
+.bg_5{background: url(../images/big1-bg5.jpg) no-repeat;top:400px;}
+.bg_6{background: url(../images/big1-bg6.jpg) no-repeat;top:500px;}
+.bg_7{background: url(../images/big1-bg7.jpg) no-repeat;top:600px;}
+.bg_8{background: url(../images/big1-bg8.jpg) no-repeat;top:700px;}
+.bg_9{background: url(../images/big1-bg9.jpg) no-repeat;top:800px;}
+.bg_10{background: url(../images/big1-bg10.jpg) no-repeat;top:900px;}
+.bg_11{background: url(../images/big1-bg11.jpg) no-repeat;top:1000px;}
+.bg_12{background: url(../images/big1-bg12.jpg) no-repeat;top:1100px;}
+

@@ -1,0 +1,1 @@
+window.data={"1":{"url":"http:\/\/www.joyme.com\/wxwiki\/ttfw\/99233.shtml"},"2":{"url":"http:\/\/www.joyme.com\/wxwiki\/ttfw\/99235.shtml"},"3":{"url":"http:\/\/www.qq.com"},"4":{"url":"http:\/\/www.baidu.com"}};

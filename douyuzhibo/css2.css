@@ -1,0 +1,10 @@
+.zhibo .header{width:395px;height:44px;}
+.zhibo .content{background:url(images/bottom.jpg);background-position:bottom;background-size:395px 5px;}
+.zhibo .content .left-border,.zhibo .content .right-border{background:url(images/lr_border.jpg);width:4px;min-height:700px;float:left;}
+.zhibo .content .center{float:left;width:387px;}
+.zhibo .content .item{width:173px;height:185px;border:1px solid #caa58c;float:left;}
+.zhibo .content .item .room-img{width:173px;height:97px;}
+.zhibo .content .item h3{width:173px;height:33px;text-align:center;line-height:33px;font-weight:normal;margin-top:0px;}
+.zhibo .content .item .info{width:173px;height:55px;margin-top:0px;}
+.zhibo .content .item .avatar-img{width:45px;height:45px;border-radius:45px;float:left;margin-left:13px;}
+.zhibo .content .item span{height:22px;width:82px;float:left;display:block;}

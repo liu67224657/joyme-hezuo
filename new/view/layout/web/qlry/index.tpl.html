@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <title>《权力与荣耀》捍卫你的女神！</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (e) {
+            var w=e.target.activeElement.clientWidth>=1024?1024:e.target.activeElement.clientWidth;
+            document.getElementById('warp').style.zoom = w / 320;
+        });
+        window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+            if (window.orientation === 180 || window.orientation === 0) {
+                var w= document.body.clientWidth;
+                document.getElementById('warp').style.zoom = w / 320;
+            }
+            if (window.orientation === 90 || window.orientation === -90 ){
+                var w=320;
+                document.getElementById('warp').style.zoom = w / 320;
+                document.getElementById('warp').style.width='320px';
+            }
+        }, false);
+    </script>
+    <link rel="stylesheet" href="http://static.joyme.com/mobile/201702qlry/css/comm.css">
+    <style>
+        #warp{
+            margin: 0 auto;
+        }
+        .popup{
+            left:50%;
+            margin-left: -160px;
+            width:320px;
+        }
+    </style>
+</head>
+<body>
+<div id="warp">
+    <img class="banner" src="http://static.joyme.com/mobile/201702qlry/images/banner-top-1.jpg">
+    <img class="banner" src="http://static.joyme.com/mobile/201702qlry/images/banner-top-2.jpg">
+
+    <div class="user">
+
+        <dl>
+            <dt><img src="http://static.joyme.com/mobile/201702qlry/images/icon-1.jpg"><p>白桑</p></dt>
+            <dd class="btn" data-uid="1"></dd>
+        </dl>
+        <dl>
+            <dt><img src="http://static.joyme.com/mobile/201702qlry/images/icon-2.jpg"><p>西萌</p></dt>
+            <dd class="btn" data-uid="2"></dd>
+        </dl>
+        <dl>
+            <dt><img src="http://static.joyme.com/mobile/201702qlry/images/icon-3.jpg"><p>嘉儿</p></dt>
+            <dd class="btn" data-uid="3"></dd>
+        </dl>
+        <dl>
+            <dt><img src="http://static.joyme.com/mobile/201702qlry/images/icon-4.jpg"><p>小饕餮</p></dt>
+            <dd class="btn" data-uid="4"></dd>
+        </dl>
+
+
+    </div>
+    <div class="ballot">
+        <?php foreach($data['voteusers'] as $key=>$v):?>
+        <div class="list"><p><?=$v['user_name'];?></p><span><?=$v['vote_num'];?>票</span><s></s></div>
+        <?php endforeach;?>
+
+    </div>
+    <div class="draw">
+        <div class="draw-mian">
+            <s class="luckyDraw"></s>
+        </div>
+    </div>
+
+    <div class="popup">
+        <!--成功-->
+        <div class="prompt-success">
+            <div class="pt"></div>
+            <div class="title"></div>
+            <div class="btnok"></div>
+        </div>
+        <!--失败-->
+        <div class="prompt-lose">
+            <p>领取失败</p>
+            <div class="btnok"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+<script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+<script>
+
+    var lottery = ['','','','','<p>恭喜勇士获得【优酷会员月卡】一张</p>\
+                    <p>请发送关键字<span>“不山不水”</span>至</p>\
+                    <p>《权力与荣耀》<span>微信公众号</span>领取</p>',
+                    '<p>恭喜勇士获得【5元手机话费】一份</p>\
+                     <p>请发送关键字<span>“行而走之”</span>至</p>\
+                     <p>《权力与荣耀》<span>微信公众号</span>领取</p>',
+                     '<p>恭喜勇士获得【游戏礼包】一份</p>\
+                     <p>请发送关键字<span>“我要礼包”</span>至</p>\
+                     <p>《权力与荣耀》<span>微信公众号</span>领取</p>'
+    ];
+    var lotteryClass = ['','','','','youku','huafei','game'];
+
+    //抽奖
+    $('.luckyDraw').on('click' , function (){
+        $.ajax({
+            url:'/new/?c=qlry&a=lottery',
+            type:'post', //GET
+            data:{},
+            dataType:'json',
+            success:function(data){
+                if(data.rs == 0){
+                    prompt(data.msg);
+                }else{
+                    $('.popup').show();
+                    $('.popup>div').hide();
+                    $('.popup .prompt-success').show();
+                    $('.pt').html(lottery[data.rs])
+                    $('.title').addClass(lotteryClass[data.rs]);
+                }
+            },
+            error:function(xhr,textStatus){
+                prompt('网络错误,领取失败');
+            }
+        })
+    });
+    //点赞
+    $('.btn').on('click' , function (){
+        var user_id = $(this).data('uid');
+        $.ajax({
+            url:'/new/?c=qlry&a=vote',
+            type:'post',
+            data:{user_id:user_id},
+            dataType:'json',
+            success:function(data){
+                console.log(data);
+                var str = '';
+                prompt(data.msg);
+                if(data.rs == 1){
+                    for (var i = 0; i < data.userlists.length; i++) {
+                        str += '<div class="list"><p>' + data.userlists[i].user_name + '</p><span>' + data.userlists[i].vote_num + '票</span><s></s></div>'
+                    }
+                    $('.ballot').html(str);
+                }
+            },
+            error:function(xhr,textStatus){
+                prompt('网络错误,请求失败');
+            }
+        })
+    });
+    //抽奖失败 点赞提示
+    function prompt(test){
+        $('.popup').show();
+        $('.popup>div').hide();
+        $('.popup .prompt-lose').show().find('p').html(test);
+    }
+
+    $('.btnok').on('click',function (){
+        $('.popup').hide();
+    });
+
+    $(document).ready(function () {
+        //设置openid
+        wx.config({
+            debug: false,
+            appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+            timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+            nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+            signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareQZone'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '真勇士，捍卫你心中的女神！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/201702qlry/images/share.png',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '真勇士，捍卫你心中的女神！',
+                desc: '《权力与荣耀》第一届【为女神而战】活动开始啦！究竟这四位谁才是你心目中的女神？快快为她们投票守护她们吧！还可参与大转盘抽奖，100%中奖哦！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/201702qlry/images/share.png',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '真勇士，捍卫你心中的女神！',
+                desc: '《权力与荣耀》第一届【为女神而战】活动开始啦！究竟这四位谁才是你心目中的女神？快快为她们投票守护她们吧！还可参与大转盘抽奖，100%中奖哦！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/201702qlry/images/share.png',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '真勇士，捍卫你心中的女神！',
+                desc: '《权力与荣耀》第一届【为女神而战】活动开始啦！究竟这四位谁才是你心目中的女神？快快为她们投票守护她们吧！还可参与大转盘抽奖，100%中奖哦！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/201702qlry/images/share.png',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+        });
+    });
+
+</script>
+</html>

@@ -1,0 +1,9 @@
+*{padding:0;margin:0;}
+body{background: #e5e4e3;}
+.cen-bg{background: url(../images/cen-bg.jpg) no-repeat center 0;overflow: hidden;padding-top:650px;}
+.explain{position: relative;top:73px;left: 0;width:810px;margin:0 auto 145px;background: url(../images/explain.jpg) no-repeat center 0;padding-top:56px;font-family: "微软雅黑";color: #4b4b4b;}
+.explain-text{background: url(../images/explain-text.jpg) repeat-y center 0;width: 100%;height:auto;}
+.explain h5{font-size:28px;font-weight: normal;text-align:center;}
+.explain-text-con{padding:0 56px 210px;font-size:16px;line-height: 40px;}
+.explain-bottom{position: absolute;bottom:0;left:2px;background: url(../images/explain-bottom.jpg) no-repeat;width:100%;height:58px;}
+.bg-bottom{background: url(../images/bg-bottom.jpg) no-repeat center 0;width:100%;height:243px;}

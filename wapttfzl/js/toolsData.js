@@ -1,0 +1,36 @@
+﻿// JavaScript Document
+//cont是标题
+//key是关键字
+//url是标题对应的链接
+var info = [
+{"cont":"闯关模式第21关","key":"闯关模式,21关,二十一关","url":"http://ttfzl.joyme.com/wxwiki/349266.shtml"},
+{"cont":"闯关模式第22关","key":"闯关模式,22关,二十二关","url":"http://ttfzl.joyme.com/wxwiki/349268.shtml"},
+{"cont":"闯关模式第23关过关视频","key":"闯关模式,23关,二十三关,视频","url":"http://ttfzl.joyme.com/wxwiki/349271.shtml"},
+{"cont":"闯关模式第19关过关视频","key":"闯关模式, 19关,十九关,视频","url":"http://ttfzl.joyme.com/wxwiki/349265.shtml"},
+{"cont":"闯关模式第19关","key":"闯关模式19关,二十一关","url":"http://ttfzl.joyme.com/wxwiki/349262.shtml"},
+{"cont":"闯关模式第20关","key":"闯关模式20关,二十关","url":"http://ttfzl.joyme.com/wxwiki/349264.shtml"},
+{"cont":"闯关模式第18关","key":"闯关模式18关,十八关","url":"http://ttfzl.joyme.com/wxwiki/349260.shtml"},
+{"cont":"风之旅秘境神秘登场！","key":"神秘秘境,秘境","url":"http://ttfzl.joyme.com/wxwiki/349241.shtml"},
+{"cont":"小伙伴应你召唤而来！","key":"角色,小伙伴,赠送","url":"http://ttfzl.joyme.com/wxwiki/349221.shtml"},
+{"cont":"秘境探险","key":"神秘,秘境,探险","url":"http://ttfzl.joyme.com/wxwiki/349240.shtml"},
+{"cont":"鹿飞征战星辰大海","key":"鹿飞,征战,星辰大海","url":"http://ttfzl.joyme.com/wxwiki/349373.shtml"},
+{"cont":"校园版热力开学","key":"校园版,开学","url":"http://ttfzl.joyme.com/wxwiki/349234.shtml"},
+{"cont":"浅谈刺金翎羽装备利弊","key":"刺金翎羽,装备,利弊","url":"http://ttfzl.joyme.com/wxwiki/349236.shtml"},
+{"cont":"抽奖技巧心得详解","key":"抽奖,抽奖心得","url":"http://ttfzl.joyme.com/wxwiki/342579.shtml"},
+{"cont":"穹顶之下自由飞翔","key":"穹顶之下,自由飞翔,翅膀","url":"http://ttfzl.joyme.com/wxwiki/349242.shtml"},
+{"cont":"悟空，你还好吗？","key":"悟空,杀怪,评测","url":"http://ttfzl.joyme.com/wxwiki/349208.shtml"},
+{"cont":"传说中的新翅膀？","key":"新版本,新翅膀,翅膀","url":"http://ttfzl.joyme.com/wxwiki/349211.shtml"},
+{"cont":"金币经验寻宝详测","key":"金币,经验,寻宝","url":"http://ttfzl.joyme.com/wxwiki/342577.shtml"},
+{"cont":"翻滚吧！五彩祥云解析","key":"五彩祥云,解析,五彩云","url":"http://ttfzl.joyme.com/wxwiki/349245.shtml"},
+{"cont":"豆花破喉咙对比评测","key":"豆花,破喉咙,对比,评测","url":"http://ttfzl.joyme.com/wxwiki/349249.shtml"},
+{"cont":"S阶福娃喜喜综合评测","key":" S阶,福娃,喜喜,综合评测","url":"http://ttfzl.joyme.com/wxwiki/349246.shtml"},
+{"cont":"288W获得俏丫丫攻略","key":"288W,俏丫丫","url":"http://ttfzl.joyme.com/wxwiki/349222.shtml"},
+{"cont":"刷金币技术哪家强？","key":"刷金币,技术","url":"http://ttfzl.joyme.com/wxwiki/342578.shtml"},
+{"cont":"《天天风之旅》平民玩家忍者高分套装推荐","key":"平民玩家,忍者,高分,套装","url":"http://ttfzl.joyme.com/wxwiki/95466.shtml"},
+{"cont":"《天天风之旅》闯关模式介绍","key":"闯关,模式,介绍","url":"http://ttfzl.joyme.com/wxwiki/88310.shtml"},
+{"cont":"如何刷金币详解","key":"刷金币,金币","url":"http://ttfzl.joyme.com/wxwiki/88255.shtml"},
+{"cont":"《天天风之旅》哪些宠物更适合闯关模式","key":"宠物,适合,闯关,模式","url":"http://ttfzl.joyme.com/wxwiki/91874.shtml"},
+{"cont":"《天天风之旅》快速升级攻略","key":"快速,升级","url":"http://ttfzl.joyme.com/wxwiki/88256.shtml"},
+{"cont":"宠物获得方法介绍","key":"宠物,获得,方法","url":"http://ttfzl.joyme.com/wxwiki/88311.shtml"},
+{"cont":"《天天风之旅》滑行技巧","key":"滑行,技巧","url":"http://ttfzl.joyme.com/wxwiki/88259.shtml"},
+{"cont":"《天天风之旅》企鹅乐乐解析","key":"企鹅,乐乐,解析,宠物","url":"http://ttfzl.joyme.com/wxwiki/88257.shtml"}]

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/new/static/css/cq/cqresign.css"/>
+</head>
+<body>
+<h1>《克鲁赛德战记》第一届荷塞拉杯竞技大会</h1>
+<h2>--报名页面--</h2>
+<div class="section-resign">
+		<div class="sq">
+			<span class="glyphicon glyphicon-star">选择赛区</span>
+				<select name="pvp_division" id="pvp_division">
+					<option value="1">官方1群  422841290</option>
+					<option value="2">官方2群  125096952</option>
+					<option value="3">官方3群  142022687</option>
+					<option value="4">WIKI群  240521319</option>
+					<option value="5">游魔王群 299867264</option>
+					<option value="6">自由人   179213542</option>
+					<option value="7">OTAKU群 440230130</option>
+					<option value="9">小姑娘群   483900178</option>
+					<option value="10">酋长群  339631236</option>
+					<option value="11">酋长之家群 460769808</option>
+					<option value="12">B站1群  257170616</option>
+					<option value="13">B站2群  229610397</option>
+					<option value="14">B站3群  186487363</option>
+					<option value="15">B站4群  259032383</option>
+				</select>
+		</div>
+		<div class="team">
+			<span class="glyphicon glyphicon-star">勇士团名称</span>
+			<input type="text" value="示例：RJOExpress" name="team" id="pvp_team" required="required"/>
+			<span id="error_pvp_team" style="color: red; display: none;"></span>
+		</div>
+		<div class="uid">
+			<span class="glyphicon glyphicon-star">玩家号码</span>
+			<input type="text" value="示例：58550000xxxxxxxx" name="usruid" required="required" id="pvp_usruid"/>
+			<span id="error_pvp_usruid" style="color: red; display: none;"></span>
+		</div>
+		<div class="tip" style="font-size: 12px;">
+			<p></p>
+			<p>游戏内查找:设置→一般设置→客服中心→账户信息</p>
+		</div>
+		<div class="qq">
+			<span class="glyphicon glyphicon-star">联系QQ</span>
+			<input type="text" name="qq" required="required" id="pvp_qq"/>
+			<span id="error_pvp_qq" style="color: red; display: none;"></span>
+		</div>
+		<div class="tel">
+			<span class="glyphicon glyphicon-star">联系电话</span>
+			<input type="text" name="tel" required="required" id="pvp_tel"/>
+			<span id="error_pvp_tel" style="color: red; display: none;"></span>
+		</div>
+		<div class="tel">
+			<span>地区</span>
+			<select name="area" id="pvp_area"/>
+				<?php foreach($data['item'] as $key=>$v):?>
+					<option value="<?=$key?>"><?=$v?></option>
+				<?php endforeach?>
+			</select>
+		</div>
+		<div class="gender">
+			<span>性别</span>
+			<select name="gender" id="pvp_gender"/>
+			<option value="1">男</option>
+			<option value="2">女</option>
+			</select>
+		</div>
+		<div class="age">
+			<span>年龄</span>
+			<input type="text" name="age" id="pvp_age"/>
+			<span id="error_pvp_age" style="color: red; display: none;"></span>
+		</div>
+
+		<div class="submit">
+			<input id="submit_button" type="button" value="提交"/>
+			<input id="return_button" type="button" value="取消"/>
+		</div>
+		<div class="tip">
+			<p>带<span class="glyphicon glyphicon-star"></span>为必填项</p>
+		</div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+<script>
+
+	var json = {};
+	//点击提交
+	$('#submit_button').click(function(){
+
+		var error_count = 0;
+		//赛区
+		var pvp_division = $('#pvp_division').val();
+		//tem
+		var pvp_team = $('#pvp_team').val();
+		//玩家UID
+		var pvp_usruid = $('#pvp_usruid').val();
+		//玩家QQ
+		var pvp_qq = $('#pvp_qq').val();
+		//玩家电话
+		var pvp_tel = $('#pvp_tel').val();
+		//玩家年龄
+		var pvp_age = $('#pvp_age').val();
+		//玩家性别
+		var pvp_gender = $('#pvp_gender').val();
+		//玩家地区
+		var pvp_area = $('#pvp_area').val();
+
+		if(pvp_team && pvp_team!='示例：RJOExpress'){
+			getpvp_tem( pvp_team );
+		}
+		if(pvp_usruid && pvp_usruid!='示例：58550000xxxxxxxx' && /^[A-Za-z0-9]{1,30}$/.test(pvp_usruid)){
+			getpvp_usru(pvp_usruid);
+		}
+		if(pvp_qq && /^[0-9]{1,13}$/.test(pvp_qq)){
+			getpvp_qq( pvp_qq );
+		}
+		if(pvp_tel && /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(pvp_tel)){
+			getpvp_tel(pvp_tel);
+		}
+		//验证
+		if(!pvp_division){
+			error_tip('pvp_division','赛区不能为为空');
+			error_count++;
+		}
+		if(!pvp_team || pvp_team=='示例：RJOExpress'){
+			error_tip('pvp_team','勇士团名称不能为为空');
+			error_count++;
+		}else if(json['pvp_team']){
+			error_tip('pvp_team','勇士团名称已经存在');
+			error_count++;
+		}else{
+			error_hide('pvp_team');
+		}
+		if(!pvp_usruid || pvp_usruid=='示例：58550000xxxxxxxx'){
+			error_tip('pvp_usruid','玩家帐号不能为为空');
+			error_count++;
+		}else if(!/^[A-Za-z0-9]{1,30}$/.test(pvp_usruid)) {
+			error_tip('pvp_usruid', '只允许数字字母填写1-30位');
+			error_count++;
+		}else if(json['pvp_usruid']){
+			error_tip('pvp_usruid','玩家帐号已存在');
+			error_count++;
+		}else{
+			error_hide('pvp_usruid');
+		}
+		if(!pvp_qq){
+			error_tip('pvp_qq','玩家QQ不能为为空');
+			error_count++;
+		}else if(!/^[0-9]{1,13}$/.test(pvp_qq)){
+			error_tip('pvp_qq','请输入正确的QQ号');
+			error_count++;
+		}else if(json['pvp_qq']){
+			error_tip('pvp_qq','QQ号已存在');
+			error_count++;
+		}else{
+			error_hide('pvp_qq');
+		}
+		if(!pvp_tel){
+			error_tip('pvp_tel','玩家电话不能为为空');
+			error_count++;
+		}else if(!/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(pvp_tel)){
+			error_tip('pvp_tel','请输入有效的手机号码！');
+			error_count++;
+		}else if(json['pvp_tel']){
+			error_tip('pvp_tel','手机号码已存在！');
+			error_count++;
+		}else{
+			error_hide('pvp_tel');
+		}
+		if(pvp_age && isNaN(pvp_age)){
+			error_tip('pvp_age','玩家年龄只允许是数字');
+			error_count++;
+		}else{
+			error_hide('pvp_age');
+		}
+		if(error_count==0){
+			pagereload();
+			jQuery.ajax({
+				"url": "?c=cq&a=addData",
+				"type": "post",
+				"async": false,
+				"data": {'pvp_division':pvp_division,'pvp_team':pvp_team,'pvp_usruid':pvp_usruid,'pvp_qq':pvp_qq,'pvp_tel':pvp_tel,'pvp_age':pvp_age,'pvp_gender':pvp_gender,'pvp_area':pvp_area},
+				"success": function(msg) {
+					var data = eval('(' + msg + ')');
+					if(data['rs']==0){
+						alert('提交成功');
+						var obj_body = window.parent.document.getElementsByClassName("eventDivOn")[0];
+						var class_name = obj_body.getAttribute("class");
+						class_name = class_name.replace('eventDivOn', '');
+						obj_body.setAttribute("class", class_name);
+						var div_eventBG = window.parent.document.getElementsByClassName("eventBG");
+						var _parentElement = div_eventBG[0].parentNode;
+						if(_parentElement){
+							_parentElement.removeChild(div_eventBG[0]);
+						}
+					}else{
+						parent().$('#aaa').hide();
+						alert('提交失败');
+					}
+				}
+			})
+		}
+	});
+
+	//错误提示
+	function error_tip( $id,$tip ){
+
+		$('#error_'+$id).show();
+		$('#error_'+$id).html($tip);
+	}
+
+	//隐藏错误提示
+	function error_hide( $id ){
+
+		$('#error_'+$id).hide();
+	}
+
+	$('#pvp_team').focus(function(){
+		if($('#pvp_team').val()=='示例：RJOExpress'){
+			$('#pvp_team').val('');
+		}
+	})
+
+	$('#pvp_usruid').blur(function(){
+		if($('#pvp_usruid').val()==''){
+			$('#pvp_usruid').val('示例：58550000xxxxxxxx');
+		}
+	})
+
+	$('#pvp_usruid').focus(function(){
+		if($('#pvp_usruid').val()=='示例：58550000xxxxxxxx'){
+			$('#pvp_usruid').val('');
+		}
+	})
+
+	$('#pvp_team').blur(function(){
+		if($('#pvp_team').val()==''){
+			$('#pvp_team').val('示例：RJOExpress');
+		}
+	})
+
+	$('#return_button').click(function(){
+
+		pagereload();
+		var obj_body = window.parent.document.getElementsByClassName("eventDivOn")[0];
+		var class_name = obj_body.getAttribute("class");
+		class_name = class_name.replace('eventDivOn', '');
+		obj_body.setAttribute("class", class_name);
+		var div_eventBG = window.parent.document.getElementsByClassName("eventBG");
+		var _parentElement = div_eventBG[0].parentNode;
+		if(_parentElement){
+			_parentElement.removeChild(div_eventBG[0]);
+		}
+	})
+
+
+	function pagereload(){
+
+		var hosts = window.location.host.split('.');
+		var domain = hosts[hosts.length-1];
+		document.domain="joyme."+domain;
+	}
+
+	function getpvp_tem( pvp_team ){
+		$.ajax({
+			"url": "?c=cq&a=exists",
+			"type": "post",
+			"async": false,
+			"data": {'pvp_team':pvp_team},
+			"success": function(msg) {
+				var data = eval('(' + msg + ')');
+				if(data['rs']==0){
+					json['pvp_team'] = true;
+				}else{
+					json['pvp_team'] = false;
+				}
+			}
+		})
+	}
+
+	function getpvp_usru( pvp_usruid ){
+
+		$.ajax({
+			"url": "?c=cq&a=exists",
+			"type": "post",
+			"async": false,
+			"data": {'pvp_usruid':pvp_usruid},
+			"success": function(msg) {
+				var data = eval('(' + msg + ')');
+				if(data['rs']==0){
+					json['pvp_usruid'] = true;
+				}else{
+					json['pvp_usruid'] = false;
+				}
+			}
+		})
+	}
+
+	function getpvp_qq( pvp_qq ){
+
+		$.ajax({
+			"url": "?c=cq&a=exists",
+			"type": "post",
+			"async": false,
+			"data": {'pvp_qq':pvp_qq},
+			"success": function(msg) {
+				var data = eval('(' + msg + ')');
+				if(data['rs']==0){
+					json['pvp_qq'] = true;
+				}else{
+					json['pvp_qq'] = false;
+				}
+			}
+		})
+	}
+
+	function getpvp_tel( pvp_tel ){
+
+		$.ajax({
+			"url": "?c=cq&a=exists",
+			"type": "post",
+			"async": false,
+			"data": {'pvp_tel':pvp_tel},
+			"success": function(msg) {
+				var data = eval('(' + msg + ')');
+				if(data['rs']==0){
+					json['pvp_tel'] = true;
+				}else{
+					json['pvp_tel'] = false;
+				}
+			}
+		})
+	}
+</script>

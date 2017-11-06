@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <link rel="stylesheet" href="<?=$data['static_path']?>css/common.css">
+    <link rel="stylesheet" href="<?=$data['static_path']?>css/page.css">
+    <script type="text/javascript" src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="http://static.joyme.com/js/plupload.full.min.js"></script>
+    <script type="text/javascript" src="http://static.joyme.com/js/qiniu.js"></script>
+    <title>全民奇迹2周年“奇迹之路”</title>
+</head>
+<body>
+<div id="page-wrap">
+    <div class="page-cont-box apply-page">
+        <div class="upload-img fn-center clearfix">
+            <div class="upload-img-box">
+                <img id="imageUrl" src="<?=$data['static_path']?>images/head-img.jpg" alt="">
+            </div>
+            <div id="container"><a class="" id="pickfiles" href="#">+</a></div>
+            <div class="up_block_line" id="up_block_line" style="position: absolute;top: 0;left: 50%;width: 2.3rem;height: 2.3rem;    padding: 0.1rem;margin-left: -1.25rem;"></div>
+            <span>仅支持JPG、PNG格式，大小在5M以内</span>
+        </div>
+        <div class="apply-iteam">
+            <span class="fn-left">服务器：</span>
+            <input type="text" id="area_code" placeholder="如：ios100区" value="">
+        </div>
+        <div class="notice">请正确填写！错误信息将导致奖品无法发放！</div>
+        <div class="apply-iteam">
+            <span class="fn-left">活动主题：</span>
+            <select class="fn-left select-style" name="" id="them">
+                <option value="" disabled="disabled" selected="selected">请选择</option>
+                <option value="全民奇迹勇士风采">全民奇迹勇士风采</option>
+                <option value="全民奇迹奇迹历程">全民奇迹奇迹历程</option>
+                <option value="全民奇迹神翼PK">全民奇迹神翼PK</option>
+                <option value="全民奇迹装备大赏">全民奇迹装备大赏</option>
+            </select>
+        </div>
+        <div class="apply-iteam">
+            <span class="fn-left">角色名称：</span>
+            <input type="text" id="user_name" value="" class="fn-left">
+        </div>
+        <div class="apply-iteam">
+            <span class="fn-left">角色ID：</span>
+            <input type="text" id="user_id" placeholder="ID位数限制为10位" value="" class="fn-left">
+        </div>
+        <div class="apply-iteam">
+            <span class="fn-left">职业：</span>
+            <input type="text" id="occup" value="" class="fn-left">
+        </div>
+        <div class="apply-iteam">
+            <span class="fn-left">战盟：</span>
+            <input type="text" id="family" value="" class="fn-left">
+        </div>
+        <div class="apply-dec-box clearfix">
+            <span class="apply-dec fn-left">参赛宣言：</span>
+            <textarea class="apply-dec-cont" id="decla" onfocus="if(value=='填写活动宣言，限制15字以内') {value=''}" onblur="if(value=='') {value='填写活动宣言，限制15字以内'}">填写活动宣言，限制15字以内</textarea>
+        </div>
+        <input type="hidden" id="nwe_img" value="">
+
+        <button class="apply-submit-btn" id="submitBtn"></button>
+        <input type="hidden" id="endtime" value="<?=$data['endtime'];?>">
+        <input type="hidden" id="time" value="<?=$data['time'];?>">
+        <input type="hidden" id="is_share" value="<?=$data['is_share'];?>">
+        <h4 class="fn-center">报名规则</h4>
+        <p><span>①</span> 参与活动的勇士必须上传本人照片，并正确填写报名页的全部信息；</p>
+        <p><span>②</span> 未上传照片或信息填写不完整时，均不能完成报名；</p>
+        <p><span>③</span> 上传的图片格式要求为：JPG、PNG格式，大小在5M以内；</p>
+        <p><span>④ 活动宣言字数限制15字；</span></p>
+        <p><span>⑤</span> 报名的照片需经过人工审核后方可发布。</p>
+    </div>
+</div>
+<div id="focus">
+    <div class="fn-left focus-img"><img src="<?=$data['static_path']?>images/app-icon.png" alt=""></div>
+    <span>全民奇迹MU</span>
+    <div class="focus-btn" onclick="showarea('focuswind');"></div>
+</div>
+<div class="focus-wind wx-tip" id="focuswind">
+    <div class="focus-box">
+        <div class="wx-tit">请在微信端打开</div>
+        <div class="close-btn" onclick="offarea('focuswind');">关闭</div>
+        <p class="fn-center"><span class="wxtip">使用微信扫码关注</span><br/>【全民奇迹】微信公众号</p>
+        <cite><img src="<?=$data['static_path']?>images/code-img.jpg" alt=""></cite>
+    </div>
+</div>
+</body>
+<script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+<script>
+
+    $(function(){
+        showweixin();
+    });
+    function isWeiXin(){
+        var ua = window.navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+            return true;
+        }else{
+            return false;
+        }
+    };
+    function showweixin(){
+        if(!isWeiXin()){
+            $('.focus-wind').show();
+        }
+    };
+
+    function showarea(id){
+
+        var con = document.getElementById(id);
+        con.style.display = "block";
+        if(isWeiXin()){
+            $('.wxtip').text('长按识别二维码关注');
+            $('.wx-tit').hide();
+        }
+    }
+    function offarea(id){
+        var con = document.getElementById(id);
+        con.style.display = "none";
+    }
+
+    window.alert = function(name){
+        var iframe = document.createElement("IFRAME");
+        iframe.style.display="none";
+        iframe.setAttribute("src", 'data:text/plain,');
+        document.documentElement.appendChild(iframe);
+        window.frames[0].window.alert(name);
+        iframe.parentNode.removeChild(iframe);
+    };
+
+    var json = {};
+    var pid='c0b9fbf18884ac1c3b9be365025da686';
+    var apiHost = 'http://api.joyme.com/';
+    var uploadToken="";
+    $(document).ready(function () {
+        uploadInit();
+    });
+
+    function uploadInit() {
+        $.ajax({
+            url: apiHost + "comment/bean/json/check",
+            type: "post",
+            data: {profileid: pid},
+            dataType: "jsonp",
+            jsonpCallback: "checkcallback",
+            success: function (req) {
+                var resMsg = req[0];
+                if (resMsg.rs == '1') {
+                    uploadToken=resMsg.uploadtoken;
+                    upload();
+                }
+            }
+        });
+    }
+    function submitGoods() {
+        document.myForm.submit();
+    }
+
+    //图片传进度条
+    function uploadPicProcessLine(uploadRate){
+        if(uploadRate == 100){
+            $('#up_block_line').html('');
+        }else{
+            $('#up_block_line').html('<span>'+uploadRate+'%</span>');
+        }
+    }
+
+    function upload(){
+
+        var QiniuPic = new QiniuJsSDK();
+        var picUploader = QiniuPic.uploader({
+            runtimes: 'html5,flash,html4',    //上传模式,依次退化
+            browse_button: 'pickfiles',       //上传选择的点选按钮，**必需**
+            uptoken: uploadToken,
+            unique_names: false ,
+            save_key: false,
+            domain: 'http://joymepic.joyme.com/',
+            container: 'container',           //上传区域DOM ID，默认是browser_button的父元素，
+            max_file_size: '8mb',           //最大文件体积限制
+            flash_swf_url: 'http://lib.joyme.com/static/third/qiniuupload/plupload/Moxie.swf',  //引入flash,相对路径
+            max_retries: 3,                   //上传失败最大重试次数
+            dragdrop: true,                   //开启可拖曳上传
+            chunk_size: '4mb',                //分块上传时，每片的体积
+            auto_start: true,                 //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+            init: {
+                'FilesAdded': function (up, files) {
+                    //头像判断多图上传的情况
+                    if(files.length>=2){
+                        alert('只能选择一张图片上传');
+                        location.reload();
+                    }
+                    var i = 1;
+                    plupload.each(files, function (file) {
+                        files.splice(i,1);
+                        // 文件添加进队列后,处理相关的事情
+                    });
+                },
+                'BeforeUpload': function (up, file) {
+                    var picType = file.name.substring(file.name.lastIndexOf('.'),file.name.length).toUpperCase();
+                    if(picType != '.JPG' && picType != '.JPEG' && picType != '.PNG'){
+                        this.trigger('Error', {
+                            code : -1,
+                            message : "只能上传*.jpg,*.png,*.jpeg的图片",
+                            file:file,
+                            details:''
+                        });
+                        return false;
+                    }
+                    if (file.size >= 1048576 * 5) {
+                        this.trigger('Error', {
+                            code : -1,
+                            message : "上传的图片大小不超过5M",
+                            file:file
+                        });
+                        return false;
+                    }
+                },
+                'UploadProgress': function (up, file) {
+                    var chunk_size = plupload.parseSize(this.getOption('chunk_size'));
+                    var uploadRate=Math.ceil(file.loaded*100/file.size);
+                    if(uploadRate>0){
+                        uploadPicProcessLine(uploadRate);
+                    }
+                },
+                'FileUploaded': function (up, file, info) {
+                    try {
+                        var domain = up.getOption('domain');
+                        var res = JSON.parse(info);
+                        var sourceLink = domain +res.key; //获取上传成功后的文件的Url
+                        $('#imageUrl').attr('src',sourceLink);
+                        $('#nwe_img').val(sourceLink);
+                    } catch (ex) {
+                        alert(ex);
+                    }
+                },
+                'Error': function (up, err, errTip) {
+                    alert(errTip);
+                    //上传出错时,处理相关的事情
+                },
+                'UploadComplete': function () {
+
+                },
+                'Key': function (up, file) {
+                    // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                    var picType = file.name.substring(file.name.lastIndexOf('.'),file.name.length).toLowerCase();
+                    var day = new Date();
+                    var Year= day.getFullYear();
+                    var Month= day.getMonth()+1;
+                    if(Month<10){
+                        Month='0'+Month;
+                    }
+                    var Day = day.getDate();
+                    var timestamp=Math.ceil(day.getTime());
+                    var key = "live/pic/"+Year+Month+'/'+Day+timestamp+picType;
+                    return key
+                }
+            }
+        });
+        picUploader.stop();
+    }
+
+    //报名按钮
+    $('#submitBtn').click(function(){
+
+        if(!isWeiXin()){
+            $('.focus-wind').show();
+            return false;
+        }
+        if(!checkTime()){
+            return false;
+        }
+        json['flag'] = '';
+        var img_path = $('#nwe_img').val();  //头像
+        var area_code = $('#area_code').val();  //服务器
+        var user_name = $('#user_name').val();  //角色名称
+        var user_id = $('#user_id').val();  //角色ID
+        var occup = $('#occup').val();   //职业
+        var family = $('#family').val();  //战盟
+        var decla = $('#decla').val();   //宣言
+        var them = $('#them').val();  //主题
+
+        if(!img_path){
+            alert('请上传头像');
+            return false;
+        }
+        if(!area_code){
+            alert('请填写服务器名称');
+            return false;
+        }
+
+        if( area_code.length > 10 ){
+            alert('服务器名称限制在10位以内');
+            return false;
+        }
+
+        if(!them){
+            alert('请选择参赛主题');
+            return false;
+        }
+        if(!user_name){
+            alert('请填写角色名称');
+            return false;
+        }
+
+        if( user_name.length > 10 ){
+            alert('角色名称限制在10位以内');
+            return false;
+        }
+
+        if(!user_id){
+            alert('请填写角色ID');
+            return false;
+        }
+        if( isNaN(user_id) ){
+            alert('角色ID只能是数字');
+            return false;
+        }
+        if( user_id.length != 10 ){
+            alert('角色ID位数限制为10位');
+            return false;
+        }
+
+        if(json['flag'] == 1){
+            alert('角色ID已存在');
+            return false;
+        }
+        if(!occup){
+            alert('请填写职业');
+            return false;
+        }
+
+        if(occup.length > 10){
+            alert('职业限制在10位以内');
+            return false;
+        }
+        if(occup){
+            if(!/^[\u4e00-\u9fa5]+$/i.test(occup)){
+                alert("职业只能是中文");
+                return false;
+            }
+        }
+
+        if(!occup){
+            var re='/[^/u4e00-/u9fa5]/';
+            if (!re.test(occup)){
+                alert('职业只能是汉字');
+                return false;
+            }
+        }
+
+        if(!family){
+            alert('请填写战盟');
+            return false;
+        }
+
+        if( family.length > 10 ){
+            alert('战盟限制在10位以内');
+            return false;
+        }
+
+        if(!decla || decla == '填写活动宣言，限制15字以内'){
+            alert('请填写宣言');
+            return false;
+        }
+        if(decla.length>15){
+            alert('宣言限制在15字以内');
+            return false;
+        }
+        $.ajax({
+            "url": "/new/?c=Qmqj&a=signUp",
+            "type": "POST",
+            "data": {'user_id':user_id,'user_name':user_name,'area_code':area_code,'occup':occup,'family':family,'decla':decla,'theme':them,'head_portr':img_path},
+            "success": function(msg) {
+                var obj = eval('(' + msg+ ')');
+                if(obj['rs'] == 0) {
+                    alert('报名成功，请等待审核');
+                    window.location.href="/new/?c=Qmqj&a=index";
+                }else{
+                    alert('报名失败');
+                }
+            }
+        })
+    });
+
+    //用户是否存在
+    function userIdExists( user_id ,area_code ){
+
+        $.ajax({
+            "url": "/new/?c=qmqj&a=userExists",
+            "type": "post",
+            "async": false,
+            "data": {'user_id':user_id,'area_code':area_code},
+            "success": function(msg) {
+                var data = eval('(' + msg + ')');
+                if(data['rs']==0){
+                    json['flag'] = 1;
+                }else{
+                    json['flag'] = 2;
+                }
+            }
+        })
+    }
+
+    //验证时间
+    function checkTime(){
+        if($('#endtime').val() < $('#time').val()){
+            alert('活动已结束');
+            return false;
+        }
+        return true;
+    }
+
+    $(document).ready(function () {
+        //设置openid
+        wx.config({
+            debug: false,
+            appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+            timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+            nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+            signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareQZone'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '《全民奇迹》2周年！我在“奇迹之路”等你！',
+                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: "http://joymepic.joyme.com/live/pic/201612/81481175694973.png",
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '《全民奇迹》2周年！我在“奇迹之路”等你！',
+                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: "http://joymepic.joyme.com/live/pic/201612/81481175694973.png",
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '《全民奇迹》2周年！我在“奇迹之路”等你！',
+                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: "http://joymepic.joyme.com/live/pic/201612/81481175694973.png",
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '《全民奇迹》2周年！我在“奇迹之路”等你！',
+                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: "http://joymepic.joyme.com/live/pic/201612/81481175694973.png",
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+        });
+    });
+</script>
+</html>

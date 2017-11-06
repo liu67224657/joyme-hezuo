@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>好友工具后台编辑</title>
+    <link rel="stylesheet" type="text/css" href="/new/static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/new/static/css/info.css">
+    <script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<div class="goods-list-main">
+    <ul class="breadcrumb">
+        <li class="active">好友工具后台编辑</li>
+    </ul>
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>编辑信息</h5>
+        </div>
+        <div class="goods-list-search content-box-content">
+            <form class="form-horizontal" style="margin-top: 10px;" method="post" action="?c=friendstool&a=editInfo" id="create_template">
+                <div class="my-center">
+                    <div class="control-group">
+                        <label class="control-label">title:</label>
+                        <input type="text" name="title" id="title" value="<?=$data['item']['title']?>">
+                        <span id="error_templateName" style="color:red"></span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">siteId:</label>
+                        <input type="text" name="siteId" id="siteId" value="<?=$data['item']['siteId']?>">
+                        <span id="error_siteId" style="color:red"></span>
+                    </div>
+                    <br class="control-group">
+                        <label class="control-label">公告:</label>
+                        <input type="hidden" value="<?=$data['item']['id']?>" name="update_id">
+                        <textarea name="notice" id="notice" cols="20" rows="10"><?=$data['item']['notice']?></textarea>
+                        </br>
+                        <span id="error_templateContext" style="color:red"></span></td>
+                    </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-success" value="保存">&nbsp;&nbsp;
+                        <a href="?c=friendstool&a=management"  class="btn btn-success" style="height: 20px;">返回</a>
+                    </div>
+                </div>
+            </form>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function() {
+        $('#create_template').submit(function() {
+            var template = $('#title').val();
+            if (template.length == 0) {
+                alert('title不能为空');
+                return false;
+            }
+            var siteId = $('#siteId').val();
+            if (siteId.length == 0) {
+                alert('siteId不能为空');
+                return false;
+            }else{
+                if(isNaN(siteId)){
+                    alert('siteId必须为数字');
+                    return false;
+                }
+            }
+            var templateContext = $('#notice').val();
+            if (templateContext.length == 0) {
+                alert('公告不能为空');
+                return false;
+            }
+        });
+    })
+</script>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<title>搜索单页</title>
+<link rel="stylesheet" href="default/common.css">
+<link rel="stylesheet" href="default/2/wiki.css">
+<script type="text/javascript">
+window.addEventListener('DOMContentLoaded', function (){
+  document.addEventListener('touchstart', function (){return false}, true)
+}, true);
+</script>
+</head>
+<body>
+<div id="wrapper"> 
+  <div id="center">
+    <div class="search-center">
+      <!--search-bar-->
+      <div class="search-bar">
+          <div class="sousuo">
+              <span class="inpTxt-box">
+                  <input class="inp-search" id="textfield" type="text" value="请输入搜索内容" >
+                  <b class="del"></b>
+              </span>
+              <span class="inpBtn-box"><a href="#">搜索</a></span>
+            </div>
+        </div>
+        <!--search-bar==end-->
+        <!--search-result-->
+
+      <div class="search-result">
+          <div class="no-result">没有您要的内容</div>
+          <div class="search-tit">热门搜索</div>
+            <div class="search-result-box clearfix">
+               <a href="http://www.joyme.com/wxwiki/qmtj/345389.shtml">合作模式丛林野战通关心得</a>
+                <a href="http://www.joyme.com/wxwiki/qmtj/102038.shtml">佣兵攻击机制详解</a>
+                <a href="http://www.joyme.com/wxwiki/qmtj/345305.shtml">最激情的《全民突击》攻略</a>
+                <a href="http://www.joyme.com/wxwiki/qmtj/102034.shtml">Ak47数据</a>
+                <a href="http://www.joyme.com/wxwiki/qmtj/345276.shtml">红桃K数据</a>
+                <a href="http://www.joyme.com/wxwiki/qmtj/345320.shtml">世界十大狙击枪</a>
+            </div>
+        </div>
+        <!--search-result==end-->
+    </div>
+    <!--search-bar==end-->  
+  </div>  
+</div>
+<script src="js/toolsData.js"></script>
+<script src="js/jQuery.js"></script>
+<script src="js/tools.js"></script>
+</body>
+</html>

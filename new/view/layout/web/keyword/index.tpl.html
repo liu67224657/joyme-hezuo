@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form action="?c=keyword&a=show" method="post">
+    <table style="width: 100%;">
+        <tr>
+            <td>主关键字</td>
+            <td>
+                <input type="text" name="keyword" value="<?=$_POST['keyword']?>"/>
+            </td>
+            <td>
+                <select name="fetchType" style="width: 120px;">
+                    <option value="pc"
+                    <?php if($_POST['fetchType']=='pc'):?>
+                    selected="selected"
+                    <?php endif;?>>PC</option>
+                    <option value="m"
+                    <?php if($_POST['fetchType']=='m'):?>
+                    selected="selected"
+                    <?php endif;?>>M端</option>
+                </select>
+            </td>
+            <td>
+                <input type="checkbox" name="check2" value="number"
+                <?php if($_POST['check2']=='number'):?>
+                checked='checked'
+                <?php endif;?> /> 数字
+            </td>
+            <td>
+                <input type="checkbox" name="check1" value="letter"
+                <?php if($_POST['check1']=='letter'):?>
+                checked='checked'
+                <?php endif;?>/> 字母
+            </td>
+            <td>
+                <input type="checkbox" name="check3" value="child"
+                <?php if($_POST['check3']=='child'):?>
+                checked='checked'
+                <?php endif;?> /> 子项
+            </td>
+            <td>
+                <input type="submit" value="查询"/>
+            </td>
+            <td>
+                <a href="<?= '?c=keyword&a=exportexcel&keyword='.$_POST['keyword'].'&check1='.$_POST['check1'].'&check2='.$_POST['check2'].'&check3='.$_POST['check3'].'&fetchType='.$_POST['fetchType'] ?>">导出到excel</a>
+            </td>
+        </tr>
+        <?php if(empty($data)):?>
+        <tr class="warning">
+            <td>暂无数据</td>
+        </tr>
+        <?php else:?>
+        <?php foreach($data as $key=>$v):?>
+        <tr>
+            <td><?=$v;?></td>
+        </tr>
+        <?php endforeach;?>
+        <?php endif;?>
+    </table>
+</form>
+</body>
+</html>

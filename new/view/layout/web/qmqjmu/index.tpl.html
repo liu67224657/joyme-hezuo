@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <title>全民奇迹MU</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (e) {
+
+            var w=e.target.activeElement.clientWidth>=1024?1024:e.target.activeElement.clientWidth;
+            document.getElementById('warp').style.zoom = w / 320;
+
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+//                alert(0)
+            } else {
+//                document.getElementById('noweixn').style.display = 'block';
+                return false;
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="http://static.joyme.com/mobile/cms/qmqj170227/css/style.css">
+    <script src="http://static.joyme.com/js/jquery-1.9.1.min.js" language="javascript"></script>
+    <script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+</head>
+<body onload="init()">
+<div class="noweixn" id="noweixn">
+    请通过微信打开
+</div>
+<div class="hp_tips">请切换到竖屏观赏~</div>
+<div id="warp">
+    <div class="page loading-page">         
+        <div class="loading">
+            <div class="preload"></div>
+        </div>
+        <div class="loading-txt">0%</div>
+    </div>
+    <div class="page start-page">
+        <img class="index-text" src="http://static.joyme.com/mobile/cms/qmqj170227/images/open-text.png" width="8%">
+        <div class="mask-text"></div>
+        <div class="star-btn"></div>
+    </div>
+        <!--第一段视频 开始-->  
+        <video id="video1" src="http://static.joyme.com/mobile/cms/qmqj170227/images/video1.mp4"  preload="auto" webkit-playsinline="true" playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true"></video>  
+        <!--第一段视频 结束--> 
+        <div class="page-bg page1"> 
+            <div class="look-btn"></div>
+        </div>
+        <!--第二段视频 开始-->  
+        <video id="video2" src="http://static.joyme.com/mobile/cms/qmqj170227/images/video2.mp4"  preload="auto" webkit-playsinline="true" playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true"></video>
+        <!--第二段视频 开始-->  
+        <div class="summon-btn"></div>
+    <!--发送方明信片开始-->
+    <div class="page-bg page7">
+        <div class="page7-mask">
+            <div class="pointer"></div>
+        </div>
+        <input class="send-name" type="text" placeholder="接收者名称">
+        <div class="column-height">
+            <div class="user-head"><img src="<?=$data['userinfo']['headimgurl']?>" alt=""><span class="user-name"><?=$data['userinfo']['nickname']?></span></div>
+            <div class="send-btn">发给兄弟</div>
+            <div class="enter-btn"><a href="http://mu.xy.com/welcome_v3/wapqq">进入官网</a></div>
+        </div>
+    </div>
+    <!--发送方明信片结束-->
+    <!--接收方明信片开始-->
+    <div class="page-bg page8" style="<?=$data['is_display']?>">
+        <input class="receive-name" type="text" value="<?=$data['rname']?>" placeholder="接收者名称">
+        <div class="column-height">
+            <div class="user-head"><img src="<?=$data['senduser']['headimgurl']?>" alt=""><span class="user-name"><?=$data['senduser']['nickname']?></span></div>
+            <div class="receive-btn"></div>
+        </div>
+    </div>
+    <!--接收方明信片结束-->
+    <div class="popup share-page">
+        <img src="http://static.joyme.com/mobile/cms/qmqj170227/images/share-text.png" alt="">
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="http://static.joyme.com/mobile/cp/ylzt20160805/js/preloadjs.min.js"></script>
+<script>
+    $(function(){
+        showweixin();
+    });
+    function isWeiXin(){
+        var ua = window.navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+            return true;
+        }else{
+            return false;
+        }
+    };
+    function showweixin(){
+        if(!isWeiXin()){
+            $('.noweixn').show();
+        }
+    };
+    /*document.addEventListener('touchmove', function (event) {
+     event.preventDefault();
+     }, false);
+
+     window.addEventListener( "load", function() {
+     FastClick.attach( document.body );
+     }, false );*/
+
+
+    function setMenuShareTimeline(data){
+        wx.onMenuShareTimeline(data);
+    }
+
+    function setMenuShareAppMessage(data){
+        wx.onMenuShareAppMessage(data);
+    }
+
+    function settitle(name){
+        var sopenid = "<?=$data['openid']?>";
+        var title = name +'，全民奇迹等你归来！';
+        var desc = '您的好友邀您回归';
+        var link = 'http://hezuo.joyme.com/new/?c=qmqjmu&a=index&rname='+name +'&sopenid='+sopenid;
+        var imgUrl = 'http://static.joyme.com/mobile/cms/qmqj170227/images/share-icon.png';
+        setMenuShareAppMessage({
+            title: title, // 分享标题
+            desc : desc,
+            link: link, // 分享链接
+            imgUrl: imgUrl, // 分享图标
+            success: function (res) {
+                alert("分享成功");
+            }
+        });
+        setMenuShareTimeline({
+            title: title, // 分享标题
+            desc : desc,
+            link: link, // 分享链接
+            imgUrl: imgUrl, // 分享图标
+            success: function (res) {
+                alert("分享成功");
+            }
+        });
+    }
+
+    /** 输入框软键盘遮挡处理 **/
+    function checkPlatform(){
+        if(/android/i.test(navigator.userAgent)){
+            var windowHeight = document.documentElement.clientHeight;
+            $('input').bind("focus",function(){
+                document.body.style.height = windowHeight + 'px';
+                setTimeout(function(){
+                    document.body.scrollTop = 120;                     
+                    document.documentElement.scrollTop = 120;                     
+                    window.pageYOffset = 120;
+                },100)
+            });
+        }
+    }
+
+    function pageOperation(){ 
+        var myVideo1 = document.getElementById('video1');
+        var myVideo2 = document.getElementById('video2');
+
+        function playVideo1() {
+            $(".star-btn").fadeOut(3500);
+            var h = $('.index-text').height();
+            $('.mask-text').animate({height:h+'px'},3000,function(){
+                $(this).hide();
+                $('.index-text').hide();
+                $(".start-page").fadeOut(500);
+                $("#video1").css({display:"block"}).delay(100);
+                myVideo1.play();                   
+            });
+        }
+
+        $('.star-btn').on('click',function(){
+            playVideo1();
+            myVideo1.play();
+            //myVideo1.pause();
+        });
+
+        myVideo1.addEventListener("ended",function(){
+            //视频1播放完成
+            myVideo1.pause();
+            $('.page1').show();
+            $(".look-btn").show();
+            setTimeout(function(){
+                myVideo1.remove();
+            },1000);
+        }, false);
+
+        $('.look-btn').on('click',function(){
+            $(this).fadeOut();
+            myVideo1.pause();
+            $("#video1").fadeOut();
+            $("#video2").fadeIn();            
+            myVideo2.play();
+        });
+
+        myVideo2.addEventListener("ended",function(){
+            //视频2播放完成
+            myVideo2.pause();
+            $(".summon-btn").fadeIn(); 
+        }, false);
+
+        $('.summon-btn').on('click',function(){
+            $(this).fadeOut();
+            myVideo2.pause();
+            $("#video2").hide();
+            $('.page7').show();
+        });
+        
+
+        $('.send-btn').on('click',function(){
+            $('.share-page').fadeIn();
+            var name = $('.send-name').val();
+            if(name != ''){
+                settitle(name);
+            }
+        });
+        $('.page7-mask').on('click',function(){
+            $(this).fadeOut();
+        });
+
+        $('.share-page').on('click',function(){
+            $(this).fadeOut();
+        });
+        
+        $('.hp_tips').on('click',function(){
+            $(this).fadeOut();
+        });
+
+
+        $('.welfare-btn').on('click',function(){
+            $('.page9').fadeIn();
+        });
+
+        $('.popup i').on('click',function(){
+            $('.popup').fadeOut();
+        });
+    }
+
+    $('.postcards-btn').on('click',function(){
+        $('.page12').fadeOut();
+        $('.page8').fadeIn();
+    });
+
+    $('.receive-btn').on('click',function(){
+        $('.page8').fadeOut();
+    });
+
+    function init() {
+        var loadingbar = $('.preload');
+        var url = 'http://static.joyme.com/mobile/cms/qmqj170227/';
+        var manifest;
+        var preload;
+        //定义相关JSON格式文件列表
+        function setupManifest() {
+            manifest = [
+                {src: url + 'images/share-icon.png', id: "images"},
+                {src: url + 'images/postcards-bg.jpg', id: "images"},
+                //{src: url + 'images/video1.mp4', id: "video"},
+                //{src: url + 'images/video2.mp4', id: "video"},
+                {src: url + 'images/notice-bg.png', id: "images"},
+                {src: url + 'images/share-icon.png', id: "images"},
+                {src: url + 'images/share-text.png', id: "images"}
+            ];
+        };
+        //开始预加载
+        function startPreload() {
+            preload = new createjs.LoadQueue(true);
+            //注意加载音频文件需要调用如下代码行
+            preload.installPlugin(createjs.Sound);
+            preload.on("fileload", handleFileLoad);
+            preload.on("progress", handleFileProgress);
+            preload.on("complete", loadComplete);
+            preload.on("error", loadError);
+            preload.loadManifest(manifest);
+        };
+        function handleFileLoad(event) {                   
+            var progress = preload.progress * 100 | 0;
+            loadingbar.css({width:(225/100)*progress});
+            $('.loading-txt').html(progress+'%')   
+            //console.log("文件类型: " + event);s
+        };
+        function loadError(evt) {
+            //console.log("加载出错！");
+        };
+        function handleFileProgress(event) {
+            //console.log(1);
+        };
+        function loadComplete(event) { 
+            $('.loading-page').hide(); 
+            pageOperation()
+        }
+        setupManifest();
+        startPreload();
+    }
+
+//    $(document).one("click",function(){ music1.play(); });
+
+    //设置openid
+    wx.config({
+        debug: false,
+        appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+        timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+        nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+        signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+        jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareQZone'
+        ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+
+    wx.ready(function () {
+        //分享到朋友圈
+        wx.onMenuShareTimeline({
+            title: '初心不老 再战奇迹',
+            link: "http://hezuo.joyme.com/new/?c=qmqjmu&a=index",
+            imgUrl: 'http://static.joyme.com/mobile/cms/qmqj170227/images/share-icon.png',
+            success: function (res) {
+                alert("分享成功");
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: '初心不老 再战奇迹',
+            desc: '点击开始你的奇迹之旅',
+            link: "http://hezuo.joyme.com/new/?c=qmqjmu&a=index",
+            imgUrl: 'http://static.joyme.com/mobile/cms/qmqj170227/images/share-icon.png',
+            success: function (res) {
+                alert("分享成功");
+            }
+        });
+
+        //分享到QQ
+        wx.onMenuShareQQ({
+            title: '初心不老 再战奇迹',
+            desc: '点击开始你的奇迹之旅',
+            link: "http://hezuo.joyme.com/new/?c=qmqjmu&a=index",
+            imgUrl: 'http://static.joyme.com/mobile/cms/qmqj170227/images/share-icon.png',
+            success: function (res) {
+                alert("分享成功");
+            }
+        });
+
+        //分享到QQ空间
+        wx.onMenuShareQZone({
+            title: '初心不老 再战奇迹',
+            desc: '点击开始你的奇迹之旅',
+            link: "http://hezuo.joyme.com/new/?c=qmqjmu&a=index",
+            imgUrl: 'http://static.joyme.com/mobile/cms/qmqj170227/images/share-icon.png',
+            success: function (res) {
+                alert("分享成功");
+            }
+        });
+    });
+
+</script>
+</html>

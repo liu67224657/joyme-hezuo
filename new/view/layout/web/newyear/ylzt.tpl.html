@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="新年点灯，御龙贺岁！丰厚大礼天天送！" />
+    <meta name="Keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>新年点灯 御龙贺岁</title>
+    <link rel="stylesheet" href="http://static.joyme.com/mobile/cms/ylztqd170122/css/comm.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function (e) {
+            var w=e.target.activeElement.clientWidth>=1024?1024:e.target.activeElement.clientWidth;
+            document.getElementById('warp').style.zoom = w / 320;
+            console.log(e.target.activeElement)
+        });
+    </script>
+    <div id="wx_pic" style="margin: 0;display: none">
+        <img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/shar-icon.png " />
+    </div>
+</head>
+<body>
+<div class="warp" id="warp">
+    <input type="hidden" name="signed_day" id="signed_day" value="<?=$data['signed_day']?>">
+    <input type="hidden" name="ylzt_sign_day" id="ylzt_sign_day" value="<?=$data['ylzt_sign_day']?>">
+    <div class="header"></div>
+    <div class="surprise"></div>
+    <div class="sign"><span><?=$data['sign_day']?></span></div>
+    <div class="pack"></div>
+    <div class="gift-bag"></div>
+    <!--签到成功sign_day添加样式cur-->
+    <div class="sign-main">
+        <?php for($i=1;$i<10;$i++){ ?>
+            <?php if(in_array($i,$data["signdays"])):?>
+            <div class="sign_day day_<?=$i?> cur" data-id="<?=$i?>" data-name="【<?=$data['ylztgiftname'][$i]?>】">
+                <div class="border curr"><img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/sign_day<?=$i?>.png"></div>
+                <p><?=$i?></p>
+                <em>×1</em>
+            </div>
+            <?php else:?>
+            <div class="sign_day day_<?=$i?>" data-id="<?=$i?>" data-name="【<?=$data['ylztgiftname'][$i]?>】">
+                <div class="border"><img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/sign_day<?=$i?>.png"></div>
+                <p><?=$i?></p>
+                <em>×1</em>
+            </div>
+            <?php endif;?>
+        <?php } ?>
+    </div>
+    <div class="tips"></div>
+    <div class="sign5"><span id="ylzt_signed_day"><?=$data['signed_day']?></span></div>
+    <div class="draw">
+        <div class="list">
+            <div class="silde">
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/lottery-1.png">
+                        </dt>
+                        <dd>黄色名将改造符</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/lottery-2.png">
+                        </dt>
+                        <dd>绿色名将改造符</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/lottery-3.png">
+                        </dt>
+                        <dd>金色麒麟30天</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="list">
+            <div class="silde">
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/lottery-2.png">
+                        </dt>
+                        <dd>绿色名将改造符</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/lottery-1.png">
+                        </dt>
+                        <dd>黄色名将改造符</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/lottery-3.png">
+                        </dt>
+                        <dd>金色麒麟30天</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="list">
+            <div class="silde">
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/lottery-3.png">
+                        </dt>
+                        <dd>金色麒麟30天</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/lottery-1.png">
+                        </dt>
+                        <dd>黄色名将改造符</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/lottery-2.png">
+                        </dt>
+                        <dd>绿色名将改造符</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--签到未满6天抽奖 增加disable样式 按钮不可用-->
+    <!--<div class="draw-btn disable" id="draw-btn"></div>-->
+    <div class="draw-btn" id="draw-btn"></div>
+    <div class="draw-tips"></div>
+    <div class="footer">
+    </div>
+    <!--签到弹窗-->
+    <div class="mask">
+        <!--奖励已领取完毕，明日再来 提示-->
+        <div class="pop-bg pop-sign-1 mask-bg">
+            <s class="close-btn"></s>
+            <p>今天的奖励已发放完毕<br>记得明天早点来哦！</p>
+        </div>
+        <!--已获得奖励 提示-->
+        <div class="pop-bg pop-sign-8 mask-bg">
+            <s class="close-btn"></s>
+            <p>您已获得奖励<br>请点击【我的礼包】查看</p>
+        </div>
+        <!--第9天和抽奖奖品发放完毕 提示-->
+        <div class="pop-bg pop-sign-9 mask-bg">
+            <s class="close-btn"></s>
+            <p>对不起<br>奖励已发放完毕</p>
+        </div>
+        <!--今日已领取 提示-->
+        <div class="pop-bg pop-sign-2 mask-bg">
+            <s class="close-btn"></s>
+            <p>您已点亮今天的灯笼！<br>请明天再来！</p>
+        </div>
+        <!--只能领取今日奖励 提示-->
+        <div class="pop-bg pop-sign-3 mask-bg">
+            <s class="close-btn"></s>
+            <p>只能点亮今天的灯笼哦~</p>
+        </div>
+        <!--获得奖励 提示-->
+        <div class="pop-bg pop-sign-4 mask-bg pop-dec">
+            <s></s>
+            <p class="p1">【黄色名将改造符】</p>
+            <p class="p2">复制下方CDK</p>
+            <p class="p3">DTMULAAANRMAQdeG</p>
+            <p class="p4">前往菜单栏<span>【点灯有礼】</span>-<span>【礼包兑换】</span>即可兑换礼包！</p>
+        </div>
+        <!--已经参加过抽奖 提示-->
+        <div class="pop-bg pop-sign-5 mask-bg">
+            <p>您已参加过本次摇奖活动！</p>
+            <s class="close-btn"></s>
+        </div>
+        <!--签到未满6天抽奖 提示-->
+        <div class="pop-bg pop-sign-6 mask-bg ">
+            <p>现在不能摇奖哦~</p>
+            <s class="close-btn"></s>
+        </div>
+        <!--中奖提示 提示-->
+        <div class="pop-bg pop-sign-7 mask-bg pop-dec">
+            <s></s>
+            <p class="p1">【<span>金色麒麟30天</span>】</p>
+            <p class="p2">复制下方CDK</p>
+            <p class="p3">DFADGFDSGJTRLJ</p>
+            <p class="p4">前往菜单栏<span>【点灯有礼】</span>-<span>【礼包兑换】</span>即可兑换礼包！</p>
+        </div>
+        <!--二维码-->
+        <div class="code mask-bg pop-dec">
+            <s></s>
+            <img src="http://static.joyme.com/mobile/cms/ylztqd170122/images/code-img.jpg">
+            <p>长按识别上方二维码关注<br/>《御龙在天手游》微信公众号</p>
+        </div>
+        <!--奖励清单-->
+        <div class="pop-gift mask-bg pop-dec">
+            <s></s>
+            <div class="gift-tit"></div>
+            <div class="gift-main">
+                <p>第一天：换镖令x1</p>
+                <p>第二天：中等淬炼宝石x1</p>
+                <p>第三天：玄武血剂x1</p>
+                <p>第四天：鸡毛令箭x1</p>
+                <p>第五天：龙纹x1</p>
+                <p>第六天：初级培养精华x1</p>
+                <p>第七天：玫瑰花x1</p>
+                <p>第八天：艺彤的拥抱x1</p>
+                <p>第九天：紫色精铁x1</p>
+            </div>
+        </div>
+        <!--我的礼包-->
+        <div class="pop-pack mask-bg pop-dec">
+            <s></s>
+            <div class="pack-tit"></div>
+            <div class="pack-main">
+
+            </div>
+            <div class="accept-info">
+                <p>1、兑换前请先确认您的游戏账号是否已在游戏内创建角色；</p>
+                <p>2、长按复制CDK，前往公众号<span>【点灯有礼】</span>-<span>【礼包兑换】</span>兑换；</p>
+                <p>3、每个CDK只可兑换<span>一次</span>。</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="http://static.joyme.com/js/jquery-1.9.1.min.js" language="javascript"></script>
+<script src="http://static.joyme.com/mobile/cms/ylztqd170122/js/lottery.js"></script>
+<script type="text/javascript">
+    $(function(){
+        window.onscroll = function() {
+            var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            if(scrollTop >= 220){
+                $('.surprise').hide(300);
+            }else{
+                $('.surprise').show(300);
+            }
+        }
+    })
+</script>
+<script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+<script>
+    //可签到日期
+    var sign_data = $('.sign span').html();
+    //已签到日期
+    var signed_day_num = $('#signed_day').val();
+    var ylzt_signed_day = parseInt($('#signed_day').val());
+    var ylzt_sign_day = parseInt($('#ylzt_sign_day').val());
+
+    var Lottery = $("#draw-btn").lottery({
+        silde:$('.silde'),  //滚动box的class
+        lottery:$('.lottery'), //奖品的列表class
+        lotteryNum:3, //列表数量
+        days:6,//第六天签到才可点击
+//        pack:true,
+        lotteryCallback:Callbacks
+    });
+    function Callbacks(){
+        $.ajax({
+            url:'/new/?c=newyear&a=lottery&atype=2',
+            type:'post', //GET
+            data:{},
+            dataType:'json',
+            success:function(data){
+                if(data.rs == 1){
+                    var num = data.code.code;
+                    console.log(num);
+                    if(num  == '100'){
+                        num= '333';
+                    }else if( num == '101'){
+                        num= '111';
+                    }else if( num == '102'){
+                        num= '222';
+                    }
+                    Lottery.startAni();
+                    setTimeout(function (){
+                        Lottery.stop(num, data.code.cdk ,data.code.name );
+                        signed_day_num=99;
+                    },30)
+                }else{
+                    maskHide();
+                    $('.mask,.pop-sign-5').show();
+                    $('.pop-sign-5').find('p').html(data.msg);
+                }
+            },
+            error:function(xhr,textStatus){
+                setTimeout(function (){
+                    Lottery.stop('');
+                },3000)
+            }
+        });
+    }
+    //关注
+    $('.header').click(function (){
+        maskHide();
+        $('.code').show();
+    });
+    //关闭弹窗
+    $('.mask s').click(function (){
+        $('.mask').hide();
+    });
+    //签到
+    $('.sign-main .sign_day').click(function (){
+        var index= $(this).attr('data-id');
+        var signclickname = $(this).attr('data-name');
+        var that = $(this);
+        if(sign_data == index){
+            $.ajax({
+                url:'/new/?c=newyear&a=sign&atype=2',
+                type:'post', //GET
+                data:{
+                    giftid:index
+                },
+                dataType:'json',
+                success:function(data){
+                    maskHide();
+                    if(data.rs == 1){
+                        that.addClass('cur');
+                        $('.pop-sign-4').show();
+                        $('.pop-sign-4 .p1').html(signclickname);
+                        $('.pop-sign-4 .p3').html(data.msg.cdk);
+                        $('#ylzt_signed_day').html(ylzt_signed_day+1);
+                    }else if(data.rs == 5){
+                        $('.mask,.pop-sign-2').show();
+                    }else if(data.rs == 2){
+                        $('.mask,.pop-sign-1').show();
+                    }else if(data.rs == 3){
+                        $('.mask,.pop-sign-3').show();
+                        $('.pop-sign-3').find('p').html (data.msg);
+                    }else if(data.rs == 4){
+                        $('.mask,.pop-sign-8').show();
+                    }
+                },
+                error:function(xhr,textStatus){
+
+                }
+            })
+        }else{
+            maskHide();
+            $('.mask,.pop-sign-3').show();
+            if(ylzt_sign_day<10){
+                if($(this).find('.border').hasClass('cur')){
+                    $('.pop-sign-3').find('p').html('您已获得奖励请点击【我的礼包】查看');
+                }else{
+                    $('.pop-sign-3').find('p').html('只能领取今日的奖励哦！');
+                }
+            }else {
+                $('.pop-sign-3').find('p').html('对不起，活动已结束！');
+            }
+        }
+
+
+    });
+    //我的礼包
+    $('.pack').click(function (){
+        maskHide();
+        $('.pop-pack').show();
+        $.ajax({
+            url:'/new/?c=newyear&a=gift&atype=2',
+            type:'post', //GET
+            data:{ },
+            dataType:'json',
+            success:function(data){
+                console.log(data);
+                if(data.rs == 1){
+                    var str = '';
+                    for(var i = 0 ; i <　data.msg.length ; i++){
+                        str+='<p><span>'+data.msg[i].giftname+'</span></p><p>'+data.msg[i].cdk+'</p>';
+                    }
+                    $('.pack-main').html(str);
+                }
+            },
+            error:function(xhr,textStatus){
+
+            }
+        })
+    });
+    $('.gift-bag').click(function (){
+        maskHide();
+        $('.pop-gift').show();
+    });
+    function maskHide(){
+        $('.mask').show();
+        $('.mask>div').hide();
+    }
+
+
+    $(document).ready(function () {
+        //设置openid
+        wx.config({
+            debug: false,
+            appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+            timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+            nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+            signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareQZone'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '新年点灯，疯抢金色麒麟！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/cms/ylztqd170122/images/shar-icon.png',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '新年点灯，疯抢金色麒麟！',
+                desc: '新年点灯，御龙贺岁！丰厚大礼天天送！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/cms/ylztqd170122/images/shar-icon.png',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '新年点灯，疯抢金色麒麟！',
+                desc: '新年点灯，御龙贺岁！丰厚大礼天天送！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/cms/ylztqd170122/images/shar-icon.png',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '新年点灯，疯抢金色麒麟！',
+                desc: '新年点灯，御龙贺岁！丰厚大礼天天送！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/cms/ylztqd170122/images/shar-icon.png',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+        });
+    });
+
+
+</script>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <title>星际火线军团争霸赛</title>
+    <link rel="stylesheet" href=" http://static.joyme.com/mobile/20170220xjhx/css/comm.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function (e) {
+            var w=e.target.activeElement.clientWidth>=1024?1024:e.target.activeElement.clientWidth;
+            document.getElementById('warp').style.zoom = w / 375;
+        });
+        window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+            if (window.orientation === 180 || window.orientation === 0) {
+                var w= document.body.clientWidth;
+                document.getElementById('warp').style.zoom = w / 375;
+            }
+            if (window.orientation === 90 || window.orientation === -90 ){
+                var w=320;
+                document.getElementById('warp').style.zoom = w / 375;
+                document.getElementById('warp').style.width='375px';
+            }
+        }, false);
+    </script>
+    <style>
+
+        #pickfiles{
+            display: block;
+            position: absolute;
+            width: 100%;
+            height:100%;
+            left:0;
+            top:0;
+            opacity: 1;
+        }
+        .container input{
+            z-index: 999;
+        }
+        .moxie-shim-html5 {
+            z-index: 99;
+        }
+    </style>
+</head>
+<body>
+
+<div id="warp">
+    <div class="nav">
+        <a href="/new/?c=xjhx&a=mustsee"><span></span></a>
+        <a href="/new/?c=xjhx&a=jtzblist"><span></span></a>
+        <a href="/new/?c=xjhx&a=reward"><span></span></a>
+        <a href="/new/?c=xjhx&a=index"><span></span></a>
+    </div>
+
+    <div class="signUp">
+        <div class="head" id="container">
+            <a class="" id="pickfiles" href="#"></a>
+            <img id="imageUrl" src=" http://static.joyme.com/mobile/20170220xjhx/images/head.jpg">
+
+        </div>
+        <div class="s_1">仅支持JPG、PNG格式，大小在5M以内</div>
+
+        <div class="opt">
+            <select name="system_type" class="system_type">
+                <option disabled selected style="color: #a7a1b7;">请选择系统</option>
+                <option value="2">ios</option>
+                <option value="1">android</option>
+            </select>
+            <span></span>
+        </div>
+
+        <div class="opt">
+            <select name="area" class="area">
+                <option disabled selected>请选择大区</option>
+            </select>
+            <span></span>
+        </div>
+
+        <div class="ipu">
+            <span>军团名称：</span>
+            <div class="im-border">
+                <input type="text" name="corps_name" value="" placeholder="">
+            </div>
+        </div>
+        <div class="ipu">
+            <span>团长名称：</span>
+            <div class="im-border">
+                <input type="text" name="colonel_name" value="" placeholder="">
+            </div>
+        </div>
+        <div class="ipu">
+            <span>联系方式：</span>
+            <div class="im-border">
+                <input type="text" name="contacts" value="" placeholder="请输入有效QQ/微信号">
+            </div>
+        </div>
+
+        <div class="ipu" style="height: 150px;">
+            <span>参赛宣言：</span>
+            <div class="im-border" style="height: 150px;">
+                <textarea class="decla" name="decla">星际第一军团舍我其谁！</textarea>
+                <em>0/20</em>
+            </div>
+        </div>
+
+        <div class="signUp-btn"></div>
+    </div>
+
+    <!--二维码-->
+    <div class="mask-code">
+        <div class="code">
+            <em></em>
+            <img width="150" height="150" src=" http://static.joyme.com/mobile/20170220xjhx/images/code.jpg">
+        </div>
+    </div>
+    <!--报名弹窗-->
+    <div class="mask-signUp">
+        <div class="sign-main">
+            <p>报名成功！</p>
+            <p>参赛信息正在进行审核，</p>
+            <p>审核通过后将在军团风采区展示哦！</p>
+            <em></em>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+<script src=" http://static.joyme.com/mobile/20170220xjhx/js/fastclick.js"></script>
+<script type="text/javascript" src="http://static.joyme.com/js/plupload.full.min.js"></script>
+<script type="text/javascript" src="http://static.joyme.com/js/qiniu.js"></script>
+<script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+<script>
+    var json = {};
+    var pid='c0b9fbf18884ac1c3b9be365025da686';
+    var apiHost = 'http://api.joyme.com/';
+    var uploadToken="";
+    var imgsrc = '';
+    $(document).ready(function () {
+        uploadInit();
+    });
+
+    function uploadInit() {
+        $.ajax({
+            url: apiHost + "comment/bean/json/check",
+            type: "post",
+            data: {profileid: pid},
+            dataType: "jsonp",
+            jsonpCallback: "checkcallback",
+            success: function (req) {
+                var resMsg = req[0];
+                if (resMsg.rs == '1') {
+                    uploadToken=resMsg.uploadtoken;
+                    upload();
+                }
+            }
+        });
+    }
+    function submitGoods() {
+        document.myForm.submit();
+    }
+
+    //图片传进度条
+    function uploadPicProcessLine(uploadRate){
+
+    }
+    function upload(){
+
+        var QiniuPic = new QiniuJsSDK();
+        var picUploader = QiniuPic.uploader({
+            runtimes: 'html5,flash,html4',    //上传模式,依次退化
+            browse_button: 'pickfiles',       //上传选择的点选按钮，**必需**
+            uptoken: uploadToken,
+            unique_names: false ,
+            save_key: false,
+            domain: 'http://joymepic.joyme.com/',
+            container: 'container',           //上传区域DOM ID，默认是browser_button的父元素，
+            max_file_size: '8mb',           //最大文件体积限制
+            flash_swf_url: 'http://lib.joyme.com/static/third/qiniuupload/plupload/Moxie.swf',  //引入flash,相对路径
+            max_retries: 3,                   //上传失败最大重试次数
+            dragdrop: true,                   //开启可拖曳上传
+            chunk_size: '4mb',                //分块上传时，每片的体积
+            auto_start: true,                 //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+            init: {
+                'FilesAdded': function (up, files) {
+                    //头像判断多图上传的情况
+                    if(files.length>=2){
+                        alert('只能选择一张图片上传');
+                        location.reload();
+                    }
+                    var i = 1;
+                    plupload.each(files, function (file) {
+                        files.splice(i,1);
+                        // 文件添加进队列后,处理相关的事情
+                    });
+                },
+                'BeforeUpload': function (up, file) {
+
+                    var picType = file.name.substring(file.name.lastIndexOf('.'),file.name.length).toUpperCase();
+                    if(picType != '.JPG' && picType != '.JPEG' && picType != '.PNG'){
+                        this.trigger('Error', {
+                            code : -1,
+                            message : "只能上传*.jpg,*png,*.jpeg的图片",
+                            file:file
+                        });
+                        return false;
+                    }
+                    if (file.size >= 1048576 * 5) {
+                        this.trigger('Error', {
+                            code : -1,
+                            message : "上传的图片大小不超过5M",
+                            file:file
+                        });
+                        return false;
+                    }
+                },
+                'UploadProgress': function (up, file) {
+                    var chunk_size = plupload.parseSize(this.getOption('chunk_size'));
+                    var uploadRate=Math.ceil(file.loaded*100/file.size);
+                    if(uploadRate>0){
+                        uploadPicProcessLine(uploadRate);
+                    }
+                },
+                'FileUploaded': function (up, file, info) {
+                    try {
+                        var domain = up.getOption('domain');
+                        var res = JSON.parse(info);
+                        var sourceLink = domain +res.key; //获取上传成功后的文件的Url
+                        $('#imageUrl').attr('src',sourceLink+'?imageView/1/w/281/h/281/');
+                        imgsrc = sourceLink;
+                        $('#nwe_img').val(sourceLink);
+                    } catch (ex) {
+                        alert('上传图片大于5M');
+                    }
+                },
+                'Error': function (up, err, errTip) {
+                    alert('上传图片大于5M');
+                    //上传出错时,处理相关的事情
+                },
+                'UploadComplete': function () {
+
+                },
+                'Key': function (up, file) {
+                    // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                    var picType = file.name.substring(file.name.lastIndexOf('.'),file.name.length).toLowerCase();
+                    var day = new Date();
+                    var Year= day.getFullYear();
+                    var Month= day.getMonth()+1;
+                    if(Month<10){
+                        Month='0'+Month;
+                    }
+                    var Day = day.getDate();
+                    var timestamp=Math.ceil(day.getTime());
+                    var key = "live/pic/"+Year+Month+'/'+Day+timestamp+picType;
+
+                    return key
+                }
+            }
+        });
+        picUploader.stop();
+    }
+
+
+
+
+
+    $('.sign-main').on('click' ,'em',function (){
+        $('.mask-signUp').hide();
+    });
+    $('.decla').focus(function (){
+        if($(this).val() == '星际第一军团舍我其谁！'){
+            $(this).css({'color':'#333333'});
+            $(this).val('');
+        }
+    });
+    $('.decla').blur(function (){
+        var remain = $(this).val().length;
+        if(remain > 20){
+            $('.decla').val($('.decla').val().substring(0,20))
+        }
+        $('.im-border em').html((remain>20?20:remain)+'/20');
+    });
+    $('.decla').keyup(
+            function(){
+                var remain = $(this).val().length;
+                if(remain > 20){
+                    $('.decla').val($('.decla').val().substring(0,20))
+                }
+                $('.im-border em').html((remain>20?20:remain)+'/20');
+            }
+    );
+
+
+
+
+    var system_type='';
+    $('.system_type').change(function (){
+        system_type = $(this).val();
+        $('.system_type').css({'color':'#333333'});
+        if(system_type == 1){
+            areaList(44);
+        }else{
+            areaList(25);
+        }
+    });
+
+    function areaList(n){
+        $('.area').html('');
+        var srt = '<option disabled selected style="color: #a7a1b7;">请选择大区</option>';
+        for(var i = 1 ; i <= n ; i++){
+            srt+='<option value="微信'+i+'区">微信'+i+'区</option>'
+        }
+        $('.area').append(srt);
+    }
+    var area='';
+    $('.area').change(function (){
+        area = $(this).val();
+        $('.area').css({'color':'#333333'});
+    });
+
+
+    $('.signUp-btn').on('click' , function (){
+        var corps_name = $('input[name="corps_name"]').val();
+        var colonel_name = $('input[name="colonel_name"]').val();
+        var contacts = $('input[name="contacts"]').val();
+        var decla = $('.decla').val();
+        if(imgsrc == ''){
+            alert('请上传头像');return false;
+        }
+        if(system_type== ''){
+            alert('请选择系统');return false;
+        }
+        if(area== ''){
+            alert('请选择大区');return false;
+        }
+        if(corps_name== ''){
+            alert('请输入军团名称');return false;
+        }
+        if(colonel_name== ''){
+            alert('请输入团长名称');return false;
+        }
+        if(contacts== ''){
+            alert('请输入qq/微信');return false;
+        }
+        if(decla== ''){
+            alert('请输入参赛宣言：');return false;
+        }
+        $.ajax({
+            url:'/new/?c=xjhx&a=signup',
+            type:'post',
+            data:{
+                avatar:imgsrc,
+                system_type:system_type,
+                area:area,
+                corps_name:corps_name,
+                colonel_name:colonel_name,
+                contacts:contacts,
+                decla:decla
+            },
+            dataType:'json',
+            success:function(data){
+                if(data.rs == 1){
+                    $('.mask-signUp').show();
+                }else{
+                    $('.mask-signUp').show();
+                    $('.sign-main').html(data.msg).css({'line-height':'178.5px'}).append('<em></em>');
+                }
+            },
+            error:function(xhr,textStatus){
+                $('.mask-signUp').show();
+                $('.sign-main').html('网络错误,请求失败').css({'line-height':'178.5px'}).append('<em></em>');
+            }
+        })
+    });
+
+    $(document).ready(function () {
+        //设置openid
+        wx.config({
+            debug: false,
+            appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+            timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+            nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+            signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareQZone'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                desc: '我正在参加《星际火线》军团争霸赛活动，快来给我点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                desc: '我正在参加《星际火线》军团争霸赛活动，快来给我点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                desc: '我正在参加《星际火线》军团争霸赛活动，快来给我点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+        });
+    });
+</script>
+</html>

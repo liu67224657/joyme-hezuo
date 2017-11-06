@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>好友工具后台管理</title>
+    <link rel="stylesheet" type="text/css" href="/new/static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/new/static/css/info.css">
+</head>
+<body>
+<div class="goods-list-main">
+    <ul class="breadcrumb">
+        <li class="active">好友工具后台管理</li>
+    </ul>
+    <a href="?c=friendstool&a=showadd"  class="btn btn-primary" style="height: 20px;">添加</a>
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>信息列表</h5>
+        </div>
+        <div class="content-box-content" style="">
+            <table class="table table-bordered table-hover" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th>wiki_key</th>
+                    <th>公告</th>
+                    <th>title</th>
+                    <th>siteId</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(empty($data['item'])):?>
+                <tr class="warning">
+                    <td colspan="4">暂无数据</td>
+                </tr>
+                <?php else:?>
+                <?php foreach($data['item'] as $key=>$v):?>
+                <tr>
+                    <td><?=$v['wiki_key'];?></td>
+                    <td style="width: 800px;"><?=$v['notice']?></td>
+                    <td><?=$v['title']?></td>
+                    <td><?=$v['siteId']?></td>
+                    <td>
+                        <a href="?c=friendstool&a=editInfo&id=<?=$v['id']?>"  class="btn btn-success" style="height: 20px;">编辑</a>
+                        <a href="?c=friendstool&a=delInfo&id=<?=$v['id']?>"  class="btn btn-success" style="height: 20px;">删除</a>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+                <?php endif;?>
+                </tbody>
+            </table>
+            <div class="pagination pagination-right">
+                <ul>
+                    <?=$data['page_str']?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

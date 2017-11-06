@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="Game" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image id="img_checkbg" x="0" y="0" source="checkbg2_jpg"/>
+	<e:Image id="img_checkdialog" source="checkdialog_png" horizontalCenter="0.5" verticalCenter="-52" visible="false"/>
+	<e:Image id="img_lightup" source="lightup_png" x="23" y="167" visible="false"/>
+	<e:Image id="img_lightdown" source="lightdown_png" x="23" y="976" visible="false"/>
+	<e:Image id="img_tipfinsh" x="57.27" y="471.24" source="tiptesting_png"/>
+	<e:Image id="img_head" source="headbg_png" x="20" y="61" width="120" height="120"/>
+</e:Skin>

@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="签到拿烈魂石等超值大礼，奖励拿到你手软！" />
+    <meta name="Keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>新年签到</title>
+    <link rel="stylesheet" href="http://static.joyme.com/mobile/20170119gwlr/css/comm.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function (e) {
+            var w=e.target.activeElement.clientWidth>=1024?1024:e.target.activeElement.clientWidth;
+            document.getElementById('warp').style.zoom = w / 375;
+        });
+    </script>
+    <style>
+        .sian_day_bg{
+            position: absolute;
+            top:0;
+            left:0;
+            width: 375px;
+            height: 354.5px;
+            z-index: 10;
+        }
+        .sian_day_bg span{
+            width: 375px;
+            height: 354.5px;
+            display: block;
+            position: absolute;
+        }
+        .sign_day{
+            z-index: 99;
+        }
+        .day_bg_1{
+            background: url(http://static.joyme.com/mobile/20170119gwlr/images/sign-1.png) no-repeat;
+            background-size: 100% 100%;
+        }
+        .day_bg_2{
+            background: url(http://static.joyme.com/mobile/20170119gwlr/images/sign-2.png) no-repeat;
+            background-size: 100% 100%;
+        }
+        .day_bg_3{
+            background: url(http://static.joyme.com/mobile/20170119gwlr/images/sign-3.png) no-repeat;
+            background-size: 100% 100%;
+        }
+        .day_bg_4{
+            background: url(http://static.joyme.com/mobile/20170119gwlr/images/sign-4.png) no-repeat;
+            background-size: 100% 100%;
+        }
+        .day_bg_5{
+            background: url(http://static.joyme.com/mobile/20170119gwlr/images/sign-5.png) no-repeat;
+            background-size: 100% 100%;
+        }
+        .day_bg_6{
+            background: url(http://static.joyme.com/mobile/20170119gwlr/images/sign-6.png) no-repeat;
+            background-size: 100% 100%;
+        }.day_bg_7{
+             background: url(http://static.joyme.com/mobile/20170119gwlr/images/sign-7.png) no-repeat;
+             background-size: 100% 100%;
+         }
+        .day_bg_8{
+            background: url(http://static.joyme.com/mobile/20170119gwlr/images/sign-8.png) no-repeat;
+            background-size: 100% 100%;
+        }
+        .day_bg_9{
+            background: url(http://static.joyme.com/mobile/20170119gwlr/images/sign-9.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+    </style>
+    <div id="wx_pic" style="margin: 0;display: none">
+        <img src="http://static.joyme.com/mobile/20170119gwlr/images/share-icon.jpg " />
+    </div>
+</head>
+<body>
+<div class="warp" id="warp">
+    <input type="hidden" name="signed_day" id="signed_day" value="<?=$data['signed_day']?>">
+    <div class="header"></div>
+    <div class="sign">今天是第<span><?=$data['sign_day']?></span>天签到哦</div>
+    <!--<div class="sign">今天是第<span>8</span>天签到哦</div>-->
+
+    <div class="pack"></div>
+
+    <!--div class 为border 签到后 添加class border-curr-->
+
+    <div class="sign-main">
+        <div class="sian_day_bg">
+            <?php for($i=1;$i<10;$i++){ ?>
+                <?php if(in_array($i,$data["signdays"])):?>
+                <span id="day_<?=$i?>" class="day_bg_<?=$i?>"></span>
+                <div class="sign_day day_<?=$i?>" data-id="<?=$i?>">
+                    <div class="border border-curr"><img src="http://static.joyme.com/mobile/20170119gwlr/images/sign_day_<?=$i?>.png"></div>
+                    <p>第<?=$i?>天</p>
+                </div>
+                <?php else:?>
+                <span id="day_<?=$i?>"></span>
+                <div class="sign_day day_<?=$i?>" data-id="<?=$i?>">
+                    <div class="border"><img src="http://static.joyme.com/mobile/20170119gwlr/images/sign_day_<?=$i?>.png"></div>
+                    <p>第<?=$i?>天</p>
+                </div>
+                <?php endif;?>
+            <?php } ?>
+        </div>
+    </div>
+    <div class="tips"></div>
+    <div class="sign5">签到满<span>5</span>天</div>
+
+    <div class="draw">
+        <div class="list">
+            <div class="silde">
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/20170119gwlr/images/lottery-1.png">
+                        </dt>
+                        <dd>猫车票*5</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/20170119gwlr/images/lottery-2.png">
+                        </dt>
+                        <dd>世界喇叭*3</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/20170119gwlr/images/lottery-3.png">
+                        </dt>
+                        <dd>收纳之书*10</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="list">
+            <div class="silde">
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/20170119gwlr/images/lottery-2.png">
+                        </dt>
+                        <dd>世界喇叭*3</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/20170119gwlr/images/lottery-3.png">
+                        </dt>
+                        <dd>收纳之书*10</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/20170119gwlr/images/lottery-1.png">
+                        </dt>
+                        <dd>猫车票*5</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="list">
+            <div class="silde">
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/20170119gwlr/images/lottery-3.png">
+                        </dt>
+                        <dd>收纳之书*10</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/20170119gwlr/images/lottery-1.png">
+                        </dt>
+                        <dd>猫车票*5</dd>
+                    </dl>
+                </div>
+                <div class="lottery">
+                    <dl>
+                        <dt>
+                            <img src="http://static.joyme.com/mobile/20170119gwlr/images/lottery-2.png">
+                        </dt>
+                        <dd>世界喇叭*3</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="draw-btn" id="draw-btn"></div>
+
+    <div class="draw-tips">点击<span>[抽奖]</span>可随机获得任意奖励</div>
+
+    <div class="footer">
+
+    </div>，
+
+    <!--签到弹窗-->
+    <div class="mask">
+
+
+        <!--未签满8天 提示-->
+        <div class="pop-bg pop-sign-1">
+            <s></s>
+            <p>您还未达到签到天数<br>请签满8天后再来</p>
+        </div>
+        <!--今日已领取 提示-->
+        <div class="pop-bg pop-sign-2">
+            <s></s>
+            <p>您已经领取过今日的奖励,<br>请明日再来。</p>
+        </div>
+        <!--只能领取今日奖励 提示-->
+        <div class="pop-bg pop-sign-3">
+            <s></s>
+            <p>只能领取今日的奖励哦！</p>
+        </div>
+        <!--获得奖励 提示-->
+        <div class="pop-bg pop-bg2 pop-sign-4">
+            <s></s>
+            <p class="p1">恭喜您获得【<span>猫车票</span>】</p>
+            <p class="p2">asdhaushfauhfalkdhfkjahif</p>
+            <p class="p3">长按并复制CDK领取奖励</p>
+        </div>
+        <!--已经参加过抽奖 提示-->
+        <div class="pop-bg pop-sign-5">
+            <s></s>
+            <p>您已经参加过本次活动，<br>已获得的奖励请点击【我的礼包】查看</p>
+        </div>
+
+        <!--签到未满5天抽奖 提示-->
+        <div class="pop-bg pop-sign-6">
+            <s></s>
+            <p>现在还不是抽奖的时候呢，<br>请签到满5天再来</p>
+        </div>
+        <!--中奖提示 提示-->
+        <div class="pop-bg pop-bg2 pop-sign-7">
+            <s></s>
+            <p class="p1">恭喜您获得【<span>猫车票</span>】</p>
+            <p class="p2">asdhaushfauhfalkdhfkjahif</p>
+            <p class="p3">长按并复制CDK领取奖励</p>
+            <p class="p4">福利专区】-【cdk兑换】领取奖励</p>
+        </div>
+
+
+        <div class="code">
+            <s></s>
+            <img src="http://static.joyme.com/mobile/20170119gwlr/images/code.png">
+        </div>
+        <!--我的礼包-->
+        <div class="pop-pack">
+            <s></s>
+            <img src="http://static.joyme.com/mobile/20170119gwlr/images/pack-top.png">
+            <div class="pack-main">
+
+            </div>
+            <img src="http://static.joyme.com/mobile/20170119gwlr/images/pack-bottom.png">
+        </div>
+
+    </div>
+</div>
+
+</body>
+<script src="http://static.joyme.com/mobile/20170119gwlr/js/jquery.min.js"></script>
+<!--<script src="http://static.joyme.com/mobile/20170119gwlr/js/comm.js"></script>-->
+<script src="http://static.joyme.com/mobile/20170119gwlr/js/lottery.js?v=123"></script>
+<script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+<script>
+    //可签到日期
+    var sign_data = $('.sign span').html();
+    //已签到日期
+    var signed_day_num = $('#signed_day').val();
+	var xjhx_signed_day = parseInt($('#signed_day').val());
+    if(sign_data !=5 && sign_data !=8 ){
+        signed_day_num=99
+    }
+    $('.day_9 p').html('签到满8天');
+    if(sign_data ==8 &&  signed_day_num == 8){
+        sign_data=9;
+    }
+     var Lottery = $("#draw-btn").lottery({
+        silde:$('.silde'),  //滚动box的class
+        lottery:$('.lottery'), //奖品的列表class
+        lotteryNum:3, //列表数量
+        lotteryCallback:Callbacks
+    });
+
+    function Callbacks(){
+    $.ajax({
+        url:'/new/?c=newyear&a=lottery&atype=1',
+        type:'post', //GET
+        data:{
+
+        },
+        dataType:'json',
+        success:function(data){
+            if(data.rs == 1){
+                var num = data.code.code;
+                if(num  == '101'){
+                    num= '333';
+                }
+                if( num == '100'){
+                    num= '222';
+                }
+                if( num == '102'){
+                    num= '111';
+                }
+                Lottery.startAni();
+                setTimeout(function (){
+                    Lottery.stop(num, data.code.cdk ,data.code.name );
+                    signed_day_num=99;
+                },3000)
+            }else{
+
+                maskHide();
+                $('.mask,.pop-sign-5').show();
+                $('.pop-sign-5').find('p').html(data.msg);
+            }
+        },
+        error:function(xhr,textStatus){
+            setTimeout(function (){
+                Lottery.stop('');
+            },3000)
+        }
+    })
+    }
+
+
+
+
+    //关注
+    $('.header').click(function (){
+        maskHide();
+        $('.code').show();
+    });
+    //关闭弹窗
+    $('.mask s').click(function (){
+        $('.mask').hide();
+    });
+    //签到
+    $('.sign-main .sign_day').click(function (){
+        var index= $(this).attr('data-id');
+        console.log(sign_data == index , sign_data , index);
+        if(sign_data == index){
+            $.ajax({
+                url:'/new/?c=newyear&a=sign&atype=1',
+                type:'post', //GET
+                data:{
+                    giftid:index
+                },
+                dataType:'json',
+                success:function(data){
+                    if(data.rs == 1){
+                       maskHide();
+                       $('.mask,.pop-sign-4').show();
+                       $('.pop-sign-4 span').html(data.msg.giftname);
+                       $('.pop-sign-4 .p2').html(data.msg.cdk);
+                       $('.sign-main span').eq(index).addClass('day_bg_'+index);
+                       $('.sign-main #day_'+index).addClass('day_bg_'+index);
+                       $('.day_'+index).find('.border').addClass('border-curr');
+                       if(index == 8){
+                           sign_data=9;
+                       }
+                   }else if(data.rs == 5){
+                        maskHide();
+                        $('.mask,.pop-sign-2').show();
+                    }else if(data.rs == 2){
+                        maskHide();
+                        $('.mask,.pop-sign-1').show();
+                    }else if(data.rs == 3){
+                        maskHide();
+                        $('.mask,.pop-sign-3').show();
+                        $('.pop-sign-3').find('p').html (data.msg);
+                    }
+                },
+                error:function(xhr,textStatus){
+
+                }
+            })
+        }else{
+            maskHide();
+            $('.mask,.pop-sign-3').show();
+            if(xjhx_signed_day<9){
+                if($(this).find('.border').hasClass('border-curr')){
+                    $('.pop-sign-3').find('p').html('您已获得奖励请点击【我的礼包】查看');
+                }else{
+                    if(index==9){
+                        $('.pop-sign-3').find('p').html('您未达到签到天数,请签满8天后再来哦！');
+                    }else {
+                        $('.pop-sign-3').find('p').html('只能领取今日的奖励哦！');
+                    }
+                }
+            }else {
+                $('.pop-sign-3').find('p').html('对不起，活动已结束！');
+            }
+        }
+    });
+
+    //我的礼包
+    $('.pack').click(function (){
+        maskHide();
+        $('.pop-pack').show();
+        $.ajax({
+        url:'/new/?c=newyear&a=gift&atype=1',
+        type:'post', //GET
+        data:{
+        },
+            dataType:'json',
+        success:function(data){
+            if(data.rs == 1){
+                var str = '';
+                for(var i = 0 ; i <　data.msg.length ; i++){
+                    str+='<p>'+data.msg[i].giftname+'</p><p>'+data.msg[i].cdk+'</p>';
+                }
+                $('.pack-main').html(str);
+            }
+        },
+        error:function(xhr,textStatus){
+
+        }
+    })
+    });
+
+    function maskHide(){
+        $('.mask').show();
+        $('.mask>div').hide();
+    }
+
+    $(document).ready(function () {
+        //设置openid
+        wx.config({
+            debug: false,
+            appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+            timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+            nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+            signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareQZone'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '新年有礼！怪猎贺岁！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170119gwlr/images/share-icon.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '新年有礼！怪猎贺岁！',
+                desc: '签到拿烈魂石等超值大礼，奖励拿到你手软！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170119gwlr/images/share-icon.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '新年有礼！怪猎贺岁！',
+                desc: '签到拿烈魂石等超值大礼，奖励拿到你手软！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170119gwlr/images/share-icon.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '新年有礼！怪猎贺岁！',
+                desc: '签到拿烈魂石等超值大礼，奖励拿到你手软！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170119gwlr/images/share-icon.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+        });
+    });
+
+</script>
+</html>

@@ -1,0 +1,22 @@
+.zhibo{}
+.zhibo .top-border{background:url(images/k-top.png) no-repeat;width:395px;height:4px;}
+.zhibo .nav{width:395px;height:39px;}
+.zhibo .nav span{display:block;float:left;}
+.zhibo .nav .nav-left{background:url(images/nav-left.png) no-repeat;width:87px;height:39px;}
+.zhibo .nav .nav-center{background:url(images/nav-center.png) repeat;width:221px;height:39px;text-align:center;line-height:39px;font-weight:bold;}
+.zhibo .nav .nav-right{background:url(images/nav-right.png) no-repeat;width:87px;height:39px;}
+.zhibo .content,.zhibo .content div,.zhibo .left-border,.zhibo .right-border{float:left;}
+.zhibo .left-border{background:url(images/k-left.png) no-repeat;width:4px;height:720px;}
+.zhibo .right-border{background:url(images/k-right.png) no-repeat;width:4px;height:720px;}
+.zhibo .content .center{width:373px;margin:5px 7px;}
+.zhibo .content .center .item{width:173px;height:185px;border:1px solid #caa58c;font-size:14px;text-align:center;margin:9px 5px;}
+.zhibo .content .center .item .room-img{width:173px;height:97px;border-bottom:1px solid #caa58c}
+.zhibo .content .center .item h3{height:22px;font-weight:normal;margin-top:0px;}
+.zhibo .content .center .item .avatar-img{width:45;height:45px;border-radius:45px;float:left;margin-left:13px;}
+.zhibo .content .center .item span{display:block;width:82px;}
+.zhibo .content .center .item .live-status{margin-top:22px;}
+.zhibo .content  .center .shenqing{background:url(images/sqjr-qian.png) no-repeat;width:373px;height:86px;text-align:center;background-position:center center;line-height:86px;}
+.zhibo .bottom-border{background:url(images/nav-center-bottom.png) no-repeat;width:387px;height:4px;}
+
+
+

@@ -1,0 +1,93 @@
+@charset "utf-8";
+/* CSS Document */
+* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); margin: 0; padding: 0; word-break: break-all; word-wrap: break-word; }
+a { text-decoration: none; }
+html { font-size: 62.5%; }
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td, hr, button, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { margin: 0; padding: 0;}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display: block;}
+audio, canvas, video {display: inline-block;*display: inline;*zoom: 1;}
+body, button, input, select, textarea {font: 14px/1.5 arial, "Hiragino Sans GB", \5b8b\4f53;}
+input, select, textarea {font-size: 100%;}
+table { border-collapse: collapse;border-spacing: 0;}
+th { text-align: inherit;}
+fieldset, img { border: 0;}
+iframe { display: block;}
+abbr, acronym { border: 0; font-variant: normal;}
+del { text-decoration: line-through; }
+address, caption, cite, code, dfn, em, th, var { font-style: normal; font-weight: 500;}
+ol, ul { list-style: none; }
+caption, th { text-align: left;}
+h1, h2, h3, h4, h5, h6 { font-size: 100%;font-weight:normal;}
+body{background-color: #1d3e91;}
+.fl{ float:left;}
+.fr{ float:right;}
+.ovf{ overflow:hidden;}
+.clearfix{zoom:1;}
+.clearfix:after{display:block; content:'.'; clear:both; line-height:0; visibility:hidden;}
+
+#wrapper{margin:0 auto; text-align:center;height:100%;position:relative;max-width:640px;background-color: #1d3e91;
+	/* background-image: -webkit-linear-gradient(top, #1e44a5, #1b3471);
+	background-image: -moz-linear-gradient(top, #1e44a5, #1b3471);
+	background-image: -o-linear-gradient(top, #1e44a5, #1b3471);
+	background-image: -ms-linear-gradient(top, #1e44a5, #1b3471);
+	background-image: linear-gradient(to bottom, #1e44a5, #1b3471); */}
+.banner{width:100%;}
+.banner span{font-size:0;margin:0;padding:0;display:block;}
+.banner span img{width:100%;}
+.title{background:#637eb9;height:28px;line-height:28px;border-radius:15px;-webkit-border-radius:15px;-moz-border-radius:15px;-o-border-radius:15px;-ms-border-radius:15px;border:1px solid #0c3192;color:#fff;width:64%;margin:0 auto;}
+.title cite{width:24px;height:24px;font-size:0;margin:2px 0 0 13px;}
+.title cite img{width:100%;}
+.text{padding:15px 10px 0;text-align:left;}
+.text h1{border-bottom:1px solid #fff;color:#fff;height:24px;line-height:24px;font-size:18px;}
+.text h1 span{border-bottom:1px solid #ff7b06;display:inline-block;}
+.text p{padding:5px 10px 0;color:#fff;line-height:28px;}
+.butten .btn{display:block;width:68%;height:45px;line-height:45px;color:#fff;text-align:center;border-radius:10px;-webkit-border-radius:10px;-moz-border-radius:10px;-o-border-radius:10px;-ms-border-radius:10px;margin:12px auto 12px;overflow:hidden;}
+.butten a.immediately{background:#4eb100;}
+.butten a.go{background:#345397;}
+.butten a.exchange{border-radius:0;-webkit-border-radius:0;-moz-border-radius:0;-o-border-radius:0;-ms-border-radius:0;background:#4eb100;}
+.butten a.exchange:active{background:#3f8f00;}
+.butten .input_box{background:#eaeaea;border-radius:0;-webkit-border-radius:0;-moz-border-radius:0;-o-border-radius:0;-ms-border-radius:0;overflow:hidden;}
+.butten .input_box input[type='text']{border:none;outline:none;text-align:center;background:none;}
+.win{color:#fff;margin-top:-37px;}
+.butten .show{background:#eaeaea;color:#919191;border-radius:0;-webkit-border-radius:0;-moz-border-radius:0;-o-border-radius:0;-ms-border-radius:0;}
+.defeated{color:#fff;margin-top:-20px;}
+.defeated h1{font-size:18px;}
+.defeated h2{padding-top:12px;}
+.defeated h3{padding-top:90px;}
+
+.dialog{background:rgba(0,0,0,0.6);position:absolute;left:50%;top:50%;z-index:11;border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;-o-border-radius:5px;-ms-border-radius:5px;text-align:center;transition: all 0.2s;-moz-transition: all 0.2s;-webkit-transition: all 0.2s; -o-transition: all 0.2s;-webkit-transform: scale(0);-moz-transform: scale(0);-ms-transform: scale(0);transform: scale(0);opacity:0;text-align:center;}
+.dialog p{color:#fff;padding:20px;}
+.dialog.close{
+    opacity: 1;
+    -webkit-transform: scale(1) translate(-50%);
+    -moz-transform: scale(1) translate(-50%);
+    -ms-transform: scale(1) translate(-50%);
+    transform: scale(1) translate(-50%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

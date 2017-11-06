@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <title>星际火线军团争霸赛</title>
+    <link rel="stylesheet" href=" http://static.joyme.com/mobile/20170220xjhx/css/comm.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function (e) {
+            var w=e.target.activeElement.clientWidth>=1024?1024:e.target.activeElement.clientWidth;
+            document.getElementById('warp').style.zoom = w / 375;
+        });
+        window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function() {
+            if (window.orientation === 180 || window.orientation === 0) {
+                var w= document.body.clientWidth;
+                document.getElementById('warp').style.zoom = w / 375;
+                document.getElementById('home').style.height='100%';
+                document.getElementById('warp').style.position='initial';
+            }
+            if (window.orientation === 90 || window.orientation === -90 ){
+                var w=320;
+                document.getElementById('warp').style.zoom = w / 375;
+                document.getElementById('warp').style.width='375px';
+                document.getElementById('home').style.width='375px';
+                document.getElementById('home').style.height='568px';
+                document.getElementById('warp').style.position='relative';
+            }
+        }, false);
+    </script>
+
+</head>
+<body>
+
+<div id="warp">
+    <div class="home" id="home">
+        <a href="https://awp.qq.com/weixin/html/xjhx_download.html" class="load"></a>
+
+        <div class="btn">
+            <a href="/new/?c=xjhx&a=signup"><span></span></a>
+            <a href="/new/?c=xjhx&a=mustsee"><span></span></a>
+            <a href="/new/?c=xjhx&a=jtzbList"><span></span></a>
+            <a href="/new/?c=xjhx&a=reward"><span></span></a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+<script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+<script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //设置openid
+        wx.config({
+            debug: false,
+            appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+            timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+            nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+            signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareQZone'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                desc: '我正在参加《星际火线》军团争霸赛活动，快来给我点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                desc: '我正在参加《星际火线》军团争霸赛活动，快来给我点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '《星际火线》军团争霸赛火爆开启！',
+                desc: '我正在参加《星际火线》军团争霸赛活动，快来给我点赞吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: 'http://static.joyme.com/mobile/20170220xjhx/images/share.jpg',
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+        });
+    });
+</script>
+</html>

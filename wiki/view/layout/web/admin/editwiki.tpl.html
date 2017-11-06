@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>编辑wiki</title>
+    <link rel="stylesheet" type="text/css" href="http://joymewiki.joyme.com/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="http://joymewiki.joyme.com/static/css/audit/info.css">
+    <link rel="stylesheet" type="text/css"
+          href="http://joymewiki.joyme.com/static/css/common/jquery.datetimepicker.css">
+    <link rel="stylesheet" type="text/css" href="/wiki/static/css/checkbox.css">
+    <script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="http://static.joyme.com/js/plupload.full.min.js"></script>
+    <script type="text/javascript" src="http://static.joyme.com/js/qiniu.js"></script>
+    <script src="http://static.joyme.com/pc/wiki/tuji/js/layer.js"></script>
+    <script src="http://joymewiki.joyme.com/static/script/common/validate/jquery.validate.js"></script>
+    <script src="http://joymewiki.joyme.com/static/script/common/validate/jquery.form.js"></script>
+    <script src="http://joymewiki.joyme.com/static/script/common/jquery.datetimepicker.full.js"></script>
+    <script type="text/javascript" src="/wiki/static/script/jquery.checktree.js"></script>
+    <style>
+        #addwikiform:not(select) .error {
+            color: red;
+        }
+
+        #addwikiform select.error {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="goods-list-main">
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>编辑wiki</h5>
+        </div>
+        <div class="goods-list-search content-box-content">
+            <form class="form-horizontal" style="margin-top: 10px;" method="post"
+                  action="/wiki/index.php?c=wiki&a=editwiki" id="addwikiform">
+                <div class="my-center">
+                    <div class="control-group">
+                        <input type="hidden" name="wikiname" id="wikiname" value="<?php echo $wikilist['wiki_name'];?>">
+                        <input type="hidden" name="wikikey" id="wikikey" value="<?php echo $wikilist['wiki_key'];?>">
+                        <input type="hidden" name="gameid" id="gameid" value="<?php echo $gameid;?>">
+                        <label class="control-label">wikikey:</label>
+                        <span style="margin-left: 10px;line-height: 30px;"><?php echo $wikilist['wiki_key'];?></span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">游戏名称：</label>
+                        <span style="line-height: 34px;" id="gamename"><?php echo $gamename;?></span>
+                    </div>
+                    <div class="control-group">
+                        <div style="float:left;">
+                            <label class="control-label" for="litpic">缩略图地址:</label>
+                            <input type="text" name="litpic" id="litpic" value="<?php echo $wikiicon;?>">
+                            <i id="litpicfile"  style="background-color:#E8E8E8;width: 80px;height: 34px;display: inline-block; text-align: center; cursor: pointer; line-height: 34px;border-radius: 4px;">上传图片</i>
+                            <span style=" color:red" id="error_litpic"></span>
+                        </div>
+                        <div style="width:320px;height:181px;float:left;">
+                            <img id="litpicview" src="<?php echo $wikiicon;?>" style="width:320px;height:181px;" title="320*181">
+                        </div>
+                        <div style="width:320px;height:181px;float:left;">
+                            宽高比例320*181，不大于100K，支持jpg和png类型
+                        </div>
+                    </div>
+                </div>
+                <div class="content-box">
+                    <div class="content-box-header">
+                        <h5>分类菜单</h5> <span class="addcategory"
+                                            style="display: block;margin-left: 200px;line-height: 40px;font-size: 18px;background-color: #51a351;width: 120px;border-radius: 5px;text-align: center; cursor:pointer;">编辑分类标签</span>
+                    </div>
+                    <div class="content-box-content" style="">
+                        <table class="table table-bordered table-hover" style="width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>顺序权重</th>
+                                <th>WIKI中分类名称</th>
+                                <th>APP中分类名称</th>
+                                <th>分类icon</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if(empty($catlists)):?>
+                            <tr class="warning">
+                                <td colspan="4">暂无数据</td>
+                            </tr>
+                            <?php else:?>
+                            <?php foreach($catlists as $key=>$val):?>
+                            <tr>
+                                <td style="text-align: left;"><?php echo $val['sort'];?></td>
+                                <td style="text-align: left;"><?php echo $val['wcat_name'];?></td>
+                                <td style="text-align: left;"><span class="appcatname" data-id="<?php echo $val['id'];?>" data-cattype="<?php echo $val['cattype'];?>"><?php echo $val['acat_name'];?></span></td>
+                                <td>
+                                    <?php if(!empty($val['cat_icon'])):?>
+                                    <img class="caticon" id="caticonview_<?php echo $val['id'];?>" src="<?php echo $val['cat_icon'];?>" style="width:50px;height:50px;">
+                                    <?php else:?>
+                                    <img class="caticon" id="caticonview_<?php echo $val['id'];?>" src="" style="width:50px;height:50px;">
+                                    <?php endif;?>
+                                    <i id="caticon_<?php echo $val['id'];?>" class="table-in-upload" data-cattype="<?php echo $val['cattype'];?>" style="background-color:#E8E8E8;width: 80px;height: 34px;display: inline-block; cursor: pointer; text-align: center;line-height: 34px;border-radius: 4px;">上传</i>
+                                </td>
+                            </tr>
+                            <?php if(!empty($val['children'])):?>
+                            <?php foreach($val['children'] as $k=>$v):?>
+                            <tr>
+                                <td style="text-align: left;padding-left: 40px;"><?php echo $v['sort'];?></td>
+                                <td style="text-align: left;padding-left: 40px;"><?php echo $v['wcat_name'];?></td>
+                                <td style="text-align: left;padding-left: 40px;"><span class="appcatname" data-id="<?php echo $v['id'];?>" data-cattype="<?php echo $v['cattype'];?>"><?php echo $v['acat_name'];?></span></td>
+                                <td>
+                                    <?php if(!empty($v['cat_icon'])):?>
+                                    <img class="caticon" id="caticonview_<?php echo $v['id'];?>" src="<?php echo $v['cat_icon'];?>" style="width:50px;height:50px;">
+                                    <?php else:?>
+                                    <img class="caticon" id="caticonview_<?php echo $v['id'];?>" src="" style="width:50px;height:50px;">
+                                    <?php endif;?>
+                                    <i id="caticon_<?php echo $v['id'];?>" class="table-in-upload" data-cattype="<?php echo $v['cattype'];?>" style="background-color:#E8E8E8;width: 80px;height: 34px;display: inline-block; cursor: pointer; text-align: center;line-height: 34px;border-radius: 4px;">上传</i>
+                                </td>
+                            </tr>
+                            <?php if(!empty($v['children'])):?>
+                            <?php foreach($v['children'] as $k=>$v3):?>
+                            <tr>
+                                <td style="text-align: left;padding-left: 80px;"><?php echo $v3['sort'];?></td>
+                                <td style="text-align: left;padding-left: 80px;"><?php echo $v3['wcat_name'];?></td>
+                                <td style="text-align: left;padding-left: 80px;"><span class="appcatname" data-id="<?php echo $v3['id'];?>" data-cattype="<?php echo $v3['cattype'];?>"><?php echo $v3['acat_name'];?></span></td>
+                                <td>
+                                    <?php if(!empty($v3['cat_icon'])):?>
+                                    <img class="caticon" id="caticonview_<?php echo $v3['id'];?>" src="<?php echo $v3['cat_icon'];?>" style="width:50px;height:50px;">
+                                    <?php else:?>
+                                    <img class="caticon" id="caticonview_<?php echo $v3['id'];?>" src="" style="width:50px;height:50px;">
+                                    <?php endif;?>
+                                    <i id="caticon_<?php echo $v3['id'];?>" class="table-in-upload" data-cattype="<?php echo $v3['cattype'];?>" style="background-color:#E8E8E8;width: 80px;height: 34px;display: inline-block; cursor: pointer; text-align: center;line-height: 34px;border-radius: 4px;">上传</i>
+                                </td>
+                            </tr>
+                            <?php endforeach;?>
+                            <?php endif;?>
+                            <?php endforeach;?>
+                            <?php endif;?>
+                            <?php endforeach;?>
+                            <?php endif;?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="hidden" name="uptoken" id="uptoken" value="<?php echo $uptoken;?>">
+                        <input type="submit" class="btn btn-success" id="submitBtn" value="提交">&nbsp;&nbsp;
+                        <a href="javascript:;" class="btn btn-success" style="height: 20px;" id="fanhui">返回</a>
+                    </div>
+                </div>
+            </form>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(function () {
+        String.prototype.utf8length = function () {
+            if (this == '' || typeof(this) == undefined) return 0;
+            var slen = this.length;
+            var len = 0;
+            for (var i = 0; i < slen; i++) {
+                if (this.charCodeAt(i) <= 128) {
+                    len += 1;
+                } else {
+                    len += 3;
+                }
+            }
+            return len;
+        };
+
+        function getImgSize(img) {
+            var nWidth, nHeight;
+            if (img.naturalWidth) {
+                nWidth = img.naturalWidth;
+                nHeight = img.naturalHeight;
+            } else { // IE6/7/8
+                var image = new Image();
+                if (img.src) {
+                    image.src = img.src;
+                } else {
+                    image.src = document.getElementById('litpic').src;
+                }
+                console.log('image.src:', image.src);
+                image.onload = function () {
+                    nWidth = this.width;
+                    nHeight = this.height;
+                }
+            }
+            return [nWidth, nHeight]
+        }
+
+        $('#fanhui').click(function () {
+            layer.confirm('确认返回么?', function (index) {
+                var wikikey = $("#wikikey").val();
+                if(wikikey){
+                    $.post('/wiki/index.php', {
+                        c: 'wiki',
+                        a: 'delcattemp',
+                        wikikey: wikikey
+                    }, function (data) {
+                        data = JSON.parse(data);
+                        console.log(data);
+                        if(data.rs==1){
+                            location.href = 'http://' + window.location.host + '/wiki/index.php?c=wiki&a=wlist';
+                            layer.close(index);
+                        }else {
+                            alert(data.msg);
+                            return false;
+                        }
+                    });
+                }else {
+                    location.href = 'http://' + window.location.host + '/wiki/index.php?c=wiki&a=wlist';
+                    layer.close(index);
+                }
+            });
+        });
+
+        $("#addwikiform").validate({
+            rules: {
+                litpic: {
+                    required: true,
+                    url: true,
+                    checkImgSize: true
+                }
+            },
+            messages: {
+                litpic: {
+                    required: "图片不能为空",
+                    url: "链接错误",
+                    checkImgSize: "请按要求尺寸传图"
+                }
+            },
+            submitHandler: function (form) {
+                var flag = true;
+//                var wikikey = $("#wikikey").val();
+                if($(".warning").length>0){
+                    flag = false;
+                    layer.msg("请按要求添加wiki分类", {time: 3000});
+                    return false;
+                }
+                if (flag) {
+                    form.submit();
+                }
+            }
+        });
+
+        jQuery.validator.addMethod("checkImgSize", function (value, element) {
+            var img = document.getElementById('litpicview');
+            var imgsize = getImgSize(img);
+            var imgW = imgsize[0];
+            var imgH = imgsize[1];
+            console.log('w:', imgW, 'h:', imgH);
+            return ((imgW < 320 || imgH < 181)) ? false : true;
+        }, "请按要求尺寸传图");
+
+
+        var historyData = {},lastStep=false;
+        $(".addcategory").click(function () {
+            var wikikey = $("#wikikey").val();
+            if (wikikey == '') {
+                layer.msg('wikikey不能为空', {time: 3000});
+                return;
+            }
+            var dataJson = {};
+            $.post('/wiki/index.php', {c: 'wiki', a: 'getcatbywikikey', wikikey: wikikey,type:'editcat'}, function (data) {
+                data = JSON.parse(data);
+
+                console.log(historyData);
+                if (!$.isEmptyObject(historyData)) {
+                    // 点击上一页时执行代码
+                    var msg = data.msg;
+                    for (var key in historyData) {
+                        msg[key].selected = "selected";
+                        msg[key].lastStep = true;
+                        var msgchildren1 = msg[key].children;
+                        var children1 = historyData[key].children;
+                        loopData(msgchildren1, children1)
+                        function loopData(msgchildren1, children1) {
+                            if (children1 && children1.length > 0) {
+                                for (var i = 0; i < children1.length; i++) {
+                                    var name = children1[i].name;
+                                    for (var j = 0; j < msgchildren1.length; j++) {
+                                        if (msgchildren1[j].name == name) {
+                                            msgchildren1[j].selected = "selected";
+                                            msgchildren1[j].lastStep = true;
+                                            if (children1[i].children && children1[i].children.length > 0) {
+                                                loopData(msgchildren1[j].children, children1[i].children);
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    historyData = {};
+                    // console.log("data.msg:",data.msg)
+                }
+                console.log(data);
+                var html = '<div class="clearfix"><div id="check_all" class="check_all"></div></div>';
+                for (x in data.msg) {
+                    // console.log("x",x,data.msg[x]);
+                    var ht = loopChildren(data.msg[x]);
+                    // console.log(ht);
+                    html += ht;
+                }
+                lastStep=false
+                layer.alert('', {
+                    title: "选择分类标签",
+                    content: html,
+
+                    area: ["700px", "500px"],
+                    success: function(layero, index){
+                        $('ul.tree').checkTree();
+                        //rendertree selected;
+                        //if (!$.isEmptyObject(historyData)) {
+                        $('ul.tree').each(function () {
+                            var lis = $(this).children('li');
+                            lis.each(function () {
+                                renderChecked($(this));
+                            })
+
+                        })
+                        var allInputL = $(layero).find('.tree input[type="checkbox"]').length;
+                        var checkedL = $(layero).find('.tree .checkedClass').length;
+                        //}
+                        console.log(allInputL,checkedL)
+                        var checkallBtn = $(layero).find('#check_all');
+                        if(allInputL == checkedL){
+                            checkallBtn.addClass('check_alled');
+                        }
+                       checkallBtn.unbind().click(function(){
+                            if(!$(this).hasClass('check_alled')){
+                                // 未全选
+                                $(this).addClass('check_alled');
+                               $(layero).find('ul.tree').find('.checkbox').addClass('checked'); 
+                            }else{
+                                // 已全选
+                               $(layero).find('ul.tree').find('.checkbox').removeClass('checked'); 
+                               $(layero).find('ul.tree').find('.checkbox').removeClass('half_checked'); 
+                                $(this).removeClass('check_alled');
+
+
+                            }
+                       })
+                    }
+                }, function () {
+                    $('.tree').each(function (ind, el) {
+                        loopSerialize($(el).children('li'), dataJson);
+                    });
+//                    console.log("第一页确定", dataJson);
+                    historyData = dataJson;
+                    var html2 = '';
+                    html2 = loopChildren2(dataJson);
+                    console.log(html2);
+                    layer.open({
+                        title: "选择分类标签",
+                        content: html2,
+                        area: ["700px", "500px"],
+                        btn: ['上一步', "提交"],
+                        cancel:function(index,layero){
+                            historyData={};
+                        },
+                        yes: function (index, layero) {
+                            $(".addcategory").get(0).click();lastStep=true;
+                        },
+                        btn2: function (index, layero) {
+
+                            // 验证表单
+                            var flag =true;
+                            $('.label-box input').each(function(){
+                                if($(this).val()==''){
+
+                                    alert("请填写权重");
+                                    return flag = false;
+                                }
+                            })
+                            if(!flag){
+                                return false;
+                            }
+                            validateSameSort($('.formbox:first'))
+                            if(!flag){
+                                return false;
+                            }
+                            function validateSameSort(dom){
+                                var obj = {};
+                                dom.children('li').each(function(){
+                                    var inp = $(this).find('input:first');
+                                    var son = $(this).find('.formbox:first');
+                                    if(!obj[inp.val()]){
+                                        obj[inp.val()]= true;
+                                        if(son.length > 0){
+                                            if(!(validateSameSort(son))){
+                                                return
+                                            }
+                                        }
+                                    }else{
+                                        flag = false;
+                                        return alert('排序权重重复，请核对后提交');
+                                    }
+
+                                })
+                                return flag;
+                            };
+                            var formbox = $(layero).find('.formbox:first').children('li');
+                            var submitObj = {};
+                            serializeForm2(formbox, submitObj);
+                            var wikiicon = $("#litpic").val();
+                            var wikiname = $("#wikiname").val();
+                            var gameid = $("#gameid").val();
+                            // ajax 提交数据
+                            $.post('/wiki/index.php', {
+                                c: 'wiki',
+                                a: 'addcattemp',
+                                wikikey: wikikey,
+                                wikiicon: wikiicon,
+                                wikiname: wikiname,
+                                gameid: gameid,
+                                data: submitObj
+                            }, function (data) {
+                                data = JSON.parse(data);
+                                if(data.rs==1){
+                                    // console.log("data:", data);
+                                    window.location.href = '/wiki/index.php?c=wiki&a=editwiki&id=<?php echo $id;?>&cattype=temp';
+                                }else {
+                                    layer.msg(data.msg, {time: 3000});
+                                }
+                            });
+                            historyData = {};
+                            // console.log("submitObj:", submitObj);
+                        }
+                    });
+                });
+                
+            });
+            // return false;
+        });
+        function renderChecked(obj) {
+            // debugger;
+            var input = obj.find('.checkedClass');
+            var son = obj.children('ul');
+            var sonson = son.children('ul').find('ul');
+            input.each(function(){
+                $(this).siblings('.checkbox').addClass('checked');
+            })
+            if(son.length > 0){
+                son.siblings('.arrow').addClass('expanded').removeClass('collapsed');
+                son.show();
+            }
+            if(sonson.length > 0) {
+                son.show();
+                sonson.show().siblings('.arrow').addClass('expanded').removeClass('collapsed');
+            }
+
+            // console.log(input.attr("name"));
+            
+            
+        }
+
+        function serializeForm2(formbox, submitObj, notfirst) {
+            // debugger;
+            var count = 0;
+            formbox.each(function (i, e) {
+                var labelBox = $(e).children('.label-box');
+                var label = labelBox.find('label').text();
+                var input = labelBox.find('input').val();
+                var aObj = submitObj;
+                if (!notfirst) {
+                    aObj = submitObj[label] = {};
+                    aObj.name = label;
+                    aObj.sort = input;
+                } else {
+                    aObj.name = label;
+                    aObj.sort = input;
+                }
+                if ($(this).hasClass('group')) {
+                    aObj.children = [];
+
+                    var lis = $(this).children('.formbox').children("li");
+                    lis.each(function () {
+                        var newObj = aObj.children[count] = {};
+                        serializeForm2($(this), newObj, true);
+                        count++;
+                    })
+                }
+            })
+        }
+
+        function loopSerialize(el, jsons, notfirst) {
+            var json = jsons ? jsons : {};
+            if (el.children('.checkbox').hasClass('checked') || el.children('.checkbox').hasClass('half_checked')) {
+                var name = el.children('input').attr('name');
+                var sort = el.children('input').data('sort');
+                var pagenums = el.children('input').data('pagenums');
+                if (!notfirst) {
+                    json[name] = {
+                        "name": name,
+                        "selected": "selected",
+                        "sort":sort,
+                        "pagenums":pagenums
+                    };
+                } else {
+                    json.name = name;
+                    json.sort = sort;
+                    json.selected = "selected";
+                    json.pagenums = pagenums;
+                }
+                if (el.children("ul").length > 0) {
+                    if (!notfirst) {
+                        //第一次
+                        json[name] = {
+                            "name": name,
+                            "selected": "selected",
+                            "sort":sort,
+                            "pagenums":pagenums
+                        };
+                        json[name].children = [];
+                        // 处理二级无三级
+                        var liswu = el.children("ul").children('li');
+                        var len2 = liswu.children('.checked').length;
+                        var count2 = 0;
+                        if (len2 > 0) {
+                            liswu.each(function (ind, ele) {
+                                if ($(ele).children('.checked').length > 0)
+                                    json[name].children[count2] = loopSerialize($(ele), null, true);
+                                count2++
+                            })
+                        }
+                        // 处理二级有三级
+                        var childrenUls = el.children("ul").children('ul');
+                        var len3 = childrenUls.children('li').children('.checked').length + childrenUls.children('li').children('.half_checked').length;
+                        var count3 = 0;
+                        if (len3 > 0) {
+                            childrenUls.each(function (inde, elem) {
+                                $(elem).children('li').each(function (ind, ele) {
+                                    if ($(ele).children('.checked').length > 0 || $(ele).children('.half_checked').length > 0) {
+
+                                        json[name].children[count3 + len2] = loopSerialize($(ele), null, true);
+                                        count3++;
+                                    }
+                                })
+                            });
+                        }
+                    } else {
+                        // 不是第一次
+                        json.name = name;
+                        json.sort = sort;
+                        json.selected = "selected";
+                        json.pagenums = pagenums;
+                        json.children = [];
+                        // 处理二级无三级
+                        var liswu = el.children("ul").children('li');
+                        var len2 = liswu.children('.checked').length;
+                        var count2 = 0;
+                        if (len2 > 0) {
+                            liswu.each(function (ind, ele) {
+                                if ($(ele).children('.checked').length > 0) {
+
+                                    json.children[count2] = loopSerialize($(ele), null, true);
+                                    count2++
+                                }
+                            })
+                        }
+                        // 处理二级有三级
+                        var childrenUls = el.children("ul").children('ul');
+                        var len3 = childrenUls.children('li').children('.checked').length + childrenUls.children('li').children('.half_checked').length;
+                        var count3 = 0;
+                        if (len3 > 0) {
+                            childrenUls.each(function (inde, elem) {
+                                $(elem).children('li').each(function (ind, ele) {
+                                    if ($(ele).children('.checked').length > 0 || $(ele).children('.half_checked').length > 0) {
+                                        json.children[count3 + len2] = loopSerialize($(ele), null, true);
+                                        count3++
+                                    }
+                                })
+
+                            });
+                        }
+                    }
+                }
+                return json
+            }
+        }
+
+        function loopChildren(obj, first) {
+            var sort = obj.sort?obj.sort:"";
+            var pagenums = obj.pagenums?obj.pagenums:0;
+            var html = "";
+            var checkClass="";
+            if(lastStep){
+                // console.log(obj.selected =="selected",obj.lastStep)
+                checkClass = (obj.selected =="selected" && obj.lastStep) ? "checkedClass" : "";
+
+            }else{
+              checkClass = obj.selected =="selected" ? "checkedClass" : "";
+            }
+            console.log("checkClass:"+checkClass)
+            if (obj.children) {
+                // 有后代
+                if (!first) {
+                    html += "<ul class='tree'>"
+                } else {
+                    html += "<ul>"
+                }
+                var children = obj.children;
+                html += '<li>' +
+                        '<input type="checkbox" data-pagenums="'+ pagenums +'" data-sort="'+ sort +'" class="' + checkClass + '" name="' + obj.name + '">' +
+                        '<label style="display: inline-block;">"' + obj.name + '"</label><span>('+pagenums+')</span>' +
+                        '<ul>';
+                for (var i = 0; i < children.length; i++) {
+                    html += arguments.callee.apply(null, [children[i], true]);
+                }
+                html += "</ul></li></ul>"
+                return html;
+            } else {
+                if (!first) {
+                    html += "<ul class='tree'>"
+                }
+                html += '<li>' +
+                        '<input type="checkbox"  data-pagenums="'+ pagenums +'"  data-sort="'+ sort +'" class="' + checkClass + '" name="' + obj.name + '">' +
+                        '<label style="display: inline-block;">"' + obj.name + '"</label><span>('+pagenums+')</span>' +
+                        '</li>';
+                if (!first) {
+
+                    html += "</ul>"
+                }
+                return html;
+            }
+        }
+
+        function loopChildren2(data) {
+            var html = '<ul class="formbox"><li class="formtitle">*排序权重（正整数，数字大的排在后面）</li>';
+            for (key in data) {
+                if (data[key].children) {
+                    html += renderGroup(data[key]);
+                } else {
+
+                    html += renderSingle(data[key])
+                }
+            }
+            return html += "</ul>";
+
+        };
+        function renderSingle(data) {
+            var html = '<li class="single">' +
+                    '<div class="label-box">' +
+                    '<label   style="display: inline-block;"  for="">' + data.name + '</label><span>('+data.pagenums+')</span>' +
+                    '<input name="sort" value="'+ data.sort +'" type="text" placeholder="请输入正整数" onkeyup="value=value.replace(/[^\\d]/g,\'\') " onbeforepaste="clipboardData.setData(\'text\',clipboardData.getData(\'text\').replace(/[^\\d]/g,\'\'))">' +
+                    '</div>' +
+                    '</li>';
+            return html;
+        };
+        function renderGroup(data) {
+
+            var html = '<li class="group">' +
+                    '<div class="label-box">' +
+                    '<label style="display: inline-block;" for="">' + data.name + '</label><span>('+data.pagenums+')</span>' +
+                    '<input name="sort" value="'+ data.sort +'" type="text" placeholder="请输入正整数" onkeyup="value=value.replace(/[^\\d]/g,\'\') " onbeforepaste="clipboardData.setData(\'text\',clipboardData.getData(\'text\').replace(/[^\\d]/g,\'\'))">' +
+                    '</div>' +
+                    '<ul class="formbox">';
+            for (var i = 0, len = data.children.length; i < len; i++) {
+                // 如果children内包含chidlren
+                var data2 = data.children[i]
+                if (data2 && data2.children) {
+                    html += renderGroup(data2);
+                } else if (data2) {
+                    // children 内不包含children
+                    html += renderSingle(data2);
+                }
+            }
+            return html += '</ul>'
+            '</li>';
+        }
+
+        $('.appcatname').click(function () {
+            var catid  = $(this).data("id");
+            var cattype  = $(this).data("cattype");
+            var catname = $(this).html();
+            var input = $('<input type="text" value="'+catname+'" maxlength="20"/>');
+            $(this).html(input);
+            input.click(function () {
+                return false;
+            });
+            //获取焦点
+            input.trigger("focus");
+            input.blur(function () {
+                var acat_name = $(this).val();
+                if(catid !='' && acat_name !=''){
+                    if(cattype=='temp'){
+                        var data = {
+                            c: 'wiki',
+                            a: 'editappcattempname',
+                            id: catid,
+                            acat_name: acat_name
+                        };
+                    }else {
+                        var data = {
+                            c: 'wiki',
+                            a: 'editappcatname',
+                            id: catid,
+                            acat_name: acat_name
+                        };
+                    }
+                    $.post('/wiki/index.php', data , function (data) {
+                        window.location.reload();
+                    });
+                }else {
+                    window.location.reload();
+                }
+            });
+        });
+    });
+
+    // 上传图片
+    uploadicon('litpicfile','wikiicon');
+
+    // 上传
+    $('.table-in-upload').each(function(){
+        uploadicon($(this).attr('id'),'caticon');
+    })
+
+    function uploadicon(id,upicontype) {
+        var Qiniu = new QiniuJsSDK();
+        var cattype=$("#" + id).data("cattype");
+        var host = window.location.host;
+        var env = host.split('.').pop();
+        if (env == 'beta' || env == 'com') {
+            var qiniudomain = 'http://joymepic.joyme.com/';
+        } else {
+            var qiniudomain = 'http://joymetest.qiniudn.com/';
+        }
+        
+        var uploader = Qiniu.uploader({
+            runtimes: 'html5,flash,html4',
+            browse_button: id,//pltp
+            uptoken: $('#uptoken').val(),
+            domain: qiniudomain,
+            //container:'szlistBtn',
+//            max_file_size: '4mb',
+            max_file_size: '100kb',
+            flash_swf_url: '',
+            max_retries: 3,
+            dragdrop: false,
+//            chunk_size: '4mb',
+            chunk_size: '100kb',
+            auto_start: true,
+            multi_selection: false,
+            filters: {
+                mime_types: [{title: "Image files", extensions: "jpg,jpeg,png"}]
+            },
+            init: {
+                'FilesAdded': function (up, files) {
+                    imgChangeing = true;
+                    //plupload.each(files, function(file){});
+                },
+                'BeforeUpload': function (up, file) {
+
+                },
+                'UploadProgress': function (up, file) {
+                },
+                'FileUploaded': function (up, file, info) {
+                    var domain = up.getOption('domain');
+                    var res = JSON.parse(info);
+                    var sourceLink = domain + res.key + '';
+                    if(upicontype=='wikiicon'){
+                        // 上侧
+                        $('#litpicview').attr('src', sourceLink);
+                        $('#litpic').val(sourceLink);
+                        $('#litpic').next('span').hide();
+                        $('#litpic').removeClass('error');
+                        imgChangeing = false;
+                    }else {
+                        // 下侧
+                        var catid = id.split('_').pop();
+                        var caticon = sourceLink;
+                        if(cattype=='temp'){
+                            var data = {
+                                c: 'wiki',
+                                a: 'editcattempicon',
+                                id: catid,
+                                caticon: caticon
+                            };
+                        }else {
+                            var data = {
+                                c: 'wiki',
+                                a: 'editcaticon',
+                                id: catid,
+                                caticon: caticon
+                            };
+                        }
+                        $.post('/wiki/index.php', data, function (data) {
+                            $('#caticonview_'+catid).attr('src', sourceLink);
+                        });
+                    }
+                },
+                'Error': function (up, err, errTip) {
+                    console.log(err);
+                    if (err.code == 401) {
+                        layer.msg('操作超时，请您刷新页面', {time: 3000});
+                    }
+                    else if(err.code=='-601'){
+                        layer.msg("请上传jpg,png图片", {time: 3000});
+                    }
+                    else {
+                        layer.msg(errTip, {time: 3000});
+                    }
+                },
+                'UploadComplete': function () {
+                },
+                'Key': function (up, file) {
+                    var myDate = new Date();
+                    var ext = file.type.substr(file.type.indexOf('/') + 1);
+                    var key = 'jwikiadmin/' + myDate.getFullYear() + '' + myDate.getMonth() + '/' + myDate.getDate() + '' + myDate.getTime() + '' + Math.round(Math.random() * 1000) + '.' + ext;
+                    return key;
+                }
+            }
+        });
+    }
+</script>

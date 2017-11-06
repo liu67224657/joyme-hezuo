@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/new/static/css/cq/cqresign.css"/>
+</head>
+<body>
+<h1>皇室战争锦标赛</h1>
+<h2>--报名页面--</h2>
+<div class="section-resign">
+		<div class="sq">
+			<span class="glyphicon glyphicon-star">游戏帐号</span>
+				<select name="pvp_division" id="pvp_division" style="width: 195px;">
+					<option value="1">腾讯</option>
+					<option value="2">其他</option>
+				</select>
+		</div>
+		<div class="team">
+			<span class="glyphicon glyphicon-star">游戏 ID</span>
+			<input type="text"  name="team" id="pvp_usruid" required="required"/>
+			<span id="error_pvp_usruid" style="color: red; display: none;"></span>
+		</div>
+		<div class="uid">
+			<span class="glyphicon glyphicon-star">玩家赛区</span>
+			<input type="text" name="usruid" required="required" id="pvp_team"/>
+			<span id="error_pvp_team" style="color: red; display: none;"></span>
+		</div>
+		<div class="tip" style="font-size: 12px;">
+			<p></p>
+			<p>&nbsp;&nbsp;&nbsp;填写玩家所在QQ群名称</p>
+		</div>
+		<div class="qq">
+			<span class="glyphicon glyphicon-star">联系 QQ</span>
+			<input type="text" name="qq" required="required" id="pvp_qq"/>
+			<span id="error_pvp_qq" style="color: red; display: none;"></span>
+		</div>
+		<div class="submit">
+			<input id="submit_button" type="button" value="提交"/>
+			<input id="return_button" type="button" value="取消"/>
+		</div>
+		<div class="tip">
+			<p>带<span class="glyphicon glyphicon-star"></span>为必填项</p>
+		</div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+<script>
+	var json = {};
+	//点击提交
+	$('#submit_button').click(function(){
+
+		var error_count = 0;
+		//赛区
+		var pvp_division = $('#pvp_division').val();
+		//tem
+		var pvp_team = $('#pvp_team').val();
+		//玩家UID
+		var pvp_usruid = $('#pvp_usruid').val();
+		//玩家QQ
+		var pvp_qq = $('#pvp_qq').val();
+
+		if(pvp_usruid && /^[A-Za-z0-9]{1,40}$/.test(pvp_usruid)){
+			getpvp_usru(pvp_usruid);
+		}
+		if(pvp_qq && /^[0-9]{1,13}$/.test(pvp_qq)){
+			getpvp_qq( pvp_qq );
+		}
+		//验证
+		if(!pvp_division){
+			error_tip('pvp_division','游戏帐号不能为为空');
+			error_count++;
+		}
+		if(!pvp_team){
+			error_tip('pvp_team','玩家赛区不能为为空');
+			error_count++;
+		}else{
+			error_hide('pvp_team');
+		}
+		if(!pvp_usruid){
+			error_tip('pvp_usruid','游戏ID不能为为空');
+			error_count++;
+		}else if(json['pvp_usruid']){
+			error_tip('pvp_usruid','游戏ID已经存在');
+			error_count++;
+		}else{
+			error_hide('pvp_usruid');
+		}
+		if(!pvp_qq){
+			error_tip('pvp_qq','玩家QQ不能为为空');
+			error_count++;
+		}else if(!/^[0-9]{1,13}$/.test(pvp_qq)){
+			error_tip('pvp_qq','请输入正确的QQ号');
+			error_count++;
+		}else if(json['pvp_qq']){
+			error_tip('pvp_qq','QQ号已存在');
+			error_count++;
+		}else{
+			error_hide('pvp_qq');
+		}
+		if(error_count==0){
+			pagereload();
+			jQuery.ajax({
+				"url": "?c=hszz&a=addData",
+				"type": "post",
+				"async": false,
+				"data": {'pvp_division':pvp_division,'pvp_team':pvp_team,'pvp_usruid':pvp_usruid,'pvp_qq':pvp_qq},
+				"success": function(msg) {
+					var data = eval('(' + msg + ')');
+					if(data['rs']==0){
+						alert('提交成功');
+						var obj_body = window.parent.document.getElementsByClassName("eventDivOn")[0];
+						var class_name = obj_body.getAttribute("class");
+						class_name = class_name.replace('eventDivOn', '');
+						obj_body.setAttribute("class", class_name);
+						var div_eventBG = window.parent.document.getElementsByClassName("eventBG");
+						var _parentElement = div_eventBG[0].parentNode;
+						if(_parentElement){
+							_parentElement.removeChild(div_eventBG[0]);
+						}
+					}else{
+						parent().$('#aaa').hide();
+						alert('提交失败');
+					}
+				}
+			})
+		}
+	});
+
+	//错误提示
+	function error_tip( $id,$tip ){
+
+		$('#error_'+$id).show();
+		$('#error_'+$id).html($tip);
+	}
+
+	//隐藏错误提示
+	function error_hide( $id ){
+
+		$('#error_'+$id).hide();
+	}
+
+	$('#return_button').click(function(){
+
+		pagereload();
+		var obj_body = window.parent.document.getElementsByClassName("eventDivOn")[0];
+		var class_name = obj_body.getAttribute("class");
+		class_name = class_name.replace('eventDivOn', '');
+		obj_body.setAttribute("class", class_name);
+		var div_eventBG = window.parent.document.getElementsByClassName("eventBG");
+		var _parentElement = div_eventBG[0].parentNode;
+		if(_parentElement){
+			_parentElement.removeChild(div_eventBG[0]);
+		}
+	})
+
+
+	function pagereload(){
+
+		var hosts = window.location.host.split('.');
+		var domain = hosts[hosts.length-1];
+		document.domain="joyme."+domain;
+	}
+
+	function getpvp_usru( pvp_usruid ){
+
+		$.ajax({
+			"url": "?c=hszz&a=exists",
+			"type": "post",
+			"async": false,
+			"data": {'pvp_usruid':pvp_usruid},
+			"success": function(msg) {
+				var data = eval('(' + msg + ')');
+				if(data['rs']==0){
+					json['pvp_usruid'] = true;
+				}else{
+					json['pvp_usruid'] = false;
+				}
+			}
+		})
+	}
+
+	function getpvp_qq( pvp_qq ){
+
+		$.ajax({
+			"url": "?c=hszz&a=exists",
+			"type": "post",
+			"async": false,
+			"data": {'pvp_qq':pvp_qq},
+			"success": function(msg) {
+				var data = eval('(' + msg + ')');
+				if(data['rs']==0){
+					json['pvp_qq'] = true;
+				}else{
+					json['pvp_qq'] = false;
+				}
+			}
+		})
+	}
+</script>

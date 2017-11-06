@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>萌新女玩家指南</title>
+    <!-- <link rel="stylesheet" href="src/css/reset.css"> -->
+    <link rel="stylesheet" href="http://static.joyme.com/mobile/women-day/dist/styles.css">
+</head>
+<body>
+<div id="mark" style="position:fixed; font-size:30px; line-height: 80px; padding-top: 30px;  text-align: center; display: none; width:100%;height:100%;background:#fff;z-index:1000">请竖屏使用手机</div>
+<div id="app"></div>
+<script src="http://static.joyme.com/mobile/women-day/dist/build.js"></script>
+<script type="text/javascript" src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+<script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //设置openid
+        wx.config({
+            debug: false,
+            appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+            timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+            nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+            signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareQZone'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '萌新女玩家如何不坑队友？王者荣耀女司机上路指南，开黑必备',
+//                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "http://hezuo.joyme.com/new/?c=girlday&a=index",
+                imgUrl: "http://static.joyme.com/mobile/women-day/dist/share-icon_26.jpg",
+                success: function (res) {
+                    $.ajax({
+                        url: '/new/?c=girlday&a=sharednum',
+                        type: 'post',
+                        data: {},
+                        dataType: 'json',
+                        success: function (data) {
+                            if (res.rs == 1) {
+                                alert("分享成功");
+                            }
+                        },
+                        error: function (xhr, textStatus) {
+
+                        }
+                    });
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: '萌新女玩家如何不坑队友？王者荣耀女司机上路指南，开黑必备',
+//                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "http://hezuo.joyme.com/new/?c=girlday&a=index",
+                imgUrl: "http://static.joyme.com/mobile/women-day/dist/share-icon_26.jpg",
+                success: function (res) {
+                    $.ajax({
+                        url: '/new/?c=girlday&a=sharednum',
+                        type: 'post',
+                        data: {},
+                        dataType: 'json',
+                        success: function (data) {
+                            if (res.rs == 1) {
+                                alert("分享成功");
+                            }
+                        },
+                        error: function (xhr, textStatus) {
+
+                        }
+                    });
+                }
+            });
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '萌新女玩家如何不坑队友？王者荣耀女司机上路指南，开黑必备',
+//                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "http://hezuo.joyme.com/new/?c=girlday&a=index",
+                imgUrl: "http://static.joyme.com/mobile/women-day/dist/share-icon_26.jpg",
+                success: function (res) {
+                    $.ajax({
+                        url: '/new/?c=girlday&a=sharednum',
+                        type: 'post',
+                        data: {},
+                        dataType: 'json',
+                        success: function (data) {
+                            if (res.rs == 1) {
+                                alert("分享成功");
+                            }
+                        },
+                        error: function (xhr, textStatus) {
+
+                        }
+                    });
+                }
+            });
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '萌新女玩家如何不坑队友？王者荣耀女司机上路指南，开黑必备',
+//                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "http://hezuo.joyme.com/new/?c=girlday&a=index",
+                imgUrl: "http://static.joyme.com/mobile/women-day/dist/share-icon_26.jpg",
+                success: function (res) {
+                    $.ajax({
+                        url: '/new/?c=girlday&a=sharednum',
+                        type: 'post',
+                        data: {},
+                        dataType: 'json',
+                        success: function (data) {
+                            if (res.rs == 1) {
+                                alert("分享成功");
+                            }
+                        },
+                        error: function (xhr, textStatus) {
+
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

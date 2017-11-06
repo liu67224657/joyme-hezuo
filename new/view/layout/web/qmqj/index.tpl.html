@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="wap-font-scale" content="no">
+    <link rel="stylesheet" href="<?=$data['static_path']?>css/common.css">
+    <link rel="stylesheet" href="<?=$data['static_path']?>css/index.css">
+    <title>全民奇迹2周年“奇迹之路”</title>
+    <style>
+        .wx-tip {display:none;position:fixed;top:0;left:0;width:100%; height:100%;font-size:0.42rem;text-align:center;color:#fff;filter:progid:DXImageTransform.Microsoft.gradient(enabled="true", startColorstr="#99000000", endColorstr="#99000000");background-color:rgba(0,0,0,0.6);overflow:hidden;z-index:999;}
+        .wx-tip div {margin-top:5rem;}
+    </style>
+</head>
+<body>
+<div class="hp_tips">请切换到竖屏观看~</div>
+<div id="ind-wrap" >
+    <div class="wx-tip"><div>请在微信端打开</div></div>
+    <div class="top-link">
+        <a class="fn-right" href="http://qmqj2.xy.com/new/xG4BfH" target="_blank">下载游戏</a>
+        <a class="fn-right" href="http://mu.xy.com/welcome_v3/wapqq" target="_blank">进入官网</a>
+    </div>
+    <div class="ind-link-box">
+        <a href="/new/?c=qmqj&a=mustSee&type=0&is_share=<?=$data['is_share']?>#ssmy">勇士风采</a>
+        <a href="/new/?c=qmqj&a=mustSee&type=1&is_share=<?=$data['is_share']?>#hqct">奇迹历程</a>
+        <a href="/new/?c=qmqj&a=mustSee&type=2&is_share=<?=$data['is_share']?>#zwwx">神翼PK</a>
+        <a href="/new/?c=qmqj&a=mustSee&type=3&is_share=<?=$data['is_share']?>#eayj">装备大赏</a>
+    </div>
+    <div class="ind-nav">
+        <a class="fn-left on" href="/new/?c=qmqj&a=signUp&is_share=<?=$data['is_share']?>" target="_blank">我要报名</a>
+        <a class="fn-left" href="/new/?c=qmqj&a=mustSee&is_share=<?=$data['is_share']?>" target="_blank">活动必看</a>
+        <a class="fn-left" href="/new/?c=qmqj&a=layerList&is_share=<?=$data['is_share']?>" target="_blank">丰厚奖励</a>
+        <a class="fn-left" href="/new/?c=qmqj&a=reward&is_share=<?=$data['is_share']?>" target="_blank">选手风采</a>
+    </div>
+</div>
+<script type="text/javascript" src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+<script src="<?=$data['shareJsPath']?>" language="javascript"></script>
+<script type="text/javascript">
+    $(function(){
+        showweixin();
+    });
+    function isWeiXin(){
+        var ua = window.navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+            return true;
+        }else{
+            return false;
+        }
+    };
+    function showweixin(){
+        if(!isWeiXin()){
+            $('.wx-tip').show();
+        }
+    };
+    $(document).ready(function () {
+        //设置openid
+        wx.config({
+            debug: false,
+            appId: "<?=$data['conf']['appId']?>", // 必填，公众号的唯一标识
+            timestamp: "<?=$data['conf']['timestamp']?>", // 必填，生成签名的时间戳
+            nonceStr: "<?=$data['conf']['nonceStr']?>", // 必填，生成签名的随机串
+            signature: "<?=$data['conf']['signature']?>",// 必填，签名，见附录1
+            jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareQZone'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+                title: '《全民奇迹》2周年！我在“奇迹之路”等你！',
+                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: "http://joymepic.joyme.com/live/pic/201612/81481175694973.png",
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: '《全民奇迹》2周年！我在“奇迹之路”等你！',
+                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: "http://joymepic.joyme.com/live/pic/201612/81481175694973.png",
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+            //分享到QQ
+            wx.onMenuShareQQ({
+                title: '《全民奇迹》2周年！我在“奇迹之路”等你！',
+                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: "http://joymepic.joyme.com/live/pic/201612/81481175694973.png",
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+            //分享到QQ空间
+            wx.onMenuShareQZone({
+                title: '《全民奇迹》2周年！我在“奇迹之路”等你！',
+                desc: '我在参加《全民奇迹》2周年庆典“奇迹之路”活动，快为我投票吧！',
+                link: "<?=$data['conf']['url']?>",
+                imgUrl: "http://joymepic.joyme.com/live/pic/201612/81481175694973.png",
+                success: function (res) {
+                    alert("分享成功");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

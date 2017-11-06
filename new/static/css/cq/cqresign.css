@@ -1,0 +1,86 @@
+*{
+	padding: 0px;
+	margin: 0px;
+}
+
+body{
+	background:#FFEEDE;
+
+}
+
+h1{
+	display:block;
+	text-align:center;
+	background:#614C3A;
+	color: white;
+	margin: 20px 0px;
+	font-size: 18px;
+	padding: 10px;
+}
+
+h2{
+	display: block;
+	text-align: center;
+	color: #614C3A;
+	margin-bottom: 40px;
+	font-size: 16px;
+}
+
+.sq,.team,.uid,.qq,.tel,.age,.gender{
+	font-size:15px;
+	margin: 15px auto;
+}
+
+.sq span,
+.team span,
+.uid span,
+.qq span,
+.tel span,
+.age span,
+.gender span{
+	width: 90px;
+	text-align: right;
+	margin-right: 25px;
+	display: inline-block;
+}
+
+.sq form{
+	display: inline;
+}
+
+.section-resign{
+	width: 350px;
+	margin: 0px auto;
+}
+
+.tip p:nth-child(1){
+	color: #D4690E;
+	text-align: center;
+}
+
+.tip p:nth-child(2){
+	text-align: center;
+}
+
+.submit input {
+	width: 100px;
+	margin: 10px auto;
+}
+
+.submit {
+	text-align: center;
+}
+
+input:focus{
+	color: #614C3A;
+}
+
+span#error_pvp_usruid,
+span#error_pvp_team,
+span#error_pvp_qq,
+span#error_pvp_tel,
+span#error_pvp_age,
+span#error_pvp_gender{
+	width: auto;
+	padding-left: 120px;
+}

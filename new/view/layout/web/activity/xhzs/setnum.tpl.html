@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<?=$data['html']?>
+</body>
+</html>
+<script type="text/javascript" src="<?=$data['static_js_url']?>/js/jquery-1.9.1.min.js"></script>
+<script>
+    //后台设置投票数
+    function uplNum(id){
+        var num = $("#"+id).val();
+        num = parseInt(num)
+        if(!isNaN(num) && num>=0){
+            jQuery.ajax({
+                "url": "?c=xhzstools&a=setVoteNum",
+                "type": "GET",
+                "data": {'id':id,'num':num,'activity_id':1},
+                dataType: "jsonp",
+                "success": function(msg) {
+                    if(msg[0]['rs']==0){
+                        alert("修改成功");
+                        location.reload();
+                    }else{
+                        location.reload();
+                    }
+                }
+            })
+        }else{
+            alert("输入数据有误");
+            return false;
+        }
+    };
+</script>

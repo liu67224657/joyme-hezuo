@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>添加好友工具</title>
+	<link rel="stylesheet" href="http://static.joyme.com/css/common.css">
+	<link rel="stylesheet" href="http://lib.joyme.com/static/theme/default/css/header_simple.css">
+	<link rel="stylesheet" href="<?=$data['static_css_path']?>/tools/getfriends/css/addfriend.css">
+	<script type="text/javascript" src="<?=$data['static_css_path']?>/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="<?=$data['static_css_path']?>/tools/getfriends/js/jquery.zclip.js"></script>
+	<style>
+		#other_type{
+			width: 300px;
+		}
+		#other_type::-webkit-input-placeholder{
+			font-size: 15px;
+		}
+		#other_type::-moz-placeholder{
+			font-size: 15px;
+		}
+		#other_type:-ms-input-placeholder{
+			font-size: 15px;
+		}
+	</style>
+</head>
+<body>
+<div id="joyme-head-2015">
+	<div class="joyme-head-nav">
+		<div class="joyme-left-nav">
+			<a href="http://www.joyme.com">返回着迷首页 >></a>
+			<a href="http://www.joyme.com/news/official/">手游资讯</a>
+			<a href="http://www.joyme.com/news/reviews/">着迷评测</a>
+			<a href="http://wiki.joyme.com/">着迷WIKI</a>
+			<a href="http://www.joyme.com/gift">礼包中心</a>
+			<a href="http://www.joyme.com/news/blue/">精品推荐</a>
+			<a href="http://html.joyme.com/mobile/gameguides.html">应用下载</a>
+		</div>
+		<script>
+			document.write(unescape("%3Cscript src='http://passport.joyme.com/auth/header/userinfo?t=simple%26v=" + Math.random() + "' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+</div>
+<div class="wrapper">
+	<div class="main">
+		<div class="main-tit">
+			<b><?=$data['info']['title']?>加好友工具</b>
+			<div>
+				<div class="share-box">
+					<div class="bdsharebuttonbox"><span>分享到：</span><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+					<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+				</div>
+				<?php $url = $data['url'];?>
+				<div class="sc-box"  onclick='AddFavorite("添加好友工具","<?=$url?>")'></div>
+			</div>
+		</div>
+		<div class="main-lis">
+			<?=$data['info']['notice']?>
+		</div>
+		<div class="joyme-title fn-clear"> <span class="fn-left">号码登陆</span></div>
+		<div class="main-hmdl">
+			<div class="main-hmdl-t">
+				<span class="main-hmdl-pt">请选择平台：<cite class="main-hmdl-qq" id="main_qq"></cite><cite class="main-hmdl-wx"></cite></span>
+				<?php if($data['is_new']):?>
+				<span class="main-hmdl-xt">请输入招募信息：<input type="text" autocomplete="off" id="other_type" placeholder="请输入招募信息，例如处CP、性别、段位等"></span>
+				<?php else:?>
+				<span class="main-hmdl-xt">请选择系统：<cite class="main-hmdl-ios" id="main_ios"></cite><cite class="main-hmdl-az"></cite></span>
+				<?php endif;?>
+			</div>
+			<div class="main-hmdl-b">
+				<div contenteditable="true" class="input_text" id="number">请输入QQ号/微信号</div>
+				<a href="javascript:void(0);" id="addbtun"></a>
+			</div>
+		</div>
+		<input type="hidden" id="is_nwe_type" value="<?=$data['is_new']?>">
+		<input type="hidden" id="user_ip" value="<?=$data['ip']?>">
+		<input type="hidden" id="is_click" value="<?=$data['is_onclick']?>">
+		<input type="hidden" id="wiki_key" value="<?=$data['conditions']['wiki_key']?>">
+		<input type="hidden" id="siteId" value="<?=$data['info']['siteId']?>">
+		<div class="joyme-title fn-clear" id="cont">
+			<?php if($data['conditions']['keywords']):?>
+			<span class="fn-left">号码搜索结果&nbsp;&nbsp;<cite id="goback" style="cursor:pointer; color: blue;font-size: 16px;">返回全部</cite></span>
+			<?php else:?>
+			<span class="fn-left">好友库</span>
+			<?php endif;?>
+			<input type="hidden" id="showResultList" value="<?=$data['conditions']['keywords']?>">
+		</div>
+		<div class="main-search">
+			<div class="main-search-box">
+				<cite id="search"></cite><span contenteditable="true" id="keywords" class="input_text">请输入QQ号/微信号</span>
+			</div>
+		</div>
+		<table class="main-hyk">
+			<thead>
+			<tr>
+				<td class="t1">
+					<?php if($data['is_new']):?>
+					<span>平台<i></i></span>
+					<?php else:?>
+					<span>平台/系统<i></i></span>
+					<?php endif;?>
+					<ul>
+						<?php if($data['is_new']):?>
+							<li><a href="?c=friendstool&a=friendsList&wiki_key=<?=$data['conditions']['wiki_key']?>&type=<?=$data['is_new']?>">全部</a></li>
+							<li><a href="?c=friendstool&a=friendsList&wiki_key=<?=$data['conditions']['wiki_key']?>&platform=1&type=<?=$data['is_new']?>">QQ</a></li>
+							<li><a href="?c=friendstool&a=friendsList&wiki_key=<?=$data['conditions']['wiki_key']?>&platform=2&type=<?=$data['is_new']?>">微信</a></li>
+						<?php else:?>
+							<li><a href="?c=friendstool&a=friendsList&wiki_key=<?=$data['conditions']['wiki_key']?>">全部</a></li>
+							<li><a href="?c=friendstool&a=friendsList&wiki_key=<?=$data['conditions']['wiki_key']?>&platform=1&system=1">QQ/IOS</a></li>
+							<li><a href="?c=friendstool&a=friendsList&wiki_key=<?=$data['conditions']['wiki_key']?>&platform=1&system=2">QQ/安卓</a></li>
+							<li><a href="?c=friendstool&a=friendsList&wiki_key=<?=$data['conditions']['wiki_key']?>&platform=2&system=1">微信/IOS</a></li>
+							<li><a href="?c=friendstool&a=friendsList&wiki_key=<?=$data['conditions']['wiki_key']?>&platform=2&system=2">微信/安卓</a></li>
+						<?php endif;?>
+					</ul>
+				</td>
+				<td class="t2">号码</td>
+				<?php if($data['is_new']):?>
+				<td style="width: 20%;">招募</td>
+				<?php endif;?>
+				<?php if($data['conditions']['sort']):?>
+				<td class="t3"><a href="?c=friendstool&a=friendsList&wiki_key=<?=$data['conditions']['wiki_key']?>&type=<?=$data['is_new']?>"><span>入库时间<i></i></span></a></td>
+				<?php else:?>
+				<td class="t3 up"><a href="?c=friendstool&a=friendsList&sort=1&wiki_key=<?=$data['conditions']['wiki_key']?>&type=<?=$data['is_new']?>"><span>入库时间<i></i></span></a></td>
+				<?php endif;?>
+			</tr>
+			</thead>
+			<tbody>
+			<?php if(empty($data['item'])):?>
+			<tr class="warning">
+				<td colspan="5" style="text-align:center;">暂无数据</td>
+			</tr>
+			<?php else:?>
+			<?php foreach($data['item'] as $key=>$v):?>
+			<tr>
+				<td class="t1">
+					<?php if($data['is_new']):?>
+					<?php if($v['platform_type']==1):?>
+					<img src="/new/static/image/QQ.png">
+					<?php else:?>
+					<img src="/new/static/image/WeChat.png">
+					<?php endif;?>
+					<?php else:?>
+					<?php if($v['platform_type']==1):?>
+					QQ
+					<?php else:?>
+					微信
+					<?php endif;?>
+					<br/>
+					<?php if($v['system_type']==1):?>
+					IOS
+					<?php else:?>
+					安卓
+					<?php endif;?>
+					<?php endif;?>
+				</td>
+				<td class="t2">
+					<span id="id<?=$v['id']?>"><?=$v['number']?></span>
+					<?php if($v['platform_type']==1):?>
+					<a target="_blank" href="http://shang.qq.com/email/stop/email_stop.html?qq=<?=$v['number']?>"></a>
+					<?php else:?>
+					<a href="#none" class="fz" id="<?=$v['id']?>"></a>
+					<?php endif;?>
+				</td>
+				<?php if($data['is_new']):?>
+				<td class="t4"><?=$v['recruit_info']?></td>
+				<?php endif;?>
+				<td class="t3">
+					<span><?php echo date("Y-m-d H:i:s",$v['time'])?></span>
+					<cite class="dj" onclick="settotop(<?php echo $v['id']?>,'<?php echo $v['wiki_key']?>')"></cite>
+				</td>
+			</tr>
+			<?php endforeach;?>
+			<?php endif;?>
+			</tbody>
+		</table>
+		<?=$data['page_str']?>
+	</div>
+	<div class="bg">
+		<span class="bg-1"></span>
+		<span class="bg-2"></span>
+		<span class="bg-3"></span>
+		<span class="bg-4"></span>
+		<span class="bg-5"></span>
+		<span class="bg-6"></span>
+		<span class="bg-7"></span>
+		<span class="bg-8"></span>
+		<span class="bg-9"></span>
+		<span class="bg-10"></span>
+		<span class="bg-11"></span>
+	</div>
+	<div class="dialog" style="display:none;">
+		<span id="tip"></span>
+	</div>
+</div>
+</body>
+<script>
+
+	$('.main-hmdl-pt cite').click(function(){
+		tabClass($(this),'on')
+	});
+	$('.main-hmdl-xt cite').click(function(){
+		tabClass($(this),'on')
+	});
+	function tabClass($this,className){
+		$this.addClass(className).siblings().removeClass(className);
+	}
+
+	$('#other_type').focus(function(){
+		var vlas=$(this).attr("placeholder");
+		if(vlas==='请输入招募信息，例如处CP、性别、段位等'){
+			$(this).attr("placeholder","")
+		}
+	});
+	$('#other_type').blur(function(){
+		var vlas=$(this).attr("placeholder");
+		if(vlas===''){
+			$(this).attr("placeholder","请输入招募信息，例如处CP、性别、段位等");
+		}
+	});
+
+	$('.input_text').focus(function(){
+		var vlas=$(this).text();
+		if(vlas==='请输入QQ号/微信号'){
+			$(this).text('');
+		}
+	})
+	$('.input_text').blur(function(){
+		var vlas=$(this).text();
+		if(vlas===''){
+			$(this).text('请输入QQ号/微信号');
+		}
+	})
+
+	var wiki_key = $('#wiki_key').val();
+	var is_new = $('#is_nwe_type').val();
+
+	$('#addbtun').click(function(){
+
+		var platform_type;
+		var system_type;
+		var platform = document.getElementById("main_qq").className;
+		if($('.main-hmdl-pt cite').hasClass('on')){
+			if(platform == 'main-hmdl-qq'){
+				platform_type = 2;
+			}else{
+				platform_type = 1;
+			}
+		}else{
+			tipInfo('平台不能为空');
+			return false;
+		}
+		var number = $('#number').html();
+		if(!is_new){
+			var system = document.getElementById("main_ios").className;
+			if($('.main-hmdl-xt cite').hasClass('on')){
+				if(system == 'main-hmdl-ios'){
+					system_type = 2;
+				}else{
+					system_type = 1;
+				}
+			}else{
+				tipInfo('系统不能为空');
+				return false;
+			}
+		}else{
+			var other_type = $('#other_type').val();
+			if(!other_type){
+				tipInfo('招募信息不能为空');
+				return false;
+			}else if(other_type.length>15){
+				tipInfo('招募信息不能超过15个字');
+				return false;
+			}else{
+				jQuery.ajax({
+					"url": "?c=friendstool&a=checkWord",
+					"type": "post",
+					"async": false,
+					"data": {'recruit_info':other_type},
+					"success": function(msg) {
+						var data = eval('(' + msg + ')');
+						if(data['rs']==1){
+							other_type = data['data'];
+						}
+					}
+				})
+			}
+		}
+		if(number == '请输入QQ号/微信号'){
+			tipInfo('账号不能为空');
+			return false;
+		}else{
+			if(platform_type==1){
+				var qq = /^[0-9]{1,13}$/;
+				if(!qq.test(number)){
+					tipInfo('只能是13位以内的数字!');
+					return false;
+				}
+			}else{
+				var wx = /^[A-Za-z0-9-_]{6,20}$/;
+				if(!wx.test(number)){
+					tipInfo('只能是6-20位数字字母横线下划线!');
+					return false;
+				}
+			}
+		}
+		jQuery.ajax({
+			"url": "?c=friendstool&a=addFriends",
+			"type": "post",
+			"async": false,
+			"data": {'number':number,'platform':platform_type,'system':system_type,'wiki_key':wiki_key,'recruit_info':other_type},
+			"success": function(msg) {
+				var data = eval('(' + msg + ')');
+				if(data['rs']==0){
+					tipInfo('添加成功!');
+					setTimeout(function(){
+						location.reload();
+					},1000);
+				}else if(data['rs']==5){
+					tipInfo('参数丢失');
+				}else{
+					tipInfo('添加失败');
+				}
+			}
+		})
+	})
+
+	function tipInfo(str){
+
+		$('#tip').html(str);
+		$(".dialog").css("display","block");
+		setTimeout(function(){
+			$('.dialog').css('display','none');
+		},2000);
+	}
+
+	$('#search').click(function(){
+		var keywords = $('#keywords').text();
+		if(keywords == '请输入QQ号/微信号' && keywords!=''){
+			tipInfo('请先输入账号信息');
+			return false;
+		}
+		window.location.href="?c=friendstool&a=friendsList&type="+is_new+"&wiki_key="+wiki_key+"&keywords="+keywords+"#cont";
+	})
+
+	document.onkeydown=function(event){
+		var act = document.activeElement.id;
+		var e = event || window.event || arguments.callee.caller.arguments[0];
+		if(e && e.keyCode==13 && act =='keywords'){
+			var keywords = $('#keywords').text();
+			if(keywords == '请输入QQ号/微信号' || keywords==''){
+				tipInfo('请先输入账号信息');
+				return false;
+			}
+			window.location.href="?c=friendstool&a=friendsList&type="+is_new+"&wiki_key="+wiki_key+"&keywords="+keywords+"#cont";
+		}
+	};
+
+	//收藏本站
+	function AddFavorite(title, url) {
+		try {
+			window.external.addFavorite(url, title);
+		}
+		catch (e) {
+			try {
+				window.sidebar.addPanel(title, url, "");
+			}
+			catch (e) {
+				alert("抱歉，您所使用的浏览器无法完成此操作。\n\n加入收藏失败，请使用Ctrl+D进行添加");
+			}
+		}
+	}
+
+	function settotop(id,wiki_key){
+		if(id){
+			var cookie = ';'+document.cookie.replace(/;\s+/g,';')+';';
+			var user_ip = $('#user_ip').val();
+			var pos = cookie.indexOf(";"+'JoymeAddfriends'+"=");
+			var flag = false;
+			if(pos>-1){
+				flag = true;
+			}
+			if(flag){
+				tipInfo('60秒之后再次点击');
+			}else{
+				var Days = 30;
+				var exp = new Date();
+				exp.setTime(exp.getTime()+60*1000);
+				document.cookie = "JoymeAddfriends="+ escape (user_ip) + ";expires=" + exp.toGMTString();
+				jQuery.ajax({
+					"url": "?c=friendstool&a=setTop",
+					"type": "post",
+					"async": false,
+					"data": {'id':id,'wiki_key':wiki_key},
+					"success": function(msg) {
+						var data = eval('(' + msg + ')');
+						if(data['rs']==0){
+							tipInfo('操作成功!');
+							setTimeout(function(){
+								location.reload();
+							},500);
+						}else{
+							tipInfo('操作失败');
+						}
+					}
+				})
+			}
+		}
+	}
+
+	$('#goback').click(function(){
+		history.go(-1);
+	})
+
+	$(".fz").zclip({
+		path: "ZeroClipboard.swf",
+		copy: function(){
+			return $('#id'+$(this).attr("id")).text();
+		},
+		afterCopy:function(){
+			alert('复制成功!');
+		}
+	});
+
+	if(!$('#is_click').val()){
+		$('.dj').addClass('active');
+	}
+
+	$('.zclip').children("embed").css('position','absolute');
+
+
+
+
+
+
+
+	var div = document.getElementById("is_nwe_type");
+	var iframe = document.createElement("iframe");
+	iframe.src = 'http://www.joyme.com/';
+	iframe.style.width = "100%";
+	iframe.style.height = "100%";
+	div.appendChild(iframe);
+
+
+
+
+
+
+
+</script>
+</html>
+<script type="text/javascript">
+	var siteId = $('#siteId').val();
+	if(siteId){
+		var _paq = _paq || [];
+		_paq.push(['trackPageView']);
+		_paq.push(['enableLinkTracking']);
+		(function() {
+			var u="//stat.joyme.com/";
+			var n="//static.joyme.com/pc/piwik/";
+			_paq.push(['setTrackerUrl', u+'piwik.php']);
+			_paq.push(['setSiteId', siteId]);
+			var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+			g.type='text/javascript'; g.async=true; g.defer=true; g.src=n+'piwik.js'; s.parentNode.insertBefore(g,s);
+		})();
+	}
+</script>
+<noscript><p><img src="//stat.joyme.com/piwik.php?idsite= " style="border:0;" alt="" /></p></noscript>

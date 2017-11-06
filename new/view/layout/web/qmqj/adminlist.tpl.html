@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>名人堂后台审核</title>
+</head>
+<title>数字站</title>
+<link rel="stylesheet" type="text/css" href="http://joymewiki.joyme.com/static/css/audit/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="http://joymewiki.joyme.com//static/css/audit/info.css">
+<script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+<body>
+<table class="table table-bordered table-hover" style="width: 100%; border: 1px">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>角色ID</th>
+        <th>角色名称</th>
+        <th>头像</th>
+        <th>职业</th>
+        <th>家族</th>
+        <th>宣言</th>
+        <th>服务器号</th>
+        <th>报名时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php if(empty($data['item'])):?>
+    <tr class="warning">
+        <td colspan="10">暂无数据</td>
+    </tr>
+    <?php else:?>
+    <?php foreach($data['item'] as $key=>$v):?>
+    <tr>
+        <td><?=$v['id'];?></td>
+        <td><?=$v['user_id']?></td>
+        <td><?=$v['user_name']?></td>
+        <td><a target="_blank" href="<?=$v['head_portr']?>"><img src="<?=$v['head_portr']?>?imageView/1/w/281/h/281/" width="50px;" height="50px;"></a></td>
+        <td><?=$v['occup']?></td>
+        <td><?=$v['family']?></td>
+        <td>#<?=$v['theme']?>#<?=$v['decla']?></td>
+        <td><?=$v['area_code']?></td>
+        <td><?=date('Y-m-d H:i:s',$v['create_time'])?></td>
+        <td>
+            <?php if($v['status']==1):?>
+                <button class="btn btn-success" onclick="auditOperation(<?=$v['id']?>)">通过</button>
+            <?php else:?>
+                <button class="btn btn-primary">已通过</button>
+            <?php endif;?>
+        </td>
+    </tr>
+    <?php endforeach;?>
+    <?php endif;?>
+    </tbody>
+</table>
+<div class="pagination pagination-right">
+    <ul>
+        <?=$data['page']?>
+    </ul>
+</div>
+</body>
+</html>
+<script>
+
+    //审核功能
+    function auditOperation(id){
+
+       if( id ){
+           if(confirm('确实要通过?')){
+               $.ajax({
+                   "url": "/new/?c=qmqj&a=adminCheckList",
+                   "type": "POST",
+                   "data": {'id':id},
+                   "success": function(msg) {
+                       var obj = eval('(' + msg+ ')');
+                       if(obj['result'] == 0){
+                           alert('操作成功');
+                           window.location.reload();
+                       }else{
+                           alert('操作失败');
+                       }
+                   }
+               })
+           }
+       }
+    }
+</script>

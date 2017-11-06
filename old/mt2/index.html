@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="width=device.width, initial-scale=1.0, user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<title>英雄列表页</title>
+<link href="http://reswiki1.joyme.com/css/mt2/wxwiki/default/common.css" rel="stylesheet" type="text/css">
+<link href="http://reswiki1.joyme.com/css/mt2/wxwiki/default/2/wiki.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+window.addEventListener('DOMContentLoaded', function (){
+	document.addEventListener('touchstart', function (){return false}, true)
+}, true);
+</script>
+</head>
+<body>
+	<div id="wrapper"> 
+    	<div id="center">
+            <!--gq-center-->
+            <div class="yx-list-title">
+                <a href="javascript:void(0);">
+                    <b class="fl"></b><span class="fl">点击筛选英雄</span>
+                </a>
+            </div>
+            <div class="gq-center">
+            	<!--base-pic-->
+                <div class="base-pic">
+                    <div class="base-picBox screen-picBox" id="hero_list"></div>
+                </div>
+                <!--base-pic==end-->
+            </div>
+           <!--gq-center==end--> 
+        </div> 
+        <!--sxyx弹出层-->
+        <div class="sxyx-dialog">
+            <div class="sxyx-dialog-main">
+                <div class="sxyx-dialog-box" id="sx_classes">
+                  <span><b>类型</b></span>
+                  <cite data="治疗"><a href="javascript:void(0);">治疗</a></cite>
+                  <cite data="防御"><a href="javascript:void(0);">防御</a></cite>
+                  <cite data="输出"><a href="javascript:void(0);">输出</a></cite>
+                </div>
+                <div class="sxyx-dialog-box" id="sx_character">
+                  <span><b>职业</b></span>
+                  <cite data="战士"><a href="javascript:void(0);">战士</a></cite>
+                  <cite data="法师"><a href="javascript:void(0);">法师</a></cite>
+                  <cite data="牧师"><a href="javascript:void(0);">牧师</a></cite>
+                  <cite data="骑士"><a href="javascript:void(0);">骑士</a></cite>
+				  <cite data="猎人"><a href="javascript:void(0);">猎人</a></cite>
+                  <cite data="死骑"><a href="javascript:void(0);">死骑</a></cite>
+                  <cite data="术士"><a href="javascript:void(0);">术士</a></cite>
+                  <cite data="萨满"><a href="javascript:void(0);">萨满</a></cite>
+                  <cite data="盗贼"><a href="javascript:void(0);">盗贼</a></cite>
+				  <cite data="德鲁伊"><a href="javascript:void(0);">德鲁伊</a></cite>
+                </div>
+            </div>
+            <div class="sxyx-dialog-btn">
+                <a href="javascript:void(0);" id="sx_sure">确定</a>|<a href="javascript:void(0);" id="sx_cancel">取消</a>
+            </div>
+        </div>
+        <div id="op-bg"></div>   
+        <!--sxyx弹出层==end-->
+    </div>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/action.js"></script>
+	<script src="js/mt2data.js"></script>
+	<script src="js/mt2_select.js"></script>
+</body>
+</html>
